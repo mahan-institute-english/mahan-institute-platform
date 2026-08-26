@@ -6,6 +6,8 @@
     <title>MAHAN - The Institute Of English | User Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
 
@@ -98,19 +100,21 @@
 
     <!-- Dashboard Logic Script -->
     <script>
-        let currentUser = null;
+        const SUPABASE_URL = 'https://wzrbsvwmrymkpzwmgypb.supabase.co';
+        const SUPABASE_KEY = 'Sb_publishable_qasb0y09kMEZbDZLQRbiLg_YoMF_iyH';
+        const _db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
         const levelRates = [0, 1000, 500, 250, 250, 250, 125, 125, 125, 125];
 
-        function initDashboard() {
+        async function initDashboard() {
             let saved = localStorage.getItem('mahan_current');
             if(!saved) {
                 alert("Please login first!");
                 window.location.href = "login.html";
                 return;
             }
-            currentUser = JSON.parse(saved);
+            let currentUser = JSON.parse(saved);
             
-            // If admin tries to open user dashboard, redirect to admin panel
             if(currentUser.role === 'admin') {
                 window.location.href = "admin.html";
                 return;
@@ -118,45 +122,45 @@
 
             document.getElementById('headerUserName').innerText = currentUser.name;
             document.getElementById('dashName').innerText = currentUser.name;
-            document.getElementById('dashUserId').innerText = currentUser.id;
+            document.getElementById('dashUserId').innerText = currentUser.user_id;
 
             // Generate Referral Link
             let refUrl = window.location.origin + "/register.html?ref=" + currentUser.referral_code;
             document.getElementById('refLinkInput').value = refUrl;
 
-            renderLevelTable();
-            calculateEarnings();
+            renderLevelTable(currentUser);
+            calculateEarnings(currentUser);
         }
 
-        function renderLevelTable() {
+        function renderLevelTable(user) {
             let tbody = document.getElementById('levelTableBody');
             tbody.innerHTML = "";
             for(let i=1; i<=9; i++) {
-                let count = currentUser.levels[i] || 0;
+                let count = user['level_' + i] || 0;
                 let pay = count * levelRates[i];
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-750">
                         <td class="p-3 font-semibold text-blue-400">Level ${i}</td>
                         <td class="p-3">₹ ${levelRates[i]}</td>
-                        <td class="p-3" id="l${i}Count">${count}</td>
-                        <td class="p-3 font-bold text-emerald-400" id="l${i}Pay">₹ ${pay}</td>
+                        <td class="p-3">${count}</td>
+                        <td class="p-3 font-bold text-emerald-400">₹ ${pay}</td>
                     </tr>
                 `;
             }
         }
 
-        function calculateEarnings() {
+        function calculateEarnings(user) {
             let totalEarning = 0;
             for(let i=1; i<=9; i++) {
-                totalEarning += (currentUser.levels[i] || 0) * levelRates[i];
+                totalEarning += (user['level_' + i] || 0) * levelRates[i];
             }
 
-            if(currentUser.status === "Active") {
+            if(user.status === "Active") {
                 document.getElementById('dashStatusText').innerText = "(Active)";
                 document.getElementById('profileCardBg').style.background = "linear-gradient(135deg, #11998e, #38ef7d)";
-                document.getElementById('totalLimit').innerText = "₹ " + currentUser.total_limit.toLocaleString();
+                document.getElementById('totalLimit').innerText = "₹ " + user.total_limit.toLocaleString();
                 document.getElementById('earningAmount').innerText = "₹ " + totalEarning.toLocaleString();
-                let remaining = currentUser.total_limit - totalEarning;
+                let remaining = user.total_limit - totalEarning;
                 document.getElementById('remainingLimit').innerText = "₹ " + Math.max(0, remaining).toLocaleString();
             } else {
                 document.getElementById('dashStatusText').innerText = "(Unactive)";
@@ -188,4 +192,4 @@
     </script>
 
 </body>
-  </html>
+                    </html>
