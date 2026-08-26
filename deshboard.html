@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAHAN - The Institute Of English | User Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="bg-slate-800 border-b border-slate-700 p-4 shadow-md flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+            <div class="bg-blue-600 text-white font-bold px-3 py-2 rounded-lg text-lg">MAHAN</div>
+            <div>
+                <h1 class="text-lg font-bold tracking-wide">User Dashboard</h1>
+                <p class="text-xs text-slate-400">Learn, Teach & Earn Network</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-3">
+            <span id="headerUserName" class="text-sm font-medium text-emerald-400"></span>
+            <button onclick="logout()" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-sm transition">
+                <i class="fa-solid fa-power-off"></i> Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow p-4 md:p-6 max-w-7xl mx-auto w-full space-y-6">
+        
+        <!-- Profile & Wallet Box -->
+        <div id="profileCardBg" class="bg-gradient-to-r from-slate-800 to-slate-700 border border-slate-600 rounded-2xl p-6 shadow-xl flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <h2 class="text-2xl font-bold text-white"><span id="dashName"></span> <span id="dashStatusText" class="text-sm font-normal text-yellow-300">(Unactive)</span></h2>
+                <p class="text-sm text-slate-300 mt-1">User ID: <span id="dashUserId" class="font-mono bg-slate-900 px-2 py-0.5 rounded text-emerald-400"></span></p>
+            </div>
+            <div class="flex flex-wrap gap-3 justify-center">
+                <div class="bg-slate-900/90 p-3 rounded-xl text-center border border-slate-700 min-w-[110px]">
+                    <p class="text-xs text-slate-400">Total Limit</p>
+                    <p id="totalLimit" class="text-lg font-bold text-blue-400">₹ 0</p>
+                </div>
+                <div class="bg-slate-900/90 p-3 rounded-xl text-center border border-slate-700 min-w-[110px]">
+                    <p class="text-xs text-slate-400">Total Earning</p>
+                    <p id="earningAmount" class="text-lg font-bold text-emerald-400">₹ 0</p>
+                </div>
+                <div class="bg-slate-900/90 p-3 rounded-xl text-center border border-slate-700 min-w-[110px]">
+                    <p class="text-xs text-slate-400">Remaining Limit</p>
+                    <p id="remainingLimit" class="text-lg font-bold text-amber-400">₹ 0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Referral Link & Social Share Bar -->
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="w-full md:w-auto flex-grow">
+                <label class="block text-xs text-slate-400 mb-1 font-semibold uppercase">Your Instant Active Referral Link</label>
+                <input type="text" id="refLinkInput" readonly class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm text-slate-300 font-mono">
+            </div>
+            <div class="flex space-x-2 w-full md:w-auto">
+                <button onclick="shareWhatsApp()" class="flex-grow md:flex-grow-0 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center space-x-2 shadow">
+                    <i class="fa-brands fa-whatsapp text-lg"></i> <span>WhatsApp</span>
+                </button>
+                <button onclick="shareEmail()" class="flex-grow md:flex-grow-0 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center space-x-2 shadow">
+                    <i class="fa-solid fa-envelope"></i> <span>Email</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 9-Level Income & Team Chart -->
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl">
+            <h3 class="text-xl font-bold mb-4 text-blue-400 border-b border-slate-700 pb-3 flex items-center">
+                <i class="fa-solid fa-sitemap mr-2"></i> 9-Level Team & Payout Structure
+            </h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="bg-slate-900 text-slate-400 border-b border-slate-700">
+                            <th class="p-3">Level</th>
+                            <th class="p-3">Rate (₹)</th>
+                            <th class="p-3">Team Count</th>
+                            <th class="p-3">Payout (₹)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="levelTableBody" class="divide-y divide-slate-700">
+                        <!-- Dynamic generated levels -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 border-t border-slate-700 p-4 text-center text-xs text-slate-400">
+        &copy; 2026 MAHAN - The Institute Of English. All Rights Reserved.
+    </footer>
+
+    <!-- Dashboard Logic Script -->
+    <script>
+        let currentUser = null;
+        const levelRates = [0, 1000, 500, 250, 250, 250, 125, 125, 125, 125];
+
+        function initDashboard() {
+            let saved = localStorage.getItem('mahan_current');
+            if(!saved) {
+                alert("Please login first!");
+                window.location.href = "login.html";
+                return;
+            }
+            currentUser = JSON.parse(saved);
+            
+            // If admin tries to open user dashboard, redirect to admin panel
+            if(currentUser.role === 'admin') {
+                window.location.href = "admin.html";
+                return;
+            }
+
+            document.getElementById('headerUserName').innerText = currentUser.name;
+            document.getElementById('dashName').innerText = currentUser.name;
+            document.getElementById('dashUserId').innerText = currentUser.id;
+
+            // Generate Referral Link
+            let refUrl = window.location.origin + "/register.html?ref=" + currentUser.referral_code;
+            document.getElementById('refLinkInput').value = refUrl;
+
+            renderLevelTable();
+            calculateEarnings();
+        }
+
+        function renderLevelTable() {
+            let tbody = document.getElementById('levelTableBody');
+            tbody.innerHTML = "";
+            for(let i=1; i<=9; i++) {
+                let count = currentUser.levels[i] || 0;
+                let pay = count * levelRates[i];
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-750">
+                        <td class="p-3 font-semibold text-blue-400">Level ${i}</td>
+                        <td class="p-3">₹ ${levelRates[i]}</td>
+                        <td class="p-3" id="l${i}Count">${count}</td>
+                        <td class="p-3 font-bold text-emerald-400" id="l${i}Pay">₹ ${pay}</td>
+                    </tr>
+                `;
+            }
+        }
+
+        function calculateEarnings() {
+            let totalEarning = 0;
+            for(let i=1; i<=9; i++) {
+                totalEarning += (currentUser.levels[i] || 0) * levelRates[i];
+            }
+
+            if(currentUser.status === "Active") {
+                document.getElementById('dashStatusText').innerText = "(Active)";
+                document.getElementById('profileCardBg').style.background = "linear-gradient(135deg, #11998e, #38ef7d)";
+                document.getElementById('totalLimit').innerText = "₹ " + currentUser.total_limit.toLocaleString();
+                document.getElementById('earningAmount').innerText = "₹ " + totalEarning.toLocaleString();
+                let remaining = currentUser.total_limit - totalEarning;
+                document.getElementById('remainingLimit').innerText = "₹ " + Math.max(0, remaining).toLocaleString();
+            } else {
+                document.getElementById('dashStatusText').innerText = "(Unactive)";
+                document.getElementById('totalLimit').innerText = "₹ 0";
+                document.getElementById('earningAmount').innerText = "₹ 0";
+                document.getElementById('remainingLimit').innerText = "₹ 0";
+            }
+        }
+
+        function shareWhatsApp() {
+            let url = document.getElementById('refLinkInput').value;
+            let msg = "Join Mahan Institute of English & Build Your Financial Future! Register here: " + url;
+            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function shareEmail() {
+            let url = document.getElementById('refLinkInput').value;
+            let subject = "Join Mahan Institute of English";
+            let body = "Hello,\n\nLearn, Teach & Earn with us. Join using my referral link: " + url;
+            window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        }
+
+        function logout() {
+            localStorage.removeItem('mahan_current');
+            window.location.href = "login.html";
+        }
+
+        window.onload = initDashboard;
+    </script>
+
+</body>
+  </html>
