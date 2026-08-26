@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAHAN - The Institute Of English | Free Registration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="bg-slate-800 border-b border-slate-700 p-4 shadow-md flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+            <a href="index.html" class="bg-blue-600 text-white font-bold px-3 py-2 rounded-lg text-lg">MAHAN</a>
+            <div>
+                <h1 class="text-lg font-bold tracking-wide">The Institute Of English</h1>
+                <p class="text-xs text-slate-400">Free Partnership Registration</p>
+            </div>
+        </div>
+        <div>
+            <a href="login.html" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-sm font-semibold">Sign In</a>
+        </div>
+    </header>
+
+    <!-- Register Section -->
+    <main class="flex-grow flex items-center justify-center p-4 py-8">
+        <div class="max-w-lg w-full bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-2xl">
+            <div class="text-center mb-6">
+                <div class="inline-block bg-emerald-600 text-white p-3 rounded-full mb-3 shadow-lg">
+                    <i class="fa-solid fa-user-plus text-2xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-emerald-400">JOIN MAHAN INSTITUTE</h2>
+                <p class="text-xs text-slate-400 mt-1">Register free & get your instant referral link</p>
+            </div>
+
+            <form onsubmit="handleRegister(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-slate-400 mb-1">Full Name</label>
+                    <input type="text" id="regName" required placeholder="Haresh Makasana" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 text-sm">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs uppercase font-semibold text-slate-400 mb-1">Email (For Welcome Letter)</label>
+                        <input type="email" id="regEmail" required placeholder="user@gmail.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase font-semibold text-slate-400 mb-1">Mobile Number</label>
+                        <input type="text" id="regMobile" required placeholder="98252XXXXX" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 text-sm">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs uppercase font-semibold text-slate-400 mb-1">Gender</label>
+                        <select id="regGender" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none text-sm">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase font-semibold text-slate-400 mb-1">Sponsor ID / Ref Code</label>
+                        <input type="text" id="regSponsor" placeholder="MAHAN101 (Optional)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 text-sm">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs uppercase font-semibold text-slate-400 mb-1">Password</label>
+                    <input type="password" id="regPass" required placeholder="Create strong password" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 text-sm">
+                </div>
+
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-lg transition duration-200 text-sm">
+                    REGISTER & GET INSTANT ID
+                </button>
+            </form>
+
+            <div class="mt-6 text-center border-t border-slate-700 pt-4">
+                <p class="text-xs text-slate-400">Already have an account?</p>
+                <a href="login.html" class="inline-block mt-2 text-sm text-blue-400 font-semibold hover:underline">Sign In Here</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 border-t border-slate-700 p-4 text-center text-xs text-slate-400">
+        &copy; 2026 MAHAN - The Institute Of English. All Rights Reserved.
+    </footer>
+
+    <!-- Registration Logic Script -->
+    <script>
+        // Check URL for referral code parameter automatically on load
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const refCode = urlParams.get('ref');
+            if(refCode) {
+                document.getElementById('regSponsor').value = refCode;
+            }
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            let name = document.getElementById('regName').value.trim();
+            let email = document.getElementById('regEmail').value.trim();
+            let mobile = document.getElementById('regMobile').value.trim();
+            let gender = document.getElementById('regGender').value.trim();
+            let pass = document.getElementById('regPass').value.trim();
+            let sponsor = document.getElementById('regSponsor').value.trim() || "MAHAN101";
+            
+            let newId = "MAHAN" + Math.floor(1000 + Math.random() * 9000);
+
+            let newUser = {
+                id: newId,
+                pass: pass,
+                name: name,
+                email: email,
+                mobile: mobile,
+                gender: gender,
+                role: "student",
+                status: "Unactive", // Unactive status has limit 0
+                total_limit: 50000,
+                sponsor: sponsor,
+                referral_code: newId,
+                levels: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            };
+
+            let dbUsers = JSON.parse(localStorage.getItem('mahan_users')) || [];
+            dbUsers.push(newUser);
+            localStorage.setItem('mahan_users', JSON.stringify(dbUsers));
+
+            alert(`Registration Successful!\n\nWelcome Letter, Login ID (${newId}) & Password have been sent to your email: ${email}`);
+            window.location.href = "login.html";
+        }
+    </script>
+
+</body>
+</html>
