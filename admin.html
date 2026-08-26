@@ -6,6 +6,8 @@
     <title>MAHAN - The Institute Of English | Admin Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
 
@@ -34,10 +36,10 @@
                 <h2 class="text-2xl font-bold text-white flex items-center">
                     <i class="fa-solid fa-shield-halved text-emerald-400 mr-2"></i> Master Management
                 </h2>
-                <p class="text-sm text-blue-200 mt-1">Full control over members, activations, and system data.</p>
+                <p class="text-sm text-blue-200 mt-1">Full control over members, activations, and cloud database.</p>
             </div>
             <div class="bg-slate-900 px-4 py-2 rounded-xl border border-blue-500 text-emerald-400 font-bold text-sm shadow">
-                System Status: Active
+                Cloud Status: Connected
             </div>
         </div>
 
@@ -52,8 +54,8 @@
                 <p id="adminTotalActivation" class="text-2xl font-bold text-emerald-400 mt-1">0</p>
             </div>
             <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl shadow">
-                <p class="text-xs text-slate-400 uppercase font-semibold">Unused Active Count</p>
-                <p id="adminUnusedCount" class="text-2xl font-bold text-amber-400 mt-1">88</p>
+                <p class="text-xs text-slate-400 uppercase font-semibold">System Database</p>
+                <p class="text-2xl font-bold text-amber-400 mt-1">Supabase</p>
             </div>
             <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl shadow">
                 <p class="text-xs text-slate-400 uppercase font-semibold">System Income</p>
@@ -65,7 +67,7 @@
         <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl space-y-4">
             <div class="flex flex-col md:flex-row justify-between items-center gap-4 border-b border-slate-700 pb-4">
                 <h3 class="text-lg font-bold text-white flex items-center">
-                    <i class="fa-solid fa-users-gear mr-2 text-blue-400"></i> Member Report & Control
+                    <i class="fa-solid fa-users-gear mr-2 text-blue-400"></i> Cloud Member Report & Control
                 </h3>
                 <input type="text" placeholder="Search by ID or Name..." onkeyup="filterMembers(this.value)" class="bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white w-full md:w-72 focus:outline-none focus:border-blue-500">
             </div>
@@ -83,7 +85,7 @@
                         </tr>
                     </thead>
                     <tbody id="adminMemberTable" class="divide-y divide-slate-700">
-                        <!-- Dynamic Rows -->
+                        <!-- Dynamic Rows from Supabase -->
                     </tbody>
                 </table>
             </div>
@@ -98,29 +100,30 @@
 
     <!-- Admin Logic Script -->
     <script>
-        function initAdmin() {
-            // Default Master Admin check or Localstorage load
-            let dbUsers = JSON.parse(localStorage.getItem('mahan_users')) || [];
-            
-            // Ensure master admin exists
-            if(!dbUsers.some(u => u.id === "MAHAN101")) {
-                dbUsers.unshift({
-                    id: "MAHAN101",
-                    pass: "admin123",
-                    name: "Haresh N Makasana",
-                    email: "haresh@gmail.com",
-                    mobile: "9825000000",
-                    gender: "Male",
-                    role: "admin",
-                    status: "Active",
-                    total_limit: 50000,
-                    referral_code: "MAHAN101",
-                    levels: [0,0,0,0,0,0,0,0,0,0]
-                });
-                localStorage.setItem('mahan_users', JSON.stringify(dbUsers));
+        const SUPABASE_URL = 'https://wzrbsvwmrymkpzwmgypb.supabase.co';
+        const SUPABASE_KEY = 'Sb_publishable_qasb0y09kMEZbDZLQRbiLg_YoMF_iyH';
+        const _db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        let allUsersData = [];
+
+        async function initAdmin() {
+            let saved = localStorage.getItem('mahan_current');
+            if(!saved) {
+                alert("Please login first!");
+                window.location.href = "login.html";
+                return;
             }
 
-            renderAdminTable(dbUsers);
+            // Fetch users from Supabase table
+            const { data, error } = await _db.from('users').select('*').order('id', { ascending: false });
+
+            if (error) {
+                alert("Error loading users: " + error.message);
+                return;
+            }
+
+            allUsersData = data || [];
+            renderAdminTable(allUsersData);
         }
 
         function renderAdminTable(usersList) {
@@ -131,21 +134,28 @@
             let tbody = document.getElementById('adminMemberTable');
             tbody.innerHTML = "";
 
+            if(usersList.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">No members found in database.</td></tr>`;
+                return;
+            }
+
             usersList.forEach(u => {
                 let statusBadge = u.status === 'Active' 
                     ? '<span class="px-2.5 py-1 rounded-full text-xs bg-emerald-900 text-emerald-300 font-semibold">Active</span>' 
                     : '<span class="px-2.5 py-1 rounded-full text-xs bg-yellow-900 text-yellow-300 font-semibold">Unactive</span>';
 
+                let actionBtnText = u.status === 'Active' ? 'Make Unactive' : 'Make Active';
+
                 tbody.innerHTML += `
                     <tr class="hover:bg-slate-750 transition">
-                        <td class="p-3 font-mono font-bold text-blue-400">${u.id}</td>
-                        <td class="p-3 font-mono text-slate-400">${u.pass}</td>
+                        <td class="p-3 font-mono font-bold text-blue-400">${u.user_id}</td>
+                        <td class="p-3 font-mono text-slate-400">${u.password}</td>
                         <td class="p-3 font-medium text-white">${u.name}</td>
                         <td class="p-3 text-slate-300">${u.mobile}</td>
                         <td class="p-3">${statusBadge}</td>
                         <td class="p-3">
-                            <button onclick="toggleUserStatus('${u.id}')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow transition">
-                                Toggle Status
+                            <button onclick="toggleUserStatus('${u.user_id}', '${u.status}')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow transition">
+                                ${actionBtnText}
                             </button>
                         </td>
                     </tr>
@@ -153,20 +163,27 @@
             });
         }
 
-        function toggleUserStatus(userId) {
-            let dbUsers = JSON.parse(localStorage.getItem('mahan_users')) || [];
-            let user = dbUsers.find(u => u.id === userId);
-            if(user) {
-                user.status = user.status === "Active" ? "Unactive" : "Active";
-                localStorage.setItem('mahan_users', JSON.stringify(dbUsers));
-                renderAdminTable(dbUsers);
-                alert(`User ${user.id} status changed to ${user.status}`);
+        async function toggleUserStatus(userId, currentStatus) {
+            let newStatus = currentStatus === "Active" ? "Unactive" : "Active";
+            
+            const { error } = await _db
+                .from('users')
+                .update({ status: newStatus })
+                .eq('user_id', userId);
+
+            if (error) {
+                alert("Error updating status: " + error.message);
+            } else {
+                alert(`User ${userId} status successfully updated to ${newStatus}`);
+                initAdmin(); // Refresh table
             }
         }
 
         function filterMembers(query) {
-            let dbUsers = JSON.parse(localStorage.getItem('mahan_users')) || [];
-            let filtered = dbUsers.filter(u => u.id.toLowerCase().includes(query.toLowerCase()) || u.name.toLowerCase().includes(query.toLowerCase()));
+            let filtered = allUsersData.filter(u => 
+                u.user_id.toLowerCase().includes(query.toLowerCase()) || 
+                u.name.toLowerCase().includes(query.toLowerCase())
+            );
             renderAdminTable(filtered);
         }
 
@@ -179,4 +196,4 @@
     </script>
 
 </body>
-  </html>
+</html>
