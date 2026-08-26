@@ -6,6 +6,8 @@
     <title>MAHAN - The Institute Of English | Free Registration</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
 
@@ -42,7 +44,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs uppercase font-semibold text-slate-400 mb-1">Email (For Welcome Letter)</label>
+                        <label class="block text-xs uppercase font-semibold text-slate-400 mb-1">Email</label>
                         <input type="email" id="regEmail" required placeholder="user@gmail.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 text-sm">
                     </div>
                     <div>
@@ -60,8 +62,8 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs uppercase font-semibold text-slate-400 mb-1">Sponsor ID / Ref Code</label>
-                        <input type="text" id="regSponsor" placeholder="MAHAN101 (Optional)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 text-sm">
+                        <label class="block text-xs uppercase font-semibold text-slate-400 mb-1">Sponsor ID</label>
+                        <input type="text" id="regSponsor" value="MAHAN101" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 text-sm">
                     </div>
                 </div>
 
@@ -70,15 +72,10 @@
                     <input type="password" id="regPass" required placeholder="Create strong password" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-emerald-500 text-sm">
                 </div>
 
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-lg transition duration-200 text-sm">
-                    REGISTER & GET INSTANT ID
+                <button type="submit" id="regSubmitBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-lg transition duration-200 text-sm">
+                    REGISTER & SAVE TO DATABASE
                 </button>
             </form>
-
-            <div class="mt-6 text-center border-t border-slate-700 pt-4">
-                <p class="text-xs text-slate-400">Already have an account?</p>
-                <a href="login.html" class="inline-block mt-2 text-sm text-blue-400 font-semibold hover:underline">Sign In Here</a>
-            </div>
         </div>
     </main>
 
@@ -87,9 +84,12 @@
         &copy; 2026 MAHAN - The Institute Of English. All Rights Reserved.
     </footer>
 
-    <!-- Registration Logic Script -->
+    <!-- Supabase Integration Script -->
     <script>
-        // Check URL for referral code parameter automatically on load
+        const SUPABASE_URL = 'https://wzrbsvwmrymkpzwmgypb.supabase.co';
+        const SUPABASE_KEY = 'Sb_publishable_qasb0y09kMEZbDZLQRbiLg_YoMF_iyH';
+        const _db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
             const refCode = urlParams.get('ref');
@@ -98,8 +98,12 @@
             }
         }
 
-        function handleRegister(e) {
+        async function handleRegister(e) {
             e.preventDefault();
+            let btn = document.getElementById('regSubmitBtn');
+            btn.innerText = "Saving to Database...";
+            btn.disabled = true;
+
             let name = document.getElementById('regName').value.trim();
             let email = document.getElementById('regEmail').value.trim();
             let mobile = document.getElementById('regMobile').value.trim();
@@ -109,27 +113,31 @@
             
             let newId = "MAHAN" + Math.floor(1000 + Math.random() * 9000);
 
-            let newUser = {
-                id: newId,
-                pass: pass,
-                name: name,
-                email: email,
-                mobile: mobile,
-                gender: gender,
-                role: "student",
-                status: "Unactive", // Unactive status has limit 0
-                total_limit: 50000,
-                sponsor: sponsor,
-                referral_code: newId,
-                levels: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            };
+            // Insert into Supabase 'users' table
+            const { data, error } = await _db.from('users').insert([
+                {
+                    user_id: newId,
+                    password: pass,
+                    name: name,
+                    email: email,
+                    mobile: mobile,
+                    gender: gender,
+                    role: 'student',
+                    status: 'Unactive',
+                    total_limit: 50000,
+                    sponsor: sponsor,
+                    referral_code: newId
+                }
+            ]);
 
-            let dbUsers = JSON.parse(localStorage.getItem('mahan_users')) || [];
-            dbUsers.push(newUser);
-            localStorage.setItem('mahan_users', JSON.stringify(dbUsers));
-
-            alert(`Registration Successful!\n\nWelcome Letter, Login ID (${newId}) & Password have been sent to your email: ${email}`);
-            window.location.href = "login.html";
+            if (error) {
+                alert("Error saving data: " + error.message);
+                btn.innerText = "REGISTER & SAVE TO DATABASE";
+                btn.disabled = false;
+            } else {
+                alert(`Registration Successful!\nYour User ID: ${newId}`);
+                window.location.href = "login.html";
+            }
         }
     </script>
 
