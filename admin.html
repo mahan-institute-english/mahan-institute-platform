@@ -3,197 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAHAN - The Institute Of English | Admin Panel</title>
+    <title>MAHAN - Admin Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Supabase CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
 
-    <!-- Header -->
     <header class="bg-slate-800 border-b border-slate-700 p-4 shadow-md flex justify-between items-center">
         <div class="flex items-center space-x-3">
-            <div class="bg-blue-600 text-white font-bold px-3 py-2 rounded-lg text-lg">MAHAN</div>
+            <div class="bg-red-600 text-white font-bold px-3 py-2 rounded-lg text-lg">ADMIN</div>
             <div>
-                <h1 class="text-lg font-bold tracking-wide">Admin Control Panel</h1>
-                <p class="text-xs text-slate-400">Founder & Master Admin: Haresh N Makasana</p>
+                <h1 class="text-sm font-bold tracking-wide">MAHAN Master Panel</h1>
+                <p class="text-xs text-slate-400">Manage All Registered Users</p>
             </div>
         </div>
-        <div>
-            <button onclick="adminLogout()" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-sm transition">
-                <i class="fa-solid fa-power-off"></i> Logout
-            </button>
-        </div>
+        <button onclick="logout()" class="bg-red-600/20 text-red-400 border border-red-500/50 hover:bg-red-600 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition">
+            <i class="fa-solid fa-power-off"></i> Logout
+        </button>
     </header>
 
-    <!-- Main Content -->
-    <main class="flex-grow p-4 md:p-6 max-w-7xl mx-auto w-full space-y-6">
-        
-        <!-- Admin Welcome Banner -->
-        <div class="bg-gradient-to-r from-blue-900 to-slate-800 border border-blue-600 rounded-2xl p-6 shadow-xl flex flex-col md:flex-row justify-between items-center gap-4">
-            <div>
-                <h2 class="text-2xl font-bold text-white flex items-center">
-                    <i class="fa-solid fa-shield-halved text-emerald-400 mr-2"></i> Master Management
-                </h2>
-                <p class="text-sm text-blue-200 mt-1">Full control over members, activations, and cloud database.</p>
-            </div>
-            <div class="bg-slate-900 px-4 py-2 rounded-xl border border-blue-500 text-emerald-400 font-bold text-sm shadow">
-                Cloud Status: Connected
-            </div>
-        </div>
-
-        <!-- Admin Stats Grid -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl shadow">
-                <p class="text-xs text-slate-400 uppercase font-semibold">Total Joining</p>
-                <p id="adminTotalJoining" class="text-2xl font-bold text-white mt-1">0</p>
-            </div>
-            <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl shadow">
-                <p class="text-xs text-slate-400 uppercase font-semibold">Total Activation</p>
-                <p id="adminTotalActivation" class="text-2xl font-bold text-emerald-400 mt-1">0</p>
-            </div>
-            <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl shadow">
-                <p class="text-xs text-slate-400 uppercase font-semibold">System Database</p>
-                <p class="text-2xl font-bold text-amber-400 mt-1">Supabase</p>
-            </div>
-            <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl shadow">
-                <p class="text-xs text-slate-400 uppercase font-semibold">System Income</p>
-                <p class="text-2xl font-bold text-blue-400 mt-1">₹ 0.00</p>
-            </div>
-        </div>
-
-        <!-- Member Management Report Table -->
-        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl space-y-4">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4 border-b border-slate-700 pb-4">
-                <h3 class="text-lg font-bold text-white flex items-center">
-                    <i class="fa-solid fa-users-gear mr-2 text-blue-400"></i> Cloud Member Report & Control
-                </h3>
-                <input type="text" placeholder="Search by ID or Name..." onkeyup="filterMembers(this.value)" class="bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-sm text-white w-full md:w-72 focus:outline-none focus:border-blue-500">
-            </div>
-
+    <main class="flex-grow p-4 max-w-6xl mx-auto w-full space-y-6 py-8">
+        <div class="bg-slate-800 border border-slate-700 p-6 rounded-2xl shadow-xl">
+            <h2 class="text-lg font-bold mb-4 flex items-center"><i class="fa-solid fa-users text-emerald-400 mr-2"></i> All Registered Users</h2>
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm border-collapse">
-                    <thead>
-                        <tr class="bg-slate-900 text-slate-400 border-b border-slate-700">
+                <table class="w-full text-left text-xs text-slate-300">
+                    <thead class="bg-slate-900 uppercase text-slate-400 border-b border-slate-700">
+                        <tr>
                             <th class="p-3">User ID</th>
-                            <th class="p-3">Password</th>
                             <th class="p-3">Name</th>
-                            <th class="p-3">Mobile No</th>
+                            <th class="p-3">Mobile</th>
+                            <th class="p-3">Sponsor</th>
                             <th class="p-3">Status</th>
-                            <th class="p-3">Action</th>
                         </tr>
                     </thead>
-                    <tbody id="adminMemberTable" class="divide-y divide-slate-700">
-                        <!-- Dynamic Rows from Supabase -->
+                    <tbody id="userTableBody" class="divide-y divide-slate-700">
+                        <tr><td colspan="5" class="p-4 text-center text-slate-500">Loading users from database...</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
-
     </main>
 
-    <!-- Footer -->
     <footer class="bg-slate-800 border-t border-slate-700 p-4 text-center text-xs text-slate-400">
         &copy; 2026 MAHAN - The Institute Of English. All Rights Reserved.
     </footer>
 
-    <!-- Admin Logic Script -->
     <script>
-        const SUPABASE_URL = 'https://wzrbsvwmrymkpzwmgypb.supabase.co';
-        const SUPABASE_KEY = 'Sb_publishable_qasb0y09kMEZbDZLQRbiLg_YoMF_iyH';
-        const _db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const SUPABASE_URL = "https://wzrbsvwmrymkpzwmgypb.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6cmJzdndtcnlta3B6d21neXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDc1NzQsImV4cCI6MjEwMzMyMzU3NH0.5ulY5LW3AQEPFDP__iOSJssgNafTSe9Yu4gEqZF7sLc";
+        
+        const { createClient } = supabase;
+        const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        let allUsersData = [];
-
-        async function initAdmin() {
-            let saved = localStorage.getItem('mahan_current');
-            if(!saved) {
-                alert("Please login first!");
-                window.location.href = "login.html";
+        async function fetchUsers() {
+            const { data, error } = await _supabase.from('users').select('*').order('id', { ascending: false });
+            const tbody = document.getElementById('userTableBody');
+            if(error) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-red-400">Error loading data: ${error.message}</td></tr>`;
+                return;
+            }
+            if(!data || data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">No users found in database.</td></tr>`;
                 return;
             }
 
-            // Fetch users from Supabase table
-            const { data, error } = await _db.from('users').select('*').order('id', { ascending: false });
-
-            if (error) {
-                alert("Error loading users: " + error.message);
-                return;
-            }
-
-            allUsersData = data || [];
-            renderAdminTable(allUsersData);
-        }
-
-        function renderAdminTable(usersList) {
-            document.getElementById('adminTotalJoining').innerText = usersList.length;
-            let activeCount = usersList.filter(u => u.status === "Active").length;
-            document.getElementById('adminTotalActivation').innerText = activeCount;
-
-            let tbody = document.getElementById('adminMemberTable');
-            tbody.innerHTML = "";
-
-            if(usersList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">No members found in database.</td></tr>`;
-                return;
-            }
-
-            usersList.forEach(u => {
-                let statusBadge = u.status === 'Active' 
-                    ? '<span class="px-2.5 py-1 rounded-full text-xs bg-emerald-900 text-emerald-300 font-semibold">Active</span>' 
-                    : '<span class="px-2.5 py-1 rounded-full text-xs bg-yellow-900 text-yellow-300 font-semibold">Unactive</span>';
-
-                let actionBtnText = u.status === 'Active' ? 'Make Unactive' : 'Make Active';
-
+            tbody.innerHTML = '';
+            data.forEach(user => {
                 tbody.innerHTML += `
-                    <tr class="hover:bg-slate-750 transition">
-                        <td class="p-3 font-mono font-bold text-blue-400">${u.user_id}</td>
-                        <td class="p-3 font-mono text-slate-400">${u.password}</td>
-                        <td class="p-3 font-medium text-white">${u.name}</td>
-                        <td class="p-3 text-slate-300">${u.mobile}</td>
-                        <td class="p-3">${statusBadge}</td>
-                        <td class="p-3">
-                            <button onclick="toggleUserStatus('${u.user_id}', '${u.status}')" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow transition">
-                                ${actionBtnText}
-                            </button>
-                        </td>
+                    <tr class="hover:bg-slate-750">
+                        <td class="p-3 font-bold text-emerald-400">${user.user_id}</td>
+                        <td class="p-3">${user.name}</td>
+                        <td class="p-3">${user.mobile}</td>
+                        <td class="p-3">${user.sponsor || '-'}</td>
+                        <td class="p-3"><span class="bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded text-[10px] font-semibold">${user.status}</span></td>
                     </tr>
                 `;
             });
         }
 
-        async function toggleUserStatus(userId, currentStatus) {
-            let newStatus = currentStatus === "Active" ? "Unactive" : "Active";
-            
-            const { error } = await _db
-                .from('users')
-                .update({ status: newStatus })
-                .eq('user_id', userId);
+        fetchUsers();
 
-            if (error) {
-                alert("Error updating status: " + error.message);
-            } else {
-                alert(`User ${userId} status successfully updated to ${newStatus}`);
-                initAdmin(); // Refresh table
-            }
+        function logout() {
+            localStorage.removeItem('mahan_user');
+            window.location.href = 'login.html';
         }
-
-        function filterMembers(query) {
-            let filtered = allUsersData.filter(u => 
-                u.user_id.toLowerCase().includes(query.toLowerCase()) || 
-                u.name.toLowerCase().includes(query.toLowerCase())
-            );
-            renderAdminTable(filtered);
-        }
-
-        function adminLogout() {
-            localStorage.removeItem('mahan_current');
-            window.location.href = "login.html";
-        }
-
-        window.onload = initAdmin;
     </script>
-
 </body>
 </html>
