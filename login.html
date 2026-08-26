@@ -6,6 +6,8 @@
     <title>MAHAN - The Institute Of English | Sign In</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="bg-slate-900 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
 
@@ -51,7 +53,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-lg transition duration-200 text-sm">
+                <button type="submit" id="loginBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-lg transition duration-200 text-sm">
                     SIGN IN NOW
                 </button>
             </form>
@@ -70,31 +72,55 @@
 
     <!-- Login Logic Script -->
     <script>
-        function handleLogin(e) {
+        const SUPABASE_URL = 'https://wzrbsvwmrymkpzwmgypb.supabase.co';
+        const SUPABASE_KEY = 'Sb_publishable_qasb0y09kMEZbDZLQRbiLg_YoMF_iyH';
+        const _db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function handleLogin(e) {
             e.preventDefault();
+            let btn = document.getElementById('loginBtn');
+            btn.innerText = "Checking Database...";
+            btn.disabled = true;
+
             let idInput = document.getElementById('loginId').value.trim();
             let passInput = document.getElementById('loginPass').value.trim();
 
-            // Check if master admin
+            // Check Master Admin
             if((idInput === "MAHAN101" || idInput === "haresh@gmail.com") && passInput === "admin123") {
-                alert("Welcome Admin (Haresh N Makasana)!");
+                let adminObj = {
+                    user_id: "MAHAN101",
+                    name: "Haresh N Makasana",
+                    role: "admin",
+                    status: "Active"
+                };
+                localStorage.setItem('mahan_current', JSON.stringify(adminObj));
                 window.location.href = "admin.html";
                 return;
             }
 
-            // Check in localstorage database for normal users
-            let dbUsers = JSON.parse(localStorage.getItem('mahan_users')) || [];
-            let found = dbUsers.find(u => (u.id === idInput || u.email === idInput) && u.pass === passInput);
+            // Fetch user from Supabase database
+            const { data, error } = await _db
+                .from('users')
+                .select('*')
+                .or(`user_id.eq.${idInput},email.eq.${idInput}`)
+                .eq('password', passInput)
+                .single();
 
-            if(found) {
-                localStorage.setItem('mahan_current', JSON.stringify(found));
-                alert("Login Successful! Redirecting to Dashboard...");
-                window.location.href = "dashboard.html";
+            if (error || !data) {
+                alert("Invalid User ID, Email or Password!");
+                btn.innerText = "SIGN IN NOW";
+                btn.disabled = false;
             } else {
-                alert("Invalid User ID or Password! Please check.");
+                localStorage.setItem('mahan_current', JSON.stringify(data));
+                alert("Login Successful! Redirecting...");
+                if(data.role === 'admin') {
+                    window.location.href = "admin.html";
+                } else {
+                    window.location.href = "dashboard.html";
+                }
             }
         }
     </script>
 
 </body>
-  </html>
+</html>
