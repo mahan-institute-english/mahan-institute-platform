@@ -3,162 +3,452 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAHAN - User Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>MAHAN The Institute Of English - Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #fdfbf7 0%, #f4e8c1 100%);
+            margin: 0;
+            padding: 15px;
+            color: #333;
+        }
+        
+        .dashboard-container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(197, 160, 89, 0.25);
+            overflow: hidden;
+            border: 1px solid #e6d5b8;
+        }
+        
+        .header {
+            background: #ffffff;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 4px solid #d4af37;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .header h2 { margin: 0; color: #4a3b22; font-size: 18px; font-weight: 700; }
+        
+        .content { padding: 15px; }
+        
+        .profile-card {
+            background: linear-gradient(135deg, #4a3b22, #2c2518);
+            color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(74, 59, 34, 0.3);
+            border: 1px solid #d4af37;
+        }
+        .profile-card h2 { margin: 0 0 5px; font-size: 22px; font-weight: 700; color: #f4e8c1; }
+        .profile-card p { margin: 0; font-size: 14px; font-weight: 650; }
+        .profile-card .sub-info { font-size: 12px; margin-top: 8px; color: #d4af37; }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .stat-box {
+            background: linear-gradient(135deg, #fffcf5, #fcf4e1);
+            border: 1px solid #d4af37;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+        .stat-box h3 { margin: 0; font-size: 12px; color: #666; }
+        .stat-box p { margin: 6px 0 0; font-size: 18px; font-weight: 700; color: #2c2518; }
+        
+        .balance-card {
+            background: #4a3b22;
+            color: #f4e8c1;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #d4af37;
+        }
+        .balance-card h3 { margin: 0 0 15px; font-size: 14px; text-align: center; color: #d4af37; border-bottom: 1px solid rgba(212,175,55,0.3); padding-bottom: 8px; }
+        
+        .b-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .b-row span { font-weight: 600; color: #fff; }
+        
+        .chart-card {
+            background: #fffdf9;
+            border: 1px solid #d4af37;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .chart-card h3 { margin: 0 0 10px; font-size: 14px; color: #2c2518; text-align: center; border-bottom: 2px solid #d4af37; padding-bottom: 5px; }
+        .level-table { width: 100%; font-size: 11px; border-collapse: collapse; text-align: center; }
+        .level-table th { background: #4a3b22; color: #f4e8c1; padding: 6px; }
+        .level-table td { padding: 6px; border-bottom: 1px solid #e6d5b8; color: #333; }
+        
+        .team-list-box {
+            background: #fffdf9;
+            border: 1px solid #d4af37;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .team-list-box h3 { margin: 0 0 10px; font-size: 13px; color: #2c2518; border-bottom: 2px solid #d4af37; padding-bottom: 5px; text-align: center; }
+        .member-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px dashed #e6d5b8;
+            font-size: 12px;
+        }
+        .badge-active { color: #2e7d32; font-weight: bold; }
+        .badge-unactive { color: #c62828; font-weight: bold; }
+        
+        .action-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            margin-bottom: 10px;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .btn-cyan { background: #00bcd4; color: white; }
+        .btn-admin { background: #d32f2f; color: white; display: none; }
+        .btn-logout { background: #4a3b22; color: #f4e8c1; border: 1px solid #d4af37; }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            box-sizing: border-box;
+        }
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+    </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen p-4">
+<body>
 
-    <div class="max-w-4xl mx-auto space-y-6">
-        <!-- Top Profile & Logout Header -->
-        <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl flex justify-between items-center shadow-lg">
-            <div class="flex items-center space-x-3">
-                <div class="bg-blue-600 text-white font-bold p-2.5 rounded-lg text-sm shadow">
-                    <i class="fa-solid fa-user"></i>
-                </div>
-                <div>
-                    <h1 id="userName" class="text-sm font-bold text-white">Loading...</h1>
-                    <p class="text-xs text-slate-400 font-mono">ID: <span id="userIdDisplay" class="text-emerald-400"></span></p>
-                </div>
-            </div>
-            <button onclick="logout()" class="bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition border border-red-600/35">
-                <i class="fa-solid fa-right-from-bracket mr-1"></i> Logout
-            </button>
-        </div>
-
-        <!-- Status & Reward Limit Card -->
-        <div class="bg-slate-800 border border-slate-700 p-6 rounded-xl shadow-xl space-y-4">
-            <div class="flex justify-between items-center">
-                <span id="userStatusBadge" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Loading...</span>
-                <span class="text-xs text-slate-400">Network Status Overview</span>
-            </div>
-            
-            <div class="bg-slate-900 border border-slate-700 p-5 rounded-xl flex justify-between items-center">
-                <div>
-                    <p class="text-xs text-slate-400">Total Reward Limit</p>
-                    <h2 id="rewardLimit" class="text-2xl font-black text-emerald-400 pt-1">₹0</h2>
-                </div>
-                <div class="text-right">
-                    <p class="text-xs text-slate-400">Account Type</p>
-                    <p id="accType" class="text-sm font-bold text-amber-400">Standard Member</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Referral Link Card -->
-        <div class="bg-slate-800 border border-slate-700 p-5 rounded-xl shadow-xl space-y-3">
-            <h2 class="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-2">
-                <i class="fa-solid fa-link text-blue-400"></i> Your Referral Link
-            </h2>
-            <div class="flex gap-2">
-                <input type="text" id="refLinkInput" readonly class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-xs text-slate-300 font-mono select-all">
-                <button onclick="copyRefLink()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-xs font-semibold transition shadow flex items-center gap-1">
-                    <i class="fa-solid fa-copy"></i> Copy
-                </button>
-            </div>
-            <p id="copyMsg" class="text-[10px] text-emerald-400 text-right hidden">Link copied to clipboard!</p>
-        </div>
-
-        <!-- Level Income Structure Table -->
-        <div class="bg-slate-800 border border-slate-700 rounded-xl shadow-xl overflow-hidden p-6 space-y-4">
-            <h2 class="text-sm font-bold text-emerald-400 flex items-center gap-2">
-                <i class="fa-solid fa-chart-line"></i> Level Income Structure & Payout
-            </h2>
-            
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs whitespace-nowrap">
-                    <thead class="bg-slate-900 text-slate-400 uppercase tracking-wider border-b border-slate-700">
-                        <tr>
-                            <th class="p-3">Level</th>
-                            <th class="p-3">Rate</th>
-                            <th class="p-3">Team</th>
-                            <th class="p-3">Payout</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-700/50 text-slate-300">
-                        <tr><td class="p-3 font-medium">Level 1</td><td class="p-3">₹200</td><td class="p-3">0</td><td class="p-3 text-emerald-400 font-bold">₹0</td></tr>
-                        <tr><td class="p-3 font-medium">Level 2</td><td class="p-3">₹100</td><td class="p-3">0</td><td class="p-3 text-emerald-400 font-bold">₹0</td></tr>
-                        <tr><td class="p-3 font-medium">Level 3</td><td class="p-3">₹50</td><td class="p-3">0</td><td class="p-3 text-emerald-400 font-bold">₹0</td></tr>
-                        <tr><td class="p-3 font-medium">Level 4</td><td class="p-3">₹50</td><td class="p-3">0</td><td class="p-3 text-emerald-400 font-bold">₹0</td></tr>
-                        <tr><td class="p-3 font-medium">Level 5</td><td class="p-3">₹50</td><td class="p-3">0</td><td class="p-3 text-emerald-400 font-bold">₹0</td></tr>
-                        <tr><td class="p-3 font-medium">Level 6</td><td class="p-3">₹25</td><td class="p-3">0</td><td class="p-3 text-emerald-400 font-bold">₹0</td></tr>
-                        <tr><td class="p-3 font-medium">Level 7</td><td class="p-3">₹25</td><td class="p-3">0</td><td class="p-3 text-emerald-400 font-bold">₹0</td></tr>
-                        <tr><td class="p-3 font-medium">Level 8</td><td class="p-3">₹25</td><td class="p-3">0</td><td class="p-3 text-emerald-400 font-bold">₹0</td></tr>
-                        <tr><td class="p-3 font-medium">Level 9</td><td class="p-3">₹25</td><td class="p-3">0</td><td class="p-3 text-emerald-400 font-bold">₹0</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+<div class="dashboard-container">
+    <div class="header">
+        <h2>MAHAN The Institute Of English</h2>
     </div>
+    
+    <div class="content">
+        <div class="profile-card" id="profileCardBg">
+            <h2 id="dashName">લોડ થઈ રહ્યું છે...</h2>
+            <p id="dashStatusText">(Unactive)</p>
+            <div class="sub-info">ID: <span id="dashId">MAHAN----</span> | Mobile: <span id="dashMobile">----------</span></div>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-box">
+                <h3>👥 ડાયરેક્ટ સ્ટુડન્ટ</h3>
+                <p id="directTeamCount">0</p>
+            </div>
+            <div class="stat-box">
+                <h3>🌐 ટોટલ સ્ટુડન્ટ ગ્રુપ</h3>
+                <p id="totalTeam">0</p>
+            </div>
+        </div>
+        
+        <div class="balance-card">
+            <h3>🎁 Study Bonus Balance Sheet</h3>
+            <div class="b-row"><span>Total Limit:</span> <span id="totalLimit">₹ 0</span></div>
+            <div class="b-row"><span>Earning:</span> <span id="earningAmount">₹ 0</span></div>
+            <div class="b-row"><span>Remaining Limit:</span> <span id="remainingLimit">₹ 0</span></div>
+        </div>
+        
+        <div class="chart-card">
+            <h3>📊 લેવલ વાઇઝ ટીમ અને બોનસ રિપોર્ટ</h3>
+            <table class="level-table">
+                <tr>
+                    <th>Level</th>
+                    <th>Rate</th>
+                    <th>Team</th>
+                    <th>Payout</th>
+                </tr>
+                <tr><td>Level 1</td><td>₹1000</td><td id="l1Count">0</td><td id="l1Pay">₹0</td></tr>
+                <tr><td>Level 2</td><td>₹500</td><td id="l2Count">0</td><td id="l2Pay">₹0</td></tr>
+                <tr><td>Level 3</td><td>₹250</td><td id="l3Count">0</td><td id="l3Pay">₹0</td></tr>
+                <tr><td>Level 4</td><td>₹250</td><td id="l4Count">0</td><td id="l4Pay">₹0</td></tr>
+                <tr><td>Level 5</td><td>₹250</td><td id="l5Count">0</td><td id="l5Pay">₹0</td></tr>
+                <tr><td>Level 6</td><td>₹125</td><td id="l6Count">0</td><td id="l6Pay">₹0</td></tr>
+                <tr><td>Level 7</td><td>₹125</td><td id="l7Count">0</td><td id="l7Pay">₹0</td></tr>
+                <tr><td>Level 8</td><td>₹125</td><td id="l8Count">0</td><td id="l8Pay">₹0</td></tr>
+                <tr><td>Level 9</td><td>₹125</td><td id="l9Count">0</td><td id="l9Pay">₹0</td></tr>
+            </table>
+        </div>
+        
+        <div class="team-list-box">
+            <h3>📋 તમારા ડાયરેક્ટ સ્ટુડન્ટ્સ (Direct Members)</h3>
+            <div id="directStudentContainer">
+                <p style="text-align: center; font-size: 12px; color: #777; margin: 5px 0;">સ્ટુડન્ટ લોડ થઈ રહ્યા છે...</p>
+            </div>
+        </div>
+        
+        <button class="action-btn btn-cyan" onclick="openPasswordModal()">🔐 Change Password (પાસવર્ડ બદલો)</button>
+        <button class="action-btn btn-cyan" onclick="openBankModal()">🏦 Bank & KYC Details (બેંક વિગતો)</button>
+        <button class="action-btn btn-admin" id="adminActivationBtn" onclick="openAdminModal()">👑 Admin Active Panel (Haresh Patel)</button>
+        <button class="action-btn btn-logout" onclick="logout()">🚪 Logout (લોગઆઉટ)</button>
+    </div>
+</div>
 
-    <script>
-        const SUPABASE_URL = "https://wzrbsvwmrymkpzwmgypb.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6cmJzdndtcnlta3B6d21neXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDc1NzQsImV4cCI6MjEwMzMyMzU3NH0.5ulY5LW3AQEPFDP__iOSJssgNafTSe9Yu4gEqZF7sLc";
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+<!-- Change Password Modal -->
+<div class="modal" id="passwordModal">
+    <div class="modal-content">
+        <h3 style="color: #2c2518; margin-top: 0;">🔐 Change Password</h3>
+        <label style="font-size: 13px; font-weight: bold;">નવો પાસવર્ડ નાખો (New Password):</label>
+        <input type="password" id="newPassword" placeholder="નવો પાસવર્ડ દાખલ કરો">
+        <button class="action-btn btn-cyan" onclick="updatePassword()">પાસવર્ડ સેવ કરો (Update)</button>
+        <button class="action-btn" style="background: #ccc; color: #333; margin-top: 10px;" onclick="closePasswordModal()">બંધ કરો</button>
+    </div>
+</div>
 
-        window.onload = async () => {
-            const userDataStr = localStorage.getItem('mahan_user');
-            if (!userDataStr) {
-                window.location.href = "login.html";
-                return;
-            }
+<!-- Bank & KYC Modal -->
+<div class="modal" id="bankModal">
+    <div class="modal-content">
+        <h3 style="color: #2c2518; margin-top: 0;">🏦 Bank & KYC Details</h3>
+        <label style="font-size: 13px; font-weight: bold;">Account Holder Name:</label>
+        <input type="text" id="accName" placeholder="બેંક ખાતા મુજબ નામ">
+        
+        <label style="font-size: 13px; font-weight: bold;">Account Number:</label>
+        <input type="text" id="accNo" placeholder="ખાતા નંબર દાખલ કરો">
+        
+        <label style="font-size: 13px; font-weight: bold;">IFSC Code:</label>
+        <input type="text" id="ifscCode" placeholder="IFSC કોડ દાખલ કરો">
+        
+        <button class="action-btn btn-cyan" onclick="saveBankDetails()">સેવ કરો (Save)</button>
+        <button class="action-btn" style="background: #ccc; color: #333; margin-top: 10px;" onclick="closeBankModal()">બંધ કરો (Close)</button>
+    </div>
+</div>
 
-            const localUser = JSON.parse(userDataStr);
+<!-- Admin Activation Modal -->
+<div class="modal" id="adminModal">
+    <div class="modal-content">
+        <h3 style="color: #d32f2f; margin-top: 0;">👑 Admin Active Panel</h3>
+        <label style="font-size: 13px; font-weight: bold;">Enter Member User ID / Mobile:</label>
+        <input type="text" id="actInput" placeholder="યુઝર આઈડી અથવા મોબાઈલ નાખો">
+        
+        <button class="action-btn btn-cyan" onclick="executeAdminActivation()">આઈડી Active કરો (+₹50,000 Limit)</button>
+        <button class="action-btn" style="background: #ccc; color: #333; margin-top: 10px;" onclick="closeAdminModal()">બંધ કરો</button>
+    </div>
+</div>
 
-            // Fetch latest data from database using user_id
+<script>
+    const SUPABASE_URL = "https://wzrbsvwmrymkpzwmgypb.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6cmJzdndtcnlta3B6d21neXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDc1NzQsImV4cCI6MjEwMzMyMzU3NH0.5ulY5LW3AQEPFDP__iOSJssgNafTSe9Yu4gEqZF7sLc";
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let currentUser = null;
+
+    window.onload = async () => {
+        const userDataStr = localStorage.getItem('mahan_user');
+        if (!userDataStr) {
+            window.location.href = "login.html";
+            return;
+        }
+
+        const localUser = JSON.parse(userDataStr);
+
+        const { data, error } = await _supabase
+            .from('users')
+            .select('*')
+            .eq('user_id', localUser.user_id)
+            .single();
+
+        currentUser = data || localUser;
+
+        // Populate Profile Info
+        document.getElementById('dashName').innerText = currentUser.name || 'Member';
+        document.getElementById('dashId').innerText = currentUser.user_id;
+        document.getElementById('dashMobile').innerText = currentUser.mobile || '----------';
+
+        // Load Direct Members and calculate structure
+        await loadDirectMembersAndCalculate(currentUser.user_id, currentUser);
+        loadBankDetails();
+    };
+
+    async function loadDirectMembersAndCalculate(myUserId, user) {
+        const container = document.getElementById('directStudentContainer');
+        try {
             const { data, error } = await _supabase
                 .from('users')
                 .select('*')
-                .eq('user_id', localUser.user_id)
-                .single();
+                .eq('sponsor', myUserId);
 
-            const user = data || localUser;
+            let directStudentList = data || [];
 
-            // Update UI elements
-            document.getElementById('userName').innerText = user.name || 'Member';
-            document.getElementById('userIdDisplay').innerText = user.user_id;
+            document.getElementById('directTeamCount').innerText = directStudentList.length;
 
-            const statusBadge = document.getElementById('userStatusBadge');
-            const rewardLimit = document.getElementById('rewardLimit');
-            const accType = document.getElementById('accType');
-
-            const status = user.status || 'Unactive';
-
-            if (status.toLowerCase() === 'active') {
-                statusBadge.innerText = "Active";
-                statusBadge.className = "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
-                rewardLimit.innerText = "₹50,000";
-                accType.innerText = "Premium Franchise Partner";
+            if (directStudentList.length === 0) {
+                container.innerHTML = `<p style="text-align: center; font-size: 12px; color: #777; margin: 5px 0;">કોઈ ડાયરેક્ટ સ્ટુડન્ટ નથી.</p>`;
             } else {
-                statusBadge.innerText = "Unactive";
-                statusBadge.className = "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/30";
-                rewardLimit.innerText = "₹0";
-                accType.innerText = "Standard Member";
+                container.innerHTML = '';
+                directStudentList.forEach(member => {
+                    const isActive = (member.status || '').toLowerCase() === 'active';
+                    const badgeClass = isActive ? 'badge-active' : 'badge-unactive';
+                    const badgeText = isActive ? '(Active)' : '(Unactive)';
+
+                    const div = document.createElement('div');
+                    div.className = 'member-item';
+                    div.innerHTML = `
+                        <span><i class="fa-solid fa-user text-amber-600 mr-1"></i> ${member.name} (${member.user_id})</span>
+                        <span class="${badgeClass}">${badgeText}</span>
+                    `;
+                    container.appendChild(div);
+                });
             }
 
-            // Set Referral Link
-            const refLink = `https://mahan-institute-english.github.io/mahan-institute-platform/register.html?ref=${user.user_id}`;
-            document.getElementById('refLinkInput').value = refLink;
-        };
+            // Level counts setup (can be expanded for multi-level, currently direct is level 1)
+            let levelCounts = { 1: directStudentList.length, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 };
 
-        function copyRefLink() {
-            const copyText = document.getElementById('refLinkInput');
-            copyText.select();
-            copyText.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(copyText.value);
-            
-            const msg = document.getElementById('copyMsg');
-            msg.classList.remove('hidden');
-            setTimeout(() => {
-                msg.classList.add('hidden');
-            }, 2000);
+            let l1 = levelCounts[1];
+            let l2 = levelCounts[2];
+            let l3 = levelCounts[3];
+            let l4 = levelCounts[4];
+            let l5 = levelCounts[5];
+            let l6 = levelCounts[6];
+            let l7 = levelCounts[7];
+            let l8 = levelCounts[8];
+            let l9 = levelCounts[9];
+
+            let p1 = l1 * 1000;
+            let p2 = l2 * 500;
+            let p3 = l3 * 250;
+            let p4 = l4 * 250;
+            let p5 = l5 * 250;
+            let p6 = l6 * 125;
+            let p7 = l7 * 125;
+            let p8 = l8 * 125;
+            let p9 = l9 * 125;
+
+            let totalTeamCount = directStudentList.length + l2 + l3 + l4 + l5 + l6 + l7 + l8 + l9;
+            let calculatedEarning = p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9;
+
+            document.getElementById('totalTeam').innerText = totalTeamCount;
+
+            document.getElementById('l1Count').innerText = l1; document.getElementById('l1Pay').innerText = "₹" + p1;
+            document.getElementById('l2Count').innerText = l2; document.getElementById('l2Pay').innerText = "₹" + p2;
+            document.getElementById('l3Count').innerText = l3; document.getElementById('l3Pay').innerText = "₹" + p3;
+            document.getElementById('l4Count').innerText = l4; document.getElementById('l4Pay').innerText = "₹" + p4;
+            document.getElementById('l5Count').innerText = l5; document.getElementById('l5Pay').innerText = "₹" + p5;
+            document.getElementById('l6Count').innerText = l6; document.getElementById('l6Pay').innerText = "₹" + p6;
+            document.getElementById('l7Count').innerText = l7; document.getElementById('l7Pay').innerText = "₹" + p7;
+            document.getElementById('l8Count').innerText = l8; document.getElementById('l8Pay').innerText = "₹" + p8;
+            document.getElementById('l9Count').innerText = l9; document.getElementById('l9Pay').innerText = "₹" + p9;
+
+            if (user.status && (user.status.toLowerCase() === 'active')) {
+                document.getElementById('dashStatusText').innerText = "(Active)";
+                document.getElementById('profileCardBg').style.background = "linear-gradient(135deg, #11998e, #38ef7d)";
+                
+                let currentLimit = user.total_limit || 50000;
+                let currentEarning = calculatedEarning;
+                let remaining = currentLimit - currentEarning;
+
+                document.getElementById('totalLimit').innerText = "₹ " + currentLimit.toLocaleString();
+                document.getElementById('earningAmount').innerText = "₹ " + currentEarning.toLocaleString();
+                document.getElementById('remainingLimit').innerText = "₹ " + Math.max(0, remaining).toLocaleString();
+            } else {
+                document.getElementById('dashStatusText').innerText = "(Unactive)";
+                document.getElementById('totalLimit').innerText = "₹ 0";
+                document.getElementById('earningAmount').innerText = "₹ 0";
+                document.getElementById('remainingLimit').innerText = "₹ 0";
+            }
+
+            // Show Admin Panel button if admin
+            if (user.user_id === 'MAHAN101' || user.mobile === '9999999999' || user.role === 'admin') {
+                document.getElementById('adminActivationBtn').style.display = 'block';
+            }
+
+        } catch (err) {
+            container.innerHTML = `<p style="text-align: center; font-size: 12px; color: #c62828;">ડેટા લોડ કરવામાં ભૂલ થઈ છે.</p>`;
+        }
+    }
+
+    // Modal Functions
+    function openPasswordModal() { document.getElementById('passwordModal').style.display = 'flex'; }
+    function closePasswordModal() { document.getElementById('passwordModal').style.display = 'none'; }
+
+    function openBankModal() {
+        if (currentUser) {
+            document.getElementById('accName').value = currentUser.bank_name || '';
+            document.getElementById('accNo').value = currentUser.bank_acc || '';
+            document.getElementById('ifscCode').value = currentUser.bank_ifsc || '';
+        }
+        document.getElementById('bankModal').style.display = 'flex';
+    }
+    function closeBankModal() { document.getElementById('bankModal').style.display = 'none'; }
+
+    function openAdminModal() { document.getElementById('adminModal').style.display = 'flex'; }
+    function closeAdminModal() { document.getElementById('adminModal').style.display = 'none'; }
+
+    async function updatePassword() {
+        const newPass = document.getElementById('newPassword').value.trim();
+        if (!newPass) {
+            alert('કૃપા કરીને નવો પાસવર્ડ દાખલ કરો!');
+            return;
         }
 
-        function logout() {
-            localStorage.removeItem('mahan_user');
-            window.location.href = "login.html";
+        const { error } = await _supabase
+            .from('users')
+            .update({ password: newPass })
+            .eq('user_id', currentUser.user_id);
+
+        if (error) {
+            alert('પાસવર્ડ અપડેટ કરવામાં એરર: ' + error.message);
+        } else {
+            alert('પાસવર્ડ સફળતાપૂર્વક બદલાઈ ગયો છે!');
+            closePasswordModal();
         }
-    </script>
-</body>
-                                                                                                </html>
+    }
+
+    async function saveBankDetails() {
+        const bank_name = document.getElementById('accName').value.trim();
+        const bank_acc = document.getElementById('accNo').value.trim();
+        const bank_ifsc = document.getElementById('ifscCode').value.trim();
+
+        const { error } = await _supabase
+            .from('users')
+            .update({ bank_name, bank_acc, bank_ifsc })
+            .eq('user_id', currentUser.user_id);
+
+        if (error) {
+           
