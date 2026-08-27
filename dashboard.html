@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="gu">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -287,22 +287,23 @@
         }
 
         const localUser = JSON.parse(userDataStr);
+        const searchId = localUser.user_id || localUser.id;
 
         const { data, error } = await _supabase
             .from('users')
             .select('*')
-            .eq('user_id', localUser.user_id)
-            .single();
+            .eq('user_id', searchId)
+            .maybeSingle();
 
         currentUser = data || localUser;
 
-        // Populate Profile Info
+        // Populate Profile Info Directly
         document.getElementById('dashName').innerText = currentUser.name || 'Member';
-        document.getElementById('dashId').innerText = currentUser.user_id;
+        document.getElementById('dashId').innerText = currentUser.user_id || searchId;
         document.getElementById('dashMobile').innerText = currentUser.mobile || '----------';
 
         // Load Direct Members and calculate structure
-        await loadDirectMembersAndCalculate(currentUser.user_id, currentUser);
+        await loadDirectMembersAndCalculate(currentUser.user_id || searchId, currentUser);
         loadBankDetails();
     };
 
@@ -450,10 +451,4 @@
         if (error) {
             alert('Error saving bank details: ' + error.message);
         } else {
-            alert('Bank & KYC details saved successfully!');
-            closeBankModal();
-        }
-    }
-
-    async function loadBankDetails() {
- 
+            alert('Bank & KYC details saved successfully!')
