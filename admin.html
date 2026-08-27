@@ -10,14 +10,16 @@
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen p-4">
 
-    <div class="max-w-4xl mx-auto space-y-6">
+    <div class="max-w-6xl mx-auto space-y-6">
         <!-- Header -->
         <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl flex justify-between items-center shadow-lg">
             <div class="flex items-center space-x-3">
-                <span class="bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg uppercase tracking-wider">ADMIN</span>
+                <div class="bg-red-600 text-white font-bold px-3 py-2 rounded-lg text-xs tracking-wider flex items-center gap-2 shadow">
+                    <i class="fa-solid fa-shield-halved"></i> ADMIN
+                </div>
                 <div>
-                    <h1 class="text-lg font-bold">MAHAN - Admin Master Panel</h1>
-                    <p class="text-xs text-slate-400">Manage All Registered Users</p>
+                    <h1 class="text-base font-bold text-white">MAHAN Institute - Master Panel</h1>
+                    <p class="text-xs text-slate-400">Manage All Registered Users & Commission Structure</p>
                 </div>
             </div>
             <button onclick="logout()" class="bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition border border-red-600/35">
@@ -28,28 +30,29 @@
         <!-- Users Table Card -->
         <div class="bg-slate-800 border border-slate-700 rounded-xl shadow-xl overflow-hidden p-6 space-y-4">
             <div class="flex justify-between items-center">
-                <h2 class="text-base font-bold flex items-center gap-2">
-                    <i class="fa-solid fa-users text-emerald-400"></i> All Registered Users
+                <h2 class="text-sm font-bold flex items-center gap-2 text-emerald-400">
+                    <i class="fa-solid fa-users"></i> All Registered Users List
                 </h2>
-                <button onclick="fetchAllUsers()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3 py-1.5 rounded-lg transition">
+                <button onclick="fetchAllUsers()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3 py-1.5 rounded-lg transition shadow">
                     <i class="fa-solid fa-rotate mr-1"></i> Refresh List
                 </button>
             </div>
 
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs">
+                <table class="w-full text-left text-xs whitespace-nowrap">
                     <thead class="bg-slate-900 text-slate-400 uppercase tracking-wider border-b border-slate-700">
                         <tr>
                             <th class="p-3">User ID</th>
                             <th class="p-3">Name</th>
                             <th class="p-3">Mobile</th>
-                            <th class="p-3">Sponsor</th>
+                            <th class="p-3">Email</th>
+                            <th class="p-3">Sponsor ID</th>
                             <th class="p-3">Status</th>
                         </tr>
                     </thead>
                     <tbody id="userTableBody" class="divide-y divide-slate-700/50">
                         <tr>
-                            <td colspan="5" class="p-4 text-center text-slate-400">Loading database records...</td>
+                            <td colspan="6" class="p-4 text-center text-slate-400">Loading database records...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -66,18 +69,18 @@
 
         async function fetchAllUsers() {
             const tbody = document.getElementById('userTableBody');
-            tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">Loading database records...</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">Fetching records from database...</td></tr>`;
 
             try {
                 const { data, error } = await _supabase.from('users').select('*').order('id', { ascending: false });
 
                 if (error) {
-                    tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-red-400">Database Error: ${error.message}</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-red-400">Database Error: ${error.message}</td></tr>`;
                     return;
                 }
 
                 if (!data || data.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">No users found in database.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">No users found in database. Please register a new user first.</td></tr>`;
                     return;
                 }
 
@@ -86,15 +89,16 @@
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td class="p-3 font-mono text-emerald-400 font-semibold">${user.user_id || '-'}</td>
-                        <td class="p-3 font-medium">${user.name || '-'}</td>
+                        <td class="p-3 font-medium text-white">${user.name || '-'}</td>
                         <td class="p-3 text-slate-300">${user.mobile || '-'}</td>
-                        <td class="p-3 text-slate-400">${user.sponsor || '-'}</td>
-                        <td class="p-3"><span class="bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded text-[10px]">${user.status || 'Unactive'}</span></td>
+                        <td class="p-3 text-slate-300">${user.email || '-'}</td>
+                        <td class="p-3 text-slate-400 font-mono">${user.sponsor || '-'}</td>
+                        <td class="p-3"><span class="bg-amber-500/20 text-amber-400 px-2.5 py-1 rounded text-[10px] font-bold">${user.status || 'Unactive'}</span></td>
                     `;
                     tbody.appendChild(tr);
                 });
             } catch (err) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-red-400">Error: ${err.message}</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-red-400">Error: ${err.message}</td></tr>`;
             }
         }
 
@@ -105,4 +109,4 @@
         window.onload = fetchAllUsers;
     </script>
 </body>
-    </html>
+</html>
