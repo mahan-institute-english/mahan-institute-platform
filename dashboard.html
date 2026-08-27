@@ -264,10 +264,15 @@
 <div class="modal" id="adminModal">
     <div class="modal-content">
         <h3 style="color: #d32f2f; margin-top: 0;">👑 Admin Active Panel</h3>
-        <label style="font-size: 13px; font-weight: bold;">Enter User ID / Mobile:</label>
-        <input type="text" id="actInput" placeholder="Enter User ID or Mobile">
+        <label style="font-size: 13px; font-weight: bold;">Enter Mobile Number / User ID:</label>
+        <input type="text" id="actInput" placeholder="Enter Mobile or User ID" oninput="fetchUserDetailsForActivation()">
         
-        <button class="action-btn btn-cyan" onclick="executeAdminActivation()">Activate ID (+₹50,000 Limit)</button>
+        <div id="foundUserInfo" style="background: #fdfbf7; border: 1px solid #d4af37; padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 12px; display: none;">
+            <p style="margin: 0;"><strong>Name:</strong> <span id="fName">-</span></p>
+            <p style="margin: 4px 0 0;"><strong>Status:</strong> <span id="fStatus">-</span></p>
+        </div>
+
+        <button class="action-btn btn-cyan" id="activateBtn" onclick="executeAdminActivation()" style="display: none;">Activate ID (+₹50,000 Limit)</button>
         <button class="action-btn" style="background: #ccc; color: #333; margin-top: 10px;" onclick="closeAdminModal()">Cancel</button>
     </div>
 </div>
@@ -278,6 +283,7 @@
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     let currentUser = null;
+    let foundTargetUser = null;
 
     window.onload = async () => {
         const userDataStr = localStorage.getItem('mahan_user');
@@ -287,23 +293,23 @@
         }
 
         const localUser = JSON.parse(userDataStr);
-        const searchId = localUser.user_id || localUser.id;
+        const searchVal = localUser.user_id || localUser.mobile;
 
+        // Fetch fresh user record from database
         const { data, error } = await _supabase
             .from('users')
             .select('*')
-            .eq('user_id', searchId)
+            .or(`user_id.eq.${searchVal},mobile.eq.${searchVal}`)
             .maybeSingle();
 
         currentUser = data || localUser;
 
         // Populate Profile Info Directly
         document.getElementById('dashName').innerText = currentUser.name || 'Member';
-        document.getElementById('dashId').innerText = currentUser.user_id || searchId;
+        document.getElementById('dashId').innerText = currentUser.user_id || 'MAHAN';
         document.getElementById('dashMobile').innerText = currentUser.mobile || '----------';
 
-        // Load Direct Members and calculate structure
-        await loadDirectMembersAndCalculate(currentUser.user_id || searchId, currentUser);
+        await loadDirectMembersAndCalculate(currentUser.user_id, currentUser);
         loadBankDetails();
     };
 
@@ -316,7 +322,6 @@
                 .eq('sponsor', myUserId);
 
             let directStudentList = data || [];
-
             document.getElementById('directTeamCount').innerText = directStudentList.length;
 
             if (directStudentList.length === 0) {
@@ -393,6 +398,7 @@
                 document.getElementById('remainingLimit').innerText = "₹ 0";
             }
 
+            // Show admin panel button for admin user
             if (user.user_id === 'MAHAN101' || user.mobile === '9999999999' || user.role === 'admin') {
                 document.getElementById('adminActivationBtn').style.display = 'block';
             }
@@ -402,6 +408,7 @@
         }
     }
 
+    // Modal Functions
     function openPasswordModal() { document.getElementById('passwordModal').style.display = 'flex'; }
     function closePasswordModal() { document.getElementById('passwordModal').style.display = 'none'; }
 
@@ -416,26 +423,77 @@
     function closeBankModal() { document.getElementById('bankModal').style.display = 'none'; }
 
     function openAdminModal() { document.getElementById('adminModal').style.display = 'flex'; }
-    function closeAdminModal() { document.getElementById('adminModal').style.display = 'none'; }
+    function closeAdminModal() { 
+        document.getElementById('adminModal').style.display = 'none'; 
+        document.getElementById('foundUserInfo').style.display = 'none';
+        document.getElementById('activateBtn').style.display = 'none';
+        document.getElementById('actInput').value = '';
+    }
+
+    // Smart Admin Lookup: Type mobile or user_id to auto-detect name
+    async function fetchUserDetailsForActivation() {
+        const val = document.getElementById('actInput').value.trim();
+        const infoBox = document.getElementById('foundUserInfo');
+        const activateBtn = document.getElementById('activateBtn');
+
+        if (val.length < 3) {
+            infoBox.style.display = 'none';
+            activateBtn.style.display = 'none';
+            foundTargetUser = null;
+            return;
+        }
+
+        const { data, error } = await _supabase
+            .from('users')
+            .select('*')
+            .or(`user_id.eq.${val},mobile.eq.${val}`)
+            .maybeSingle();
+
+        if (error || !data) {
+            infoBox.style.display = 'none';
+            activateBtn.style.display = 'none';
+            foundTargetUser = null;
+            return;
+        }
+
+        foundTargetUser = data;
+        document.getElementById('fName').innerText = `${data.name} (ID: ${data.user_id})`;
+        document.getElementById('fStatus').innerText = data.status || 'Unactive';
+        infoBox.style.display = 'block';
+        activateBtn.style.display = 'block';
+    }
+
+    async function executeAdminActivation() {
+        if (!foundTargetUser) {
+            alert('Please enter a valid User ID or Mobile number first!');
+            return;
+        }
+
+        const { error } = await _supabase
+            .from('users')
+            .update({ status: 'Active', total_limit: 50000 })
+            .eq('user_id', foundTargetUser.user_id);
+
+        if (error) {
+            alert('Activation failed: ' + error.message);
+        } else {
+            alert(`Success! User ${foundTargetUser.name} is now Active with ₹50,000 Limit.`);
+            closeAdminModal();
+            location.reload();
+        }
+    }
 
     async function updatePassword() {
         const newPass = document.getElementById('newPassword').value.trim();
-        if (!newPass) {
-            alert('Please enter a new password!');
-            return;
-        }
+        if (!newPass) { alert('Please enter a new password!'); return; }
 
         const { error } = await _supabase
             .from('users')
             .update({ password: newPass })
             .eq('user_id', currentUser.user_id);
 
-        if (error) {
-            alert('Error updating password: ' + error.message);
-        } else {
-            alert('Password updated successfully!');
-            closePasswordModal();
-        }
+        if (error) { alert('Error: ' + error.message); } 
+        else { alert('Password updated successfully!'); closePasswordModal(); }
     }
 
     async function saveBankDetails() {
@@ -448,7 +506,23 @@
             .update({ bank_name, bank_acc, bank_ifsc })
             .eq('user_id', currentUser.user_id);
 
-        if (error) {
-            alert('Error saving bank details: ' + error.message);
-        } else {
-            alert('Bank & KYC details saved successfully!')
+        if (error) { alert('Error: ' + error.message); } 
+        else { alert('Bank & KYC details saved successfully!'); closeBankModal(); }
+    }
+
+    async function loadBankDetails() {
+        if (currentUser && currentUser.bank_name) {
+            document.getElementById('accName').value = currentUser.bank_name;
+            document.getElementById('accNo').value = currentUser.bank_acc;
+            document.getElementById('ifscCode').value = currentUser.bank_ifsc;
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem('mahan_user');
+        window.location.href = "login.html";
+    }
+</script>
+
+</body>
+</html>
