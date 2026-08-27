@@ -6,109 +6,82 @@
     <title>MAHAN - Register</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-slate-900 text-slate-100 flex items-center justify-center min-h-screen p-4">
-
-    <div class="bg-slate-800 border border-slate-700 p-8 rounded-2xl shadow-2xl w-full max-w-md space-y-6">
-        <div class="text-center space-y-2">
-            <div class="bg-emerald-600/20 text-emerald-400 w-16 h-16 rounded-full flex items-center justify-center mx-auto text-2xl mb-2">
-                <i class="fa-solid fa-user-plus"></i>
-            </div>
-            <h1 class="text-2xl font-bold tracking-wide">JOIN MAHAN INSTITUTE</h1>
-            <p class="text-xs text-slate-400">Register free & get your instant referral link</p>
-        </div>
-
-        <form id="registerForm" class="space-y-4">
+<body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-slate-800 border border-slate-700 p-6 rounded-xl shadow-xl space-y-4">
+        <h2 class="text-xl font-bold text-center text-emerald-400">User Registration</h2>
+        
+        <form id="regForm" class="space-y-3">
             <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Full Name</label>
-                <input type="text" id="name" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-500">
+                <label class="text-xs text-slate-400">Full Name</label>
+                <input type="text" id="name" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white">
             </div>
             <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Email</label>
-                <input type="email" id="email" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-500">
+                <label class="text-xs text-slate-400">Mobile Number</label>
+                <input type="text" id="mobile" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white">
             </div>
             <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Mobile Number</label>
-                <input type="tel" id="mobile" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-500">
+                <label class="text-xs text-slate-400">Email Address</label>
+                <input type="email" id="email" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white">
             </div>
             <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Gender</label>
-                <select id="gender" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-500">
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                </select>
+                <label class="text-xs text-slate-400">Password</label>
+                <input type="password" id="password" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white">
             </div>
             <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Sponsor ID</label>
-                <input type="text" id="sponsor" value="MAHAN101" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-500">
+                <label class="text-xs text-slate-400">Sponsor ID / Referral Code</label>
+                <input type="text" id="sponsor" value="MAHAN101" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white">
             </div>
-            <div>
-                <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Password</label>
-                <input type="password" id="password" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-emerald-500">
-            </div>
-
-            <button type="submit" id="submitBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-lg text-sm transition tracking-wide">
-                REGISTER & SAVE TO DATABASE
-            </button>
+            <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2 rounded transition text-sm">Register Now</button>
         </form>
-
-        <div class="text-center text-xs text-slate-400">
-            Already have an account? <a href="login.html" class="text-emerald-400 font-semibold hover:underline">Sign In</a>
+        <p id="msg" class="text-xs text-center"></p>
+        <div class="text-center text-xs">
+            <a href="login.html" class="text-emerald-400 hover:underline">Already registered? Login here</a>
         </div>
     </div>
 
     <script>
         const SUPABASE_URL = "https://wzrbsvwmrymkpzwmgypb.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6cmJzdndtcnlta3B6d21neXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDc1NzQsImV4cCI6MjEwMzMyMzU3NH0.5ulY5LW3AQEPFDP__iOSJssgNafTSe9Yu4gEqZF7sLc";
-        
-        const { createClient } = supabase;
-        const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+        document.getElementById('regForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            btn.disabled = true;
-            btn.innerText = "Saving to Database...";
+            const msg = document.getElementById('msg');
+            msg.innerText = "Processing registration...";
+            msg.className = "text-xs text-center text-amber-400";
 
             const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
             const mobile = document.getElementById('mobile').value;
-            const gender = document.getElementById('gender').value;
-            const sponsor = document.getElementById('sponsor').value;
+            const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+            const sponsor = document.getElementById('sponsor').value;
 
-            // Generate unique user ID and referral code
+            // Generate unique user_id
             const randomNum = Math.floor(1000 + Math.random() * 9000);
             const user_id = "MAHAN" + randomNum;
-            const referral_code = "REF" + randomNum;
 
-            const { data, error } = await _supabase.from('users').insert([
-                { 
-                    user_id: user_id, 
-                    password: password, 
-                    name: name, 
-                    email: email, 
-                    mobile: mobile, 
-                    gender: gender, 
-                    sponsor: sponsor,
-                    referral_code: referral_code,
-                    role: 'student',
-                    status: 'Unactive',
-                    total_limit: 50000
+            try {
+                const { data, error } = await _supabase.from('users').insert([
+                    { user_id, name, mobile, email, password, sponsor, status: 'Unactive' }
+                ]);
+
+                if (error) {
+                    msg.innerText = "Error: " + error.message;
+                    msg.className = "text-xs text-center text-red-400";
+                    return;
                 }
-            ]);
 
-            if (error) {
-                alert("Error saving data: " + error.message);
-                btn.disabled = false;
-                btn.innerText = "REGISTER & SAVE TO DATABASE";
-            } else {
-                alert("Registration Successful! Your User ID is: " + user_id);
-                window.location.href = "login.html";
+                msg.innerText = "Registration Successful! Your ID: " + user_id;
+                msg.className = "text-xs text-center text-emerald-400";
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 2000);
+            } catch (err) {
+                msg.innerText = "Error: " + err.message;
+                msg.className = "text-xs text-center text-red-400";
             }
         });
     </script>
 </body>
-                    </html>
+    </html>
