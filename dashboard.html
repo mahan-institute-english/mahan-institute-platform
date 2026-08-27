@@ -35,7 +35,7 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
         
-        .header h2 { margin: 0; color: #4a3b22; font-size: 18px; font-weight: 700; }
+        .header h2 { margin: 0; color: #4a3b22; font-size: 18px; font-weight: 700; letter-spacing: 0.5px; }
         
         .content { padding: 15px; }
         
@@ -50,7 +50,7 @@
             border: 1px solid #d4af37;
         }
         .profile-card h2 { margin: 0 0 5px; font-size: 22px; font-weight: 700; color: #f4e8c1; }
-        .profile-card p { margin: 0; font-size: 14px; font-weight: 650; }
+        .profile-card p { margin: 0; font-size: 14px; font-weight: 600; }
         .profile-card .sub-info { font-size: 12px; margin-top: 8px; color: #d4af37; }
         
         .stats-grid {
@@ -67,7 +67,7 @@
             padding: 15px;
             text-align: center;
         }
-        .stat-box h3 { margin: 0; font-size: 12px; color: #666; }
+        .stat-box h3 { margin: 0; font-size: 12px; color: #666; font-weight: 600; }
         .stat-box p { margin: 6px 0 0; font-size: 18px; font-weight: 700; color: #2c2518; }
         
         .balance-card {
@@ -78,7 +78,7 @@
             margin-bottom: 15px;
             border: 1px solid #d4af37;
         }
-        .balance-card h3 { margin: 0 0 15px; font-size: 14px; text-align: center; color: #d4af37; border-bottom: 1px solid rgba(212,175,55,0.3); padding-bottom: 8px; }
+        .balance-card h3 { margin: 0 0 15px; font-size: 14px; text-align: center; color: #d4af37; border-bottom: 1px solid rgba(212,175,55,0.3); padding-bottom: 8px; letter-spacing: 0.5px; }
         
         .b-row {
             display: flex;
@@ -173,18 +173,18 @@
     
     <div class="content">
         <div class="profile-card" id="profileCardBg">
-            <h2 id="dashName">લોડ થઈ રહ્યું છે...</h2>
-            <p id="dashStatusText">(Unactive)</p>
+            <h2 id="dashName">Loading...</h2>
+            <p id="dashStatusText">Status: (Unactive)</p>
             <div class="sub-info">ID: <span id="dashId">MAHAN----</span> | Mobile: <span id="dashMobile">----------</span></div>
         </div>
         
         <div class="stats-grid">
             <div class="stat-box">
-                <h3>👥 ડાયરેક્ટ સ્ટુડન્ટ</h3>
+                <h3>👥 Direct Students</h3>
                 <p id="directTeamCount">0</p>
             </div>
             <div class="stat-box">
-                <h3>🌐 ટોટલ સ્ટુડન્ટ ગ્રુપ</h3>
+                <h3>🌐 Total Student Group</h3>
                 <p id="totalTeam">0</p>
             </div>
         </div>
@@ -197,7 +197,7 @@
         </div>
         
         <div class="chart-card">
-            <h3>📊 લેવલ વાઇઝ ટીમ અને બોનસ રિપોર્ટ</h3>
+            <h3>📊 Level Wise Team & Bonus Report</h3>
             <table class="level-table">
                 <tr>
                     <th>Level</th>
@@ -218,16 +218,16 @@
         </div>
         
         <div class="team-list-box">
-            <h3>📋 તમારા ડાયરેક્ટ સ્ટુડન્ટ્સ (Direct Members)</h3>
+            <h3>📋 Direct Students List</h3>
             <div id="directStudentContainer">
-                <p style="text-align: center; font-size: 12px; color: #777; margin: 5px 0;">સ્ટુડન્ટ લોડ થઈ રહ્યા છે...</p>
+                <p style="text-align: center; font-size: 12px; color: #777; margin: 5px 0;">Loading students...</p>
             </div>
         </div>
         
-        <button class="action-btn btn-cyan" onclick="openPasswordModal()">🔐 Change Password (પાસવર્ડ બદલો)</button>
-        <button class="action-btn btn-cyan" onclick="openBankModal()">🏦 Bank & KYC Details (બેંક વિગતો)</button>
+        <button class="action-btn btn-cyan" onclick="openPasswordModal()">🔐 Change Password</button>
+        <button class="action-btn btn-cyan" onclick="openBankModal()">🏦 Bank & KYC Details</button>
         <button class="action-btn btn-admin" id="adminActivationBtn" onclick="openAdminModal()">👑 Admin Active Panel (Haresh Patel)</button>
-        <button class="action-btn btn-logout" onclick="logout()">🚪 Logout (લોગઆઉટ)</button>
+        <button class="action-btn btn-logout" onclick="logout()">🚪 Logout</button>
     </div>
 </div>
 
@@ -235,10 +235,10 @@
 <div class="modal" id="passwordModal">
     <div class="modal-content">
         <h3 style="color: #2c2518; margin-top: 0;">🔐 Change Password</h3>
-        <label style="font-size: 13px; font-weight: bold;">નવો પાસવર્ડ નાખો (New Password):</label>
-        <input type="password" id="newPassword" placeholder="નવો પાસવર્ડ દાખલ કરો">
-        <button class="action-btn btn-cyan" onclick="updatePassword()">પાસવર્ડ સેવ કરો (Update)</button>
-        <button class="action-btn" style="background: #ccc; color: #333; margin-top: 10px;" onclick="closePasswordModal()">બંધ કરો</button>
+        <label style="font-size: 13px; font-weight: bold;">Enter New Password:</label>
+        <input type="password" id="newPassword" placeholder="Enter new password">
+        <button class="action-btn btn-cyan" onclick="updatePassword()">Update Password</button>
+        <button class="action-btn" style="background: #ccc; color: #333; margin-top: 10px;" onclick="closePasswordModal()">Cancel</button>
     </div>
 </div>
 
@@ -247,16 +247,16 @@
     <div class="modal-content">
         <h3 style="color: #2c2518; margin-top: 0;">🏦 Bank & KYC Details</h3>
         <label style="font-size: 13px; font-weight: bold;">Account Holder Name:</label>
-        <input type="text" id="accName" placeholder="બેંક ખાતા મુજબ નામ">
+        <input type="text" id="accName" placeholder="Enter account holder name">
         
         <label style="font-size: 13px; font-weight: bold;">Account Number:</label>
-        <input type="text" id="accNo" placeholder="ખાતા નંબર દાખલ કરો">
+        <input type="text" id="accNo" placeholder="Enter account number">
         
         <label style="font-size: 13px; font-weight: bold;">IFSC Code:</label>
-        <input type="text" id="ifscCode" placeholder="IFSC કોડ દાખલ કરો">
+        <input type="text" id="ifscCode" placeholder="Enter IFSC code">
         
-        <button class="action-btn btn-cyan" onclick="saveBankDetails()">સેવ કરો (Save)</button>
-        <button class="action-btn" style="background: #ccc; color: #333; margin-top: 10px;" onclick="closeBankModal()">બંધ કરો (Close)</button>
+        <button class="action-btn btn-cyan" onclick="saveBankDetails()">Save Details</button>
+        <button class="action-btn" style="background: #ccc; color: #333; margin-top: 10px;" onclick="closeBankModal()">Cancel</button>
     </div>
 </div>
 
@@ -264,11 +264,11 @@
 <div class="modal" id="adminModal">
     <div class="modal-content">
         <h3 style="color: #d32f2f; margin-top: 0;">👑 Admin Active Panel</h3>
-        <label style="font-size: 13px; font-weight: bold;">Enter Member User ID / Mobile:</label>
-        <input type="text" id="actInput" placeholder="યુઝર આઈડી અથવા મોબાઈલ નાખો">
+        <label style="font-size: 13px; font-weight: bold;">Enter User ID / Mobile:</label>
+        <input type="text" id="actInput" placeholder="Enter User ID or Mobile">
         
-        <button class="action-btn btn-cyan" onclick="executeAdminActivation()">આઈડી Active કરો (+₹50,000 Limit)</button>
-        <button class="action-btn" style="background: #ccc; color: #333; margin-top: 10px;" onclick="closeAdminModal()">બંધ કરો</button>
+        <button class="action-btn btn-cyan" onclick="executeAdminActivation()">Activate ID (+₹50,000 Limit)</button>
+        <button class="action-btn" style="background: #ccc; color: #333; margin-top: 10px;" onclick="closeAdminModal()">Cancel</button>
     </div>
 </div>
 
@@ -319,7 +319,7 @@
             document.getElementById('directTeamCount').innerText = directStudentList.length;
 
             if (directStudentList.length === 0) {
-                container.innerHTML = `<p style="text-align: center; font-size: 12px; color: #777; margin: 5px 0;">કોઈ ડાયરેક્ટ સ્ટુડન્ટ નથી.</p>`;
+                container.innerHTML = `<p style="text-align: center; font-size: 12px; color: #777; margin: 5px 0;">No direct students found.</p>`;
             } else {
                 container.innerHTML = '';
                 directStudentList.forEach(member => {
@@ -337,7 +337,6 @@
                 });
             }
 
-            // Level counts setup (can be expanded for multi-level, currently direct is level 1)
             let levelCounts = { 1: directStudentList.length, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0 };
 
             let l1 = levelCounts[1];
@@ -376,7 +375,7 @@
             document.getElementById('l9Count').innerText = l9; document.getElementById('l9Pay').innerText = "₹" + p9;
 
             if (user.status && (user.status.toLowerCase() === 'active')) {
-                document.getElementById('dashStatusText').innerText = "(Active)";
+                document.getElementById('dashStatusText').innerText = "Status: (Active)";
                 document.getElementById('profileCardBg').style.background = "linear-gradient(135deg, #11998e, #38ef7d)";
                 
                 let currentLimit = user.total_limit || 50000;
@@ -387,23 +386,21 @@
                 document.getElementById('earningAmount').innerText = "₹ " + currentEarning.toLocaleString();
                 document.getElementById('remainingLimit').innerText = "₹ " + Math.max(0, remaining).toLocaleString();
             } else {
-                document.getElementById('dashStatusText').innerText = "(Unactive)";
+                document.getElementById('dashStatusText').innerText = "Status: (Unactive)";
                 document.getElementById('totalLimit').innerText = "₹ 0";
                 document.getElementById('earningAmount').innerText = "₹ 0";
                 document.getElementById('remainingLimit').innerText = "₹ 0";
             }
 
-            // Show Admin Panel button if admin
             if (user.user_id === 'MAHAN101' || user.mobile === '9999999999' || user.role === 'admin') {
                 document.getElementById('adminActivationBtn').style.display = 'block';
             }
 
         } catch (err) {
-            container.innerHTML = `<p style="text-align: center; font-size: 12px; color: #c62828;">ડેટા લોડ કરવામાં ભૂલ થઈ છે.</p>`;
+            container.innerHTML = `<p style="text-align: center; font-size: 12px; color: #c62828;">Error loading data.</p>`;
         }
     }
 
-    // Modal Functions
     function openPasswordModal() { document.getElementById('passwordModal').style.display = 'flex'; }
     function closePasswordModal() { document.getElementById('passwordModal').style.display = 'none'; }
 
@@ -423,7 +420,7 @@
     async function updatePassword() {
         const newPass = document.getElementById('newPassword').value.trim();
         if (!newPass) {
-            alert('કૃપા કરીને નવો પાસવર્ડ દાખલ કરો!');
+            alert('Please enter a new password!');
             return;
         }
 
@@ -433,9 +430,9 @@
             .eq('user_id', currentUser.user_id);
 
         if (error) {
-            alert('પાસવર્ડ અપડેટ કરવામાં એરર: ' + error.message);
+            alert('Error updating password: ' + error.message);
         } else {
-            alert('પાસવર્ડ સફળતાપૂર્વક બદલાઈ ગયો છે!');
+            alert('Password updated successfully!');
             closePasswordModal();
         }
     }
@@ -451,4 +448,12 @@
             .eq('user_id', currentUser.user_id);
 
         if (error) {
-           
+            alert('Error saving bank details: ' + error.message);
+        } else {
+            alert('Bank & KYC details saved successfully!');
+            closeBankModal();
+        }
+    }
+
+    async function loadBankDetails() {
+ 
