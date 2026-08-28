@@ -141,8 +141,6 @@
         </div>
     </div>
 
-    <!-- Modals (Popups) -->
-    
     <!-- Password Modal -->
     <div id="passwordModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
         <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-full max-w-sm shadow-2xl">
@@ -159,16 +157,9 @@
     <div id="bankModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
         <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-full max-w-sm shadow-2xl">
             <h3 class="text-lg font-bold text-white mb-4"><i class="fa-solid fa-building-columns text-emerald-400 mr-2"></i> KYC Details</h3>
-            
-            <label class="text-xs text-slate-400 mb-1 block ml-1">Account Name</label>
-            <input type="text" id="accName" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-3 outline-none focus:border-emerald-500">
-            
-            <label class="text-xs text-slate-400 mb-1 block ml-1">Account Number</label>
-            <input type="text" id="accNo" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-3 outline-none focus:border-emerald-500">
-            
-            <label class="text-xs text-slate-400 mb-1 block ml-1">IFSC Code</label>
-            <input type="text" id="ifscCode" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-6 outline-none focus:border-emerald-500 uppercase">
-            
+            <input type="text" id="accName" placeholder="Account Holder Name" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-3 outline-none focus:border-emerald-500">
+            <input type="text" id="accNo" placeholder="Account Number" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-3 outline-none focus:border-emerald-500">
+            <input type="text" id="ifscCode" placeholder="IFSC Code" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-6 outline-none focus:border-emerald-500 uppercase">
             <div class="flex gap-3">
                 <button onclick="saveBankDetails()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-sm font-semibold transition">Save KYC</button>
                 <button onclick="closeModal('bankModal')" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold transition">Cancel</button>
@@ -180,15 +171,10 @@
     <div id="adminModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
         <div class="bg-[#1e293b] border border-blue-500/30 p-6 rounded-2xl w-full max-w-sm shadow-2xl">
             <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i class="fa-solid fa-crown text-amber-400"></i> Admin Panel</h3>
-            
-            <label class="text-xs text-slate-400 mb-1 block ml-1">Target User ID or Mobile</label>
-            <input type="text" id="actInput" placeholder="e.g. MAHAN9396 or 98765..." class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3.5 text-sm text-white mb-4 outline-none focus:border-blue-500 uppercase">
-            
+            <input type="text" id="actInput" placeholder="Target User ID or Mobile" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3.5 text-sm text-white mb-4 outline-none focus:border-blue-500 uppercase">
             <button onclick="fetchUserDetailsForActivation()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-sm font-semibold mb-4 transition flex justify-center items-center gap-2">
                 <i class="fa-solid fa-magnifying-glass"></i> Search User
             </button>
-            
-            <!-- Result Box -->
             <div id="foundUserInfo" class="hidden bg-[#0f172a] border border-slate-600 p-4 rounded-xl mb-4">
                 <p class="text-xs text-slate-400 mb-1">Found User:</p>
                 <p id="fName" class="font-bold text-white text-sm truncate">-</p>
@@ -197,7 +183,6 @@
                     <span id="fStatus" class="text-xs font-bold px-2 py-1 rounded bg-slate-800">-</span>
                 </div>
             </div>
-
             <button id="activateBtn" onclick="executeAdminActivation()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-sm font-semibold mb-3 hidden transition shadow-lg shadow-emerald-500/20">
                 ✅ Make Active (+₹50k Limit)
             </button>
@@ -215,30 +200,18 @@
 
     window.onload = async () => {
         const userDataStr = localStorage.getItem('mahan_user');
-        if (!userDataStr) {
-            window.location.href = "login.html";
-            return;
-        }
+        if (!userDataStr) { window.location.href = "login.html"; return; }
 
         const localUser = JSON.parse(userDataStr);
         const searchVal = localUser.user_id || localUser.mobile;
 
         try {
-            const { data, error } = await _supabase
-                .from('users')
-                .select('*')
-                .or(`user_id.eq.${searchVal},mobile.eq.${searchVal}`)
-                .maybeSingle();
-            
+            const { data } = await _supabase.from('users').select('*').or(`user_id.eq.${searchVal},mobile.eq.${searchVal}`).maybeSingle();
             if(data) {
                 currentUser = data;
                 localStorage.setItem('mahan_user', JSON.stringify(data)); 
-            } else {
-                currentUser = localUser;
-            }
-        } catch (e) {
-            currentUser = localUser;
-        }
+            } else { currentUser = localUser; }
+        } catch (e) { currentUser = localUser; }
 
         document.getElementById('dashName').innerText = currentUser.name || 'Member';
         document.getElementById('dashId').innerText = currentUser.user_id || 'MAHAN----';
@@ -248,34 +221,34 @@
         if (currentUser.bank_acc) document.getElementById('accNo').value = currentUser.bank_acc;
         if (currentUser.bank_ifsc) document.getElementById('ifscCode').value = currentUser.bank_ifsc;
 
-        // FETCH ENTIRE NETWORK FOR 9-LEVEL CALCULATION
         await fetchNetworkData(currentUser.user_id, currentUser);
     };
 
     async function fetchNetworkData(myUserId, userObj) {
         const container = document.getElementById('directStudentContainer');
         try {
-            // 9-Level MLM Logic: First fetch ALL users to build the tree
-            const { data: allUsers, error } = await _supabase.from('users').select('user_id, name, sponsor, status');
-            
+            // Fetch ALL users to build proper 9-level structure safely
+            const { data: allUsers, error } = await _supabase.from('users').select('*');
             if (error || !allUsers) throw error;
 
-            // Build a fast lookup map: sponsor_id -> [downline users]
+            const myIdNorm = String(myUserId).trim().toUpperCase();
             const networkMap = {};
+            
+            // Map users by their sponsor's ID
             allUsers.forEach(u => {
-                const sp = u.sponsor ? u.sponsor.trim().toUpperCase() : '';
+                const sp = String(u.sponsor || '').trim().toUpperCase();
                 if(sp) {
                     if(!networkMap[sp]) networkMap[sp] = [];
                     networkMap[sp].push(u);
                 }
             });
 
-            // Start with Level 1 (Directs)
-            let currentLevelUsers = networkMap[myUserId.toUpperCase()] || [];
+            // Level 1 (Directs)
+            let currentLevelUsers = networkMap[myIdNorm] || [];
             let directStudentList = currentLevelUsers; 
 
-            // Display Direct Students UI
             document.getElementById('directTeamCount').innerText = directStudentList.length;
+
             if (directStudentList.length === 0) {
                 container.innerHTML = `<p class="text-center text-xs text-slate-500 py-4">No direct network found yet.</p>`;
             } else {
@@ -286,7 +259,7 @@
                     const badgeText = isActive ? 'ACTIVE' : 'UNACTIVE';
 
                     const div = document.createElement('div');
-                    div.className = 'flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-700/50 shadow-sm';
+                    div.className = 'flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-700/50 shadow-sm mb-2';
                     div.innerHTML = `
                         <div>
                             <p class="text-sm font-semibold text-white"><i class="fa-solid fa-user-circle text-blue-400 mr-1.5"></i> ${member.name}</p>
@@ -298,48 +271,39 @@
                 });
             }
 
-            // Calculate 9 Levels Deep
-            let levelCounts = [0,0,0,0,0,0,0,0,0]; // Total members per level
-            let activeCounts = [0,0,0,0,0,0,0,0,0]; // Only ACTIVE members for payout
+            // 9 Levels Logic
+            let levelCounts = [0,0,0,0,0,0,0,0,0]; 
+            let activeCounts = [0,0,0,0,0,0,0,0,0];
 
             for (let i = 0; i < 9; i++) {
                 levelCounts[i] = currentLevelUsers.length;
                 activeCounts[i] = currentLevelUsers.filter(u => (u.status || '').toLowerCase() === 'active').length;
 
-                // Find next level by gathering all downlines of the current level
                 let nextLevelUsers = [];
                 currentLevelUsers.forEach(u => {
-                    const downlines = networkMap[u.user_id.toUpperCase()] || [];
+                    const downlines = networkMap[String(u.user_id).trim().toUpperCase()] || [];
                     nextLevelUsers = nextLevelUsers.concat(downlines);
                 });
-                currentLevelUsers = nextLevelUsers; // move to next level
+                currentLevelUsers = nextLevelUsers;
             }
 
-            // Payouts only based on ACTIVE members
-            let p1 = activeCounts[0] * 1000;
-            let p2 = activeCounts[1] * 500;
-            let p3 = activeCounts[2] * 250;
-            let p4 = activeCounts[3] * 250;
-            let p5 = activeCounts[4] * 250;
-            let p6 = activeCounts[5] * 125;
-            let p7 = activeCounts[6] * 125;
-            let p8 = activeCounts[7] * 125;
-            let p9 = activeCounts[8] * 125;
+            // Payout calculation ONLY for ACTIVE users
+            let p1 = activeCounts[0] * 1000, p2 = activeCounts[1] * 500, p3 = activeCounts[2] * 250;
+            let p4 = activeCounts[3] * 250, p5 = activeCounts[4] * 250, p6 = activeCounts[5] * 125;
+            let p7 = activeCounts[6] * 125, p8 = activeCounts[7] * 125, p9 = activeCounts[8] * 125;
 
-            // Total network is ALL members in 9 levels
             let totalTeam = levelCounts.reduce((a, b) => a + b, 0);
             let totalEarned = p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9;
 
             document.getElementById('totalTeam').innerText = totalTeam;
 
-            // Update UI Table
             const pays = [p1,p2,p3,p4,p5,p6,p7,p8,p9];
             for(let i=1; i<=9; i++) {
                 document.getElementById('l'+i+'Count').innerText = levelCounts[i-1];
                 document.getElementById('l'+i+'Pay').innerText = "₹" + pays[i-1];
             }
 
-            // Update Balance Sheet
+            // UI Status Update
             const statusBadge = document.getElementById('dashStatusText');
             const cardBg = document.getElementById('profileCardBg');
 
@@ -355,34 +319,24 @@
                 document.getElementById('totalLimit').innerText = "₹ " + limit.toLocaleString();
                 document.getElementById('earningAmount').innerText = "₹ " + totalEarned.toLocaleString();
                 document.getElementById('remainingLimit').innerText = "₹ " + Math.max(0, remaining).toLocaleString();
-
-                // Silent Database Sync for Earning & Limit
-                _supabase.from('users').update({
-                    total_earning: totalEarned,
-                    remaining_limit: Math.max(0, remaining)
-                }).eq('user_id', userObj.user_id).then();
-
+                
+                _supabase.from('users').update({ total_earning: totalEarned, remaining_limit: Math.max(0, remaining) }).eq('user_id', userObj.user_id).then();
             } else {
                 statusBadge.innerText = "Status: UNACTIVE";
                 statusBadge.className = "text-xs font-bold text-slate-400 bg-slate-800 inline-block px-4 py-1.5 rounded-full border border-slate-600 tracking-wider shadow-inner";
-                
                 document.getElementById('totalLimit').innerText = "₹ 0";
                 document.getElementById('earningAmount').innerText = "₹ 0";
                 document.getElementById('remainingLimit').innerText = "₹ 0";
             }
 
-            // Admin Panel Visibility
             if (userObj.user_id === 'MAHAN101' || userObj.user_id === 'MAHAN9396' || userObj.mobile === '9999999999' || userObj.role === 'admin') {
                 document.getElementById('adminActivationBtn').classList.remove('hidden');
             }
-
         } catch (err) {
-            console.error(err);
             container.innerHTML = `<p class="text-center text-xs text-red-400 py-4">Network sync failed.</p>`;
         }
     }
 
-    // Modal Handling
     function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
     function closeModal(id) { 
         document.getElementById(id).classList.add('hidden'); 
@@ -394,81 +348,48 @@
         }
     }
 
-    // UPDATE QUERIES
     async function updatePassword() {
         const newPass = document.getElementById('newPassword').value.trim();
         if (!newPass) { alert('Enter a new password!'); return; }
-
-        const { data, error } = await _supabase
-            .from('users')
-            .update({ password: newPass })
-            .eq('user_id', currentUser.user_id)
-            .select();
-            
-        if (error) { 
-            alert('Security Update Failed: ' + error.message); 
-        } else { 
-            alert('✅ Password changed successfully!'); 
-            closeModal('passwordModal'); 
-        }
+        const { error } = await _supabase.from('users').update({ password: newPass }).eq('user_id', currentUser.user_id).select();
+        if (error) { alert('Failed: ' + error.message); } else { alert('✅ Password changed!'); closeModal('passwordModal'); }
     }
 
     async function saveBankDetails() {
         const bank_name = document.getElementById('accName').value.trim();
         const bank_acc = document.getElementById('accNo').value.trim();
         const bank_ifsc = document.getElementById('ifscCode').value.trim();
-
-        const { data, error } = await _supabase
-            .from('users')
-            .update({ bank_name, bank_acc, bank_ifsc })
-            .eq('user_id', currentUser.user_id)
-            .select();
-            
-        if (error) { 
-            alert('KYC Update Failed: ' + error.message); 
-        } else { 
-            alert('✅ Bank Details saved securely!'); 
-            closeModal('bankModal'); 
-        }
+        const { error } = await _supabase.from('users').update({ bank_name, bank_acc, bank_ifsc }).eq('user_id', currentUser.user_id).select();
+        if (error) { alert('Failed: ' + error.message); } else { alert('✅ Bank Details saved!'); closeModal('bankModal'); }
     }
 
-    // SMART ADMIN ACTIVATION
     async function fetchUserDetailsForActivation() {
         const val = document.getElementById('actInput').value.trim().toUpperCase();
         const infoBox = document.getElementById('foundUserInfo');
         const activateBtn = document.getElementById('activateBtn');
-
         if (!val) { alert("Please type User ID or Mobile No."); return; }
 
         infoBox.classList.remove('hidden');
-        document.getElementById('fName').innerText = "Searching global database...";
+        document.getElementById('fName').innerText = "Searching...";
         document.getElementById('fStatus').innerText = "...";
-        document.getElementById('fStatus').className = "text-xs font-bold px-2 py-1 rounded bg-slate-800 text-slate-400";
         activateBtn.classList.add('hidden');
 
-        const { data, error } = await _supabase
-            .from('users')
-            .select('*')
-            .or(`user_id.eq.${val},mobile.eq.${val}`)
-            .maybeSingle();
+        const { data, error } = await _supabase.from('users').select('*').or(`user_id.eq.${val},mobile.eq.${val}`).maybeSingle();
 
         if (error || !data) {
-            document.getElementById('fName').innerHTML = "<span class='text-red-400'>No user found matching this criteria.</span>";
+            document.getElementById('fName').innerHTML = "<span class='text-red-400'>No user found.</span>";
             document.getElementById('fStatus').innerText = "N/A";
-            foundTargetUser = null;
-            return;
+            foundTargetUser = null; return;
         }
 
         foundTargetUser = data;
         document.getElementById('fName').innerText = `${data.name} (${data.user_id})`;
-        
         const currentStatus = (data.status || 'Unactive').toLowerCase();
         const statusBadge = document.getElementById('fStatus');
         
         if(currentStatus === 'active') {
             statusBadge.innerText = "ALREADY ACTIVE";
             statusBadge.className = "text-xs font-bold px-2 py-1 rounded bg-emerald-900/50 text-emerald-400 border border-emerald-500/30";
-            activateBtn.classList.add('hidden'); 
         } else {
             statusBadge.innerText = "UNACTIVE";
             statusBadge.className = "text-xs font-bold px-2 py-1 rounded bg-red-900/50 text-red-400 border border-red-500/30";
@@ -478,35 +399,17 @@
 
     async function executeAdminActivation() {
         if (!foundTargetUser) return;
-        
         const btn = document.getElementById('activateBtn');
         btn.innerText = "Processing...";
-
-        const { data, error } = await _supabase
-            .from('users')
-            .update({ status: 'Active', total_limit: 50000 })
-            .eq('user_id', foundTargetUser.user_id)
-            .select();
-
-        if (error) {
-            alert('Admin System Error: ' + error.message);
-            btn.innerText = "✅ Make Active (+₹50k Limit)";
-        } else {
-            alert(`🎉 Success! Account for ${foundTargetUser.name} has been ACTIVATED.`);
-            closeModal('adminModal');
-            location.reload(); 
-        }
+        const { error } = await _supabase.from('users').update({ status: 'Active', total_limit: 50000 }).eq('user_id', foundTargetUser.user_id).select();
+        if (error) { alert('Error: ' + error.message); btn.innerText = "✅ Make Active (+₹50k Limit)"; } 
+        else { alert(`🎉 Success! ${foundTargetUser.name} is now ACTIVATED.`); closeModal('adminModal'); location.reload(); }
     }
 
-    function logout() {
-        localStorage.removeItem('mahan_user');
-        window.location.href = "login.html";
-    }
+    function logout() { localStorage.removeItem('mahan_user'); window.location.href = "login.html"; }
 </script>
 
 </body>
 </html>
-                            
 
-
-                            
+            
