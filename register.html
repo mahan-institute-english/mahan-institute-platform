@@ -35,7 +35,8 @@
             </div>
             <div>
                 <label class="text-xs text-slate-400">Sponsor ID / Referral Code</label>
-                <input type="text" id="sponsor" value="MAHAN101" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white focus:border-emerald-500 outline-none">
+                <!-- રેફરલ લિંકથી આવતા ID માટે આ બોક્સ છે -->
+                <input type="text" id="sponsor" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white focus:border-emerald-500 outline-none placeholder-slate-500" placeholder="Enter Sponsor ID (e.g. MAHAN101)">
             </div>
             <button type="submit" id="submitBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-lg transition text-sm shadow">Register Now</button>
         </form>
@@ -72,14 +73,38 @@
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6cmJzdndtcnlta3B6d21neXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDc1NzQsImV4cCI6MjEwMzMyMzU3NH0.5ulY5LW3AQEPFDP__iOSJssgNafTSe9Yu4gEqZF7sLc";
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Auto-fill sponsor from URL if referral link is used (e.g. register.html?ref=MAHAN1234)
+        // રેફરલ લિંક માંથી ID પકડવા અને બોક્સને લોક કરવા માટે
         window.onload = () => {
             const urlParams = new URLSearchParams(window.location.search);
             const ref = urlParams.get('ref');
             if (ref) {
-                document.getElementById('sponsor').value = ref;
+                const sponsorInput = document.getElementById('sponsor');
+                sponsorInput.value = ref;
+                sponsorInput.readOnly = true; // યુઝર આને બદલી નહિ શકે
+                sponsorInput.classList.add('bg-slate-800', 'text-slate-400');
             }
         };
+
+        // 100% Unique ID જનરેટ કરવાનું ફંક્શન
+        async function generateUniqueMAHANId() {
+            let isUnique = false;
+            let newId = "";
+            while (!isUnique) {
+                const randomNum = Math.floor(100000 + Math.random() * 900000); // 6 આંકડાનો નંબર
+                newId = "MAHAN" + randomNum;
+                
+                const { data } = await _supabase
+                    .from('users')
+                    .select('user_id')
+                    .eq('user_id', newId)
+                    .maybeSingle();
+                    
+                if (!data) {
+                    isUnique = true; 
+                }
+            }
+            return newId;
+        }
 
         document.getElementById('regForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -87,22 +112,36 @@
             const submitBtn = document.getElementById('submitBtn');
             
             submitBtn.disabled = true;
-            msg.innerText = "Creating account & generating ID...";
+            msg.innerText = "Checking Details & Generating Unique ID...";
             msg.className = "text-xs text-center text-amber-400";
 
-            const name = document.getElementById('name').value;
-            const mobile = document.getElementById('mobile').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const sponsor = document.getElementById('sponsor').value;
-
-            // Generate unique user_id
-            const randomNum = Math.floor(1000 + Math.random() * 9000);
-            const user_id = "MAHAN" + randomNum;
-            const referral_code = user_id;
+            const name = document.getElementById('name').value.trim();
+            const mobile = document.getElementById('mobile').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const sponsor = document.getElementById('sponsor').value.trim();
 
             try {
-                const { data, error } = await _supabase.from('users').insert([
+                // સ્ટેપ 1: ચેક કરો કે Sponsor ડેટાબેઝમાં છે કે નહિ
+                const { data: sponsorData, error: sponsorError } = await _supabase
+                    .from('users')
+                    .select('user_id')
+                    .eq('user_id', sponsor)
+                    .maybeSingle();
+
+                if (sponsorError || !sponsorData) {
+                    msg.innerText = "❌ સ્પોન્સર ID ખોટું છે અથવા મળતું નથી!";
+                    msg.className = "text-xs text-center text-red-400";
+                    submitBtn.disabled = false;
+                    return; 
+                }
+
+                // સ્ટેપ 2: ડેટાબેઝમાં ચેક કરીને નવું Unique ID બનાવો
+                const user_id = await generateUniqueMAHANId();
+                const referral_code = user_id;
+
+                // સ્ટેપ 3: ડેટા સેવ કરો
+                const { error } = await _supabase.from('users').insert([
                     { user_id, name, mobile, email, password, sponsor, referral_code, status: 'Unactive' }
                 ]);
 
@@ -113,7 +152,7 @@
                     return;
                 }
 
-                // Hide form and show Welcome Letter Box
+                // રજીસ્ટ્રેશન ફોર્મ છુપાવો અને Welcome Box બતાવો
                 document.getElementById('regForm').classList.add('hidden');
                 msg.classList.add('hidden');
 
@@ -122,10 +161,11 @@
                 document.getElementById('wPass').innerText = password;
                 document.getElementById('wSponsor').innerText = sponsor;
                 
+                // તમારી રેફરલ લિંક સિસ્ટમ એમને એમ કામ કરતી રહેશે
                 const refLink = `https://mahan-institute-english.github.io/mahan-institute-platform/register.html?ref=${user_id}`;
                 document.getElementById('wLink').innerText = refLink;
 
-                // WhatsApp Share Text with Welcome Letter & Referral Link
+                // WhatsApp શેરિંગ બટન
                 const waText = `🌟 *Welcome to MAHAN Institute* 🌟\n\nDear *${name}*,\nYour registration is successfully completed!\n\n🆔 User ID: *${user_id}*\n🔑 Password: *${password}*\n👥 Sponsor: ${sponsor}\n\n🔗 *Your Referral Link:*\n${refLink}\n\nJoin us and start your learning & earning journey!`;
                 document.getElementById('whatsappBtn').setAttribute('href', `https://api.whatsapp.com/send?text=${encodeURIComponent(waText)}`);
 
@@ -139,4 +179,4 @@
         });
     </script>
 </body>
-    </html>
+</html>
