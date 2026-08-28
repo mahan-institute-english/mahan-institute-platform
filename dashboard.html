@@ -179,7 +179,6 @@
             <button onclick="closeModal('adminModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold transition">Close</button>
         </div>
     </div>
-
 <script>
     const SUPABASE_URL = "https://wzrbsvwmrymkpzwmgypb.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6cmJzdndtcnlta3B6d21neXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDc1NzQsImV4cCI6MjEwMzMyMzU3NH0.5ulY5LW3AQEPFDP__iOSJssgNafTSe9Yu4gEqZF7sLc";
@@ -193,7 +192,7 @@
         if (!userDataStr) { window.location.href = "login.html"; return; }
 
         const localUser = JSON.parse(userDataStr);
-        const searchVal = localUser.user_id || localUser.mobile;
+        const searchVal = String(localUser.user_id || localUser.mobile).trim();
 
         try {
             const { data } = await _supabase.from('users').select('*').or(`user_id.eq.${searchVal},mobile.eq.${searchVal}`).maybeSingle();
@@ -218,9 +217,7 @@
         const container = document.getElementById('directStudentContainer');
         try {
             const { data: allUsers, error } = await _supabase.from('users').select('*');
-            if (error || !allUsers) {
-                throw error;
-            }
+            if (error || !allUsers) { throw error; }
 
             const myIdNorm = String(myUserId).trim().toUpperCase();
             const networkMap = {};
@@ -278,7 +275,7 @@
                 currentLevelUsers = nextLevelUsers;
             }
 
-             // Payout calculation ONLY for ACTIVE users
+            // Payout calculation ONLY for ACTIVE users
             let p1 = activeCounts[0] * 1000, p2 = activeCounts[1] * 500, p3 = activeCounts[2] * 250;
             let p4 = activeCounts[3] * 250, p5 = activeCounts[4] * 250, p6 = activeCounts[5] * 125;
             let p7 = activeCounts[6] * 125, p8 = activeCounts[7] * 125, p9 = activeCounts[8] * 125;
@@ -294,7 +291,6 @@
                 document.getElementById('l'+i+'Pay').innerText = "₹" + pays[i-1];
             }
 
-            // UI Status Update
             const statusBadge = document.getElementById('dashStatusText');
             const cardBg = document.getElementById('profileCardBg');
 
@@ -311,15 +307,23 @@
                 document.getElementById('earningAmount').innerText = "₹ " + totalEarned.toLocaleString();
                 document.getElementById('remainingLimit').innerText = "₹ " + Math.max(0, remaining).toLocaleString();
                 
-                // FORCE UPDATE TO SUPABASE DATABASE
-                const { error: syncErr } = await _supabase.from('users').update({ 
-                    total_earning: totalEarned, 
-                    remaining_limit: Math.max(0, remaining) 
-                }).eq('user_id', userObj.user_id);
+                // === લાઈવ એરર ટ્રેકિંગ સિસ્ટમ (અપડેટ) ===
+                const myIdForUpdate = String(userObj.user_id).trim();
+                const { data: updateData, error: syncErr } = await _supabase
+                    .from('users')
+                    .update({ 
+                        total_earning: totalEarned, 
+                        remaining_limit: Math.max(0, remaining) 
+                    })
+                    .eq('user_id', myIdForUpdate)
+                    .select();
                 
                 if (syncErr) {
-                    console.log("DB Update Error: ", syncErr);
+                    alert("⚠️ DB Update Error: " + syncErr.message);
+                } else if (!updateData || updateData.length === 0) {
+                    alert("⚠️ ડેટાબેઝમાં ID મેચ થતું નથી! કૃપા કરીને Supabase માં જઈને તમારા user_id (" + myIdForUpdate + ") ની પાછળ કોઈ સ્પેસ (જગ્યા) હોય તો કાઢી નાખો.");
                 }
+                // ==========================================
                 
             } else {
                 statusBadge.innerText = "Status: UNACTIVE";
@@ -333,7 +337,7 @@
                 document.getElementById('adminActivationBtn').classList.remove('hidden');
             }
         } catch (err) {
-            container.innerHTML = `<p class="text-center text-xs text-red-400 py-4">Network sync failed. Please check internet connection.</p>`;
+            container.innerHTML = `<p class="text-center text-xs text-red-400 py-4">Network sync failed. Check DB Permissions.</p>`;
         }
     }
 
@@ -409,8 +413,6 @@
     function logout() { localStorage.removeItem('mahan_user'); window.location.href = "login.html"; }
 </script>
 
-</body>
-</html>
 
-
-        
+    
+    
