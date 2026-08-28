@@ -10,11 +10,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Poppins', sans-serif; }
-        /* Custom Smooth Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
-        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); }
     </style>
 </head>
 <body class="bg-[#0f172a] text-slate-200 min-h-screen p-4 pb-12">
@@ -208,7 +206,6 @@
     </div>
 
 <script>
-    // SUPABASE CONNECTION
     const SUPABASE_URL = "https://wzrbsvwmrymkpzwmgypb.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6cmJzdndtcnlta3B6d21neXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDc1NzQsImV4cCI6MjEwMzMyMzU3NH0.5ulY5LW3AQEPFDP__iOSJssgNafTSe9Yu4gEqZF7sLc";
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -226,7 +223,6 @@
         const localUser = JSON.parse(userDataStr);
         const searchVal = localUser.user_id || localUser.mobile;
 
-        // Ensure we always get live fresh data
         try {
             const { data, error } = await _supabase
                 .from('users')
@@ -236,7 +232,6 @@
             
             if(data) {
                 currentUser = data;
-                // Update local storage silently so it stays fresh
                 localStorage.setItem('mahan_user', JSON.stringify(data)); 
             } else {
                 currentUser = localUser;
@@ -245,36 +240,47 @@
             currentUser = localUser;
         }
 
-        // SET PROFILE UI
         document.getElementById('dashName').innerText = currentUser.name || 'Member';
         document.getElementById('dashId').innerText = currentUser.user_id || 'MAHAN----';
         document.getElementById('dashMobile').innerText = currentUser.mobile || '----------';
 
-        // Load Bank Details if they exist
         if (currentUser.bank_name) document.getElementById('accName').value = currentUser.bank_name;
         if (currentUser.bank_acc) document.getElementById('accNo').value = currentUser.bank_acc;
         if (currentUser.bank_ifsc) document.getElementById('ifscCode').value = currentUser.bank_ifsc;
 
-        // FETCH TEAM AND CALCULATE EARNINGS
+        // FETCH ENTIRE NETWORK FOR 9-LEVEL CALCULATION
         await fetchNetworkData(currentUser.user_id, currentUser);
     };
 
     async function fetchNetworkData(myUserId, userObj) {
         const container = document.getElementById('directStudentContainer');
         try {
-            const { data, error } = await _supabase
-                .from('users')
-                .select('*')
-                .eq('sponsor', myUserId);
+            // 9-Level MLM Logic: First fetch ALL users to build the tree
+            const { data: allUsers, error } = await _supabase.from('users').select('user_id, name, sponsor, status');
+            
+            if (error || !allUsers) throw error;
 
-            let directs = data || [];
-            document.getElementById('directTeamCount').innerText = directs.length;
+            // Build a fast lookup map: sponsor_id -> [downline users]
+            const networkMap = {};
+            allUsers.forEach(u => {
+                const sp = u.sponsor ? u.sponsor.trim().toUpperCase() : '';
+                if(sp) {
+                    if(!networkMap[sp]) networkMap[sp] = [];
+                    networkMap[sp].push(u);
+                }
+            });
 
-            if (directs.length === 0) {
+            // Start with Level 1 (Directs)
+            let currentLevelUsers = networkMap[myUserId.toUpperCase()] || [];
+            let directStudentList = currentLevelUsers; 
+
+            // Display Direct Students UI
+            document.getElementById('directTeamCount').innerText = directStudentList.length;
+            if (directStudentList.length === 0) {
                 container.innerHTML = `<p class="text-center text-xs text-slate-500 py-4">No direct network found yet.</p>`;
             } else {
                 container.innerHTML = '';
-                directs.forEach(member => {
+                directStudentList.forEach(member => {
                     const isActive = (member.status || '').toLowerCase() === 'active';
                     const badgeClass = isActive ? 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20' : 'text-slate-400 bg-slate-700/50 border-slate-600';
                     const badgeText = isActive ? 'ACTIVE' : 'UNACTIVE';
@@ -292,24 +298,48 @@
                 });
             }
 
-            // Calculations based on rates provided
-            let l1 = directs.length, l2 = 0, l3 = 0, l4 = 0, l5 = 0, l6 = 0, l7 = 0, l8 = 0, l9 = 0;
-            let p1 = l1 * 1000, p2 = l2 * 500, p3 = l3 * 250, p4 = l4 * 250, p5 = l5 * 250;
-            let p6 = l6 * 125, p7 = l7 * 125, p8 = l8 * 125, p9 = l9 * 125;
+            // Calculate 9 Levels Deep
+            let levelCounts = [0,0,0,0,0,0,0,0,0]; // Total members per level
+            let activeCounts = [0,0,0,0,0,0,0,0,0]; // Only ACTIVE members for payout
 
-            let totalTeam = l1 + l2 + l3 + l4 + l5 + l6 + l7 + l8 + l9;
+            for (let i = 0; i < 9; i++) {
+                levelCounts[i] = currentLevelUsers.length;
+                activeCounts[i] = currentLevelUsers.filter(u => (u.status || '').toLowerCase() === 'active').length;
+
+                // Find next level by gathering all downlines of the current level
+                let nextLevelUsers = [];
+                currentLevelUsers.forEach(u => {
+                    const downlines = networkMap[u.user_id.toUpperCase()] || [];
+                    nextLevelUsers = nextLevelUsers.concat(downlines);
+                });
+                currentLevelUsers = nextLevelUsers; // move to next level
+            }
+
+            // Payouts only based on ACTIVE members
+            let p1 = activeCounts[0] * 1000;
+            let p2 = activeCounts[1] * 500;
+            let p3 = activeCounts[2] * 250;
+            let p4 = activeCounts[3] * 250;
+            let p5 = activeCounts[4] * 250;
+            let p6 = activeCounts[5] * 125;
+            let p7 = activeCounts[6] * 125;
+            let p8 = activeCounts[7] * 125;
+            let p9 = activeCounts[8] * 125;
+
+            // Total network is ALL members in 9 levels
+            let totalTeam = levelCounts.reduce((a, b) => a + b, 0);
             let totalEarned = p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9;
 
             document.getElementById('totalTeam').innerText = totalTeam;
 
-            const counts = [l1,l2,l3,l4,l5,l6,l7,l8,l9];
+            // Update UI Table
             const pays = [p1,p2,p3,p4,p5,p6,p7,p8,p9];
             for(let i=1; i<=9; i++) {
-                document.getElementById('l'+i+'Count').innerText = counts[i-1];
+                document.getElementById('l'+i+'Count').innerText = levelCounts[i-1];
                 document.getElementById('l'+i+'Pay').innerText = "₹" + pays[i-1];
             }
 
-            // Handle ACTIVE vs UNACTIVE UI
+            // Update Balance Sheet
             const statusBadge = document.getElementById('dashStatusText');
             const cardBg = document.getElementById('profileCardBg');
 
@@ -325,6 +355,13 @@
                 document.getElementById('totalLimit').innerText = "₹ " + limit.toLocaleString();
                 document.getElementById('earningAmount').innerText = "₹ " + totalEarned.toLocaleString();
                 document.getElementById('remainingLimit').innerText = "₹ " + Math.max(0, remaining).toLocaleString();
+
+                // Silent Database Sync for Earning & Limit
+                _supabase.from('users').update({
+                    total_earning: totalEarned,
+                    remaining_limit: Math.max(0, remaining)
+                }).eq('user_id', userObj.user_id).then();
+
             } else {
                 statusBadge.innerText = "Status: UNACTIVE";
                 statusBadge.className = "text-xs font-bold text-slate-400 bg-slate-800 inline-block px-4 py-1.5 rounded-full border border-slate-600 tracking-wider shadow-inner";
@@ -334,12 +371,13 @@
                 document.getElementById('remainingLimit').innerText = "₹ 0";
             }
 
-            // Show Admin Panel ONLY for authorized IDs
-            if (userObj.user_id === 'MAHAN101' || userObj.user_id === 'MAHAN9396' || userObj.mobile === '9999999999') {
+            // Admin Panel Visibility
+            if (userObj.user_id === 'MAHAN101' || userObj.user_id === 'MAHAN9396' || userObj.mobile === '9999999999' || userObj.role === 'admin') {
                 document.getElementById('adminActivationBtn').classList.remove('hidden');
             }
 
         } catch (err) {
+            console.error(err);
             container.innerHTML = `<p class="text-center text-xs text-red-400 py-4">Network sync failed.</p>`;
         }
     }
@@ -356,8 +394,7 @@
         }
     }
 
-    // UPDATE QUERIES (Requires RLS Update Policy in Supabase)
-    
+    // UPDATE QUERIES
     async function updatePassword() {
         const newPass = document.getElementById('newPassword').value.trim();
         if (!newPass) { alert('Enter a new password!'); return; }
@@ -403,7 +440,6 @@
 
         if (!val) { alert("Please type User ID or Mobile No."); return; }
 
-        // UI Feedback
         infoBox.classList.remove('hidden');
         document.getElementById('fName').innerText = "Searching global database...";
         document.getElementById('fStatus').innerText = "...";
@@ -458,7 +494,6 @@
         } else {
             alert(`🎉 Success! Account for ${foundTargetUser.name} has been ACTIVATED.`);
             closeModal('adminModal');
-            // Hard reload to reflect limits everywhere
             location.reload(); 
         }
     }
@@ -471,8 +506,7 @@
 
 </body>
 </html>
+                            
 
 
-
-
-        
+                            
