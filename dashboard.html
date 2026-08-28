@@ -3,297 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAHAN The Institute Of English - Dashboard</title>
+    <title>MAHAN - Premium Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #fdfbf7 0%, #f4e8c1 100%);
-            margin: 0;
-            padding: 15px;
-            color: #333;
-        }
-        
-        .dashboard-container {
-            max-width: 480px;
-            margin: 0 auto;
-            background: #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(197, 160, 89, 0.25);
-            overflow: hidden;
-            border: 1px solid #e6d5b8;
-        }
-        
-        .header {
-            background: #ffffff;
-            padding: 15px;
-            text-align: center;
-            border-bottom: 4px solid #d4af37;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        
-        .header h2 { margin: 0; color: #4a3b22; font-size: 18px; font-weight: 700; letter-spacing: 0.5px; }
-        
-        .content { padding: 15px; }
-        
-        .profile-card {
-            background: linear-gradient(135deg, #4a3b22, #2c2518);
-            color: white;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 15px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(74, 59, 34, 0.3);
-            border: 1px solid #d4af37;
-        }
-        .profile-card h2 { margin: 0 0 5px; font-size: 22px; font-weight: 700; color: #f4e8c1; }
-        .profile-card p { margin: 0; font-size: 14px; font-weight: 600; }
-        .profile-card .sub-info { font-size: 12px; margin-top: 8px; color: #d4af37; }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-        
-        .stat-box {
-            background: linear-gradient(135deg, #fffcf5, #fcf4e1);
-            border: 1px solid #d4af37;
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
-        }
-        .stat-box h3 { margin: 0; font-size: 12px; color: #666; font-weight: 600; }
-        .stat-box p { margin: 6px 0 0; font-size: 18px; font-weight: 700; color: #2c2518; }
-        
-        .balance-card {
-            background: #4a3b22;
-            color: #f4e8c1;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border: 1px solid #d4af37;
-        }
-        .balance-card h3 { margin: 0 0 15px; font-size: 14px; text-align: center; color: #d4af37; border-bottom: 1px solid rgba(212,175,55,0.3); padding-bottom: 8px; }
-        
-        .b-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-        .b-row span { font-weight: 600; color: #fff; }
-        
-        .chart-card {
-            background: #fffdf9;
-            border: 1px solid #d4af37;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-        .chart-card h3 { margin: 0 0 10px; font-size: 14px; color: #2c2518; text-align: center; border-bottom: 2px solid #d4af37; padding-bottom: 5px; }
-        .level-table { width: 100%; font-size: 11px; border-collapse: collapse; text-align: center; }
-        .level-table th { background: #4a3b22; color: #f4e8c1; padding: 6px; }
-        .level-table td { padding: 6px; border-bottom: 1px solid #e6d5b8; color: #333; }
-        
-        .team-list-box {
-            background: #fffdf9;
-            border: 1px solid #d4af37;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
-        .team-list-box h3 { margin: 0 0 10px; font-size: 13px; color: #2c2518; border-bottom: 2px solid #d4af37; padding-bottom: 5px; text-align: center; }
-        .member-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px 0;
-            border-bottom: 1px dashed #e6d5b8;
-            font-size: 12px;
-        }
-        .badge-active { color: #2e7d32; font-weight: bold; }
-        .badge-unactive { color: #c62828; font-weight: bold; }
-        
-        .action-btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            text-align: center;
-            margin-bottom: 10px;
-            text-decoration: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .btn-cyan { background: #00bcd4; color: white; }
-        .btn-admin { background: #d32f2f; color: white; display: none; }
-        .btn-logout { background: #4a3b22; color: #f4e8c1; border: 1px solid #d4af37; }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-            box-sizing: border-box;
-        }
-        .modal-content input {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0 15px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            box-sizing: border-box;
-        }
-        
-        #foundUserInfo {
-            background: #fdfbf7; 
-            border: 1px solid #d4af37; 
-            padding: 10px; 
-            border-radius: 8px; 
-            margin-bottom: 15px; 
-            font-size: 13px; 
-            display: none;
-        }
+        body { font-family: 'Poppins', sans-serif; }
+        /* Custom Smooth Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); }
     </style>
 </head>
-<body>
+<body class="bg-[#0f172a] text-slate-200 min-h-screen p-4 pb-12">
 
-<div class="dashboard-container">
-    <div class="header">
-        <h2>MAHAN The Institute Of English</h2>
-    </div>
-    
-    <div class="content">
-        <!-- Profile Card -->
-        <div class="profile-card" id="profileCardBg">
-            <h2 id="dashName">Loading...</h2>
-            <p id="dashStatusText">Status: (Unactive)</p>
-            <div class="sub-info">ID: <span id="dashId">MAHAN----</span> | Mobile: <span id="dashMobile">----------</span></div>
+    <div class="max-w-md mx-auto space-y-5">
+        
+        <!-- Header -->
+        <div class="text-center pt-2 pb-3 border-b border-slate-800">
+            <h1 class="text-2xl font-bold text-white tracking-wider">
+                MAHAN <span class="text-blue-500">INSTITUTE</span>
+            </h1>
+            <p class="text-xs text-slate-400">Premium English & Development</p>
         </div>
         
-        <!-- Stats -->
-        <div class="stats-grid">
-            <div class="stat-box">
-                <h3>👥 Direct Students</h3>
-                <p id="directTeamCount">0</p>
+        <!-- Profile & Status Card -->
+        <div id="profileCardBg" class="bg-[#1e293b] border border-slate-700 p-6 rounded-2xl shadow-2xl relative overflow-hidden transition-all duration-500">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl"></div>
+            
+            <div class="relative z-10 text-center space-y-2">
+                <h2 id="dashName" class="text-2xl font-bold text-white tracking-wide">Connecting...</h2>
+                <p id="dashStatusText" class="text-xs font-semibold text-amber-400 bg-amber-400/10 inline-block px-3 py-1 rounded-full border border-amber-400/20 uppercase tracking-widest">
+                    Checking Status...
+                </p>
+                <div class="pt-3 flex justify-center items-center gap-3 text-xs text-slate-400 font-mono">
+                    <span class="bg-[#0f172a] px-3 py-1.5 rounded-lg border border-slate-700 shadow-inner">
+                        <i class="fa-solid fa-id-badge text-blue-400 mr-1"></i> <span id="dashId">-----</span>
+                    </span>
+                    <span class="bg-[#0f172a] px-3 py-1.5 rounded-lg border border-slate-700 shadow-inner">
+                        <i class="fa-solid fa-phone text-emerald-400 mr-1"></i> <span id="dashMobile">-----</span>
+                    </span>
+                </div>
             </div>
-            <div class="stat-box">
-                <h3>🌐 Total Student Group</h3>
-                <p id="totalTeam">0</p>
+        </div>
+        
+        <!-- Network Stats -->
+        <div class="grid grid-cols-2 gap-4">
+            <div class="bg-[#1e293b] border border-slate-700 p-4 rounded-2xl text-center shadow-lg">
+                <div class="text-blue-400 mb-2"><i class="fa-solid fa-users text-2xl"></i></div>
+                <h3 class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Direct Students</h3>
+                <p id="directTeamCount" class="text-2xl font-bold text-white mt-1">0</p>
+            </div>
+            <div class="bg-[#1e293b] border border-slate-700 p-4 rounded-2xl text-center shadow-lg">
+                <div class="text-emerald-400 mb-2"><i class="fa-solid fa-globe text-2xl"></i></div>
+                <h3 class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Total Network</h3>
+                <p id="totalTeam" class="text-2xl font-bold text-white mt-1">0</p>
             </div>
         </div>
         
         <!-- Balance Sheet -->
-        <div class="balance-card">
-            <h3>🎁 Study Bonus Balance Sheet</h3>
-            <div class="b-row"><span>Total Limit:</span> <span id="totalLimit">₹ 0</span></div>
-            <div class="b-row"><span>Earning:</span> <span id="earningAmount">₹ 0</span></div>
-            <div class="b-row"><span>Remaining Limit:</span> <span id="remainingLimit">₹ 0</span></div>
-        </div>
-        
-        <!-- Income Chart -->
-        <div class="chart-card">
-            <h3>📊 Level Wise Team & Bonus Report</h3>
-            <table class="level-table">
-                <tr>
-                    <th>Level</th>
-                    <th>Rate</th>
-                    <th>Team</th>
-                    <th>Payout</th>
-                </tr>
-                <tr><td>Level 1</td><td>₹1000</td><td id="l1Count">0</td><td id="l1Pay">₹0</td></tr>
-                <tr><td>Level 2</td><td>₹500</td><td id="l2Count">0</td><td id="l2Pay">₹0</td></tr>
-                <tr><td>Level 3</td><td>₹250</td><td id="l3Count">0</td><td id="l3Pay">₹0</td></tr>
-                <tr><td>Level 4</td><td>₹250</td><td id="l4Count">0</td><td id="l4Pay">₹0</td></tr>
-                <tr><td>Level 5</td><td>₹250</td><td id="l5Count">0</td><td id="l5Pay">₹0</td></tr>
-                <tr><td>Level 6</td><td>₹125</td><td id="l6Count">0</td><td id="l6Pay">₹0</td></tr>
-                <tr><td>Level 7</td><td>₹125</td><td id="l7Count">0</td><td id="l7Pay">₹0</td></tr>
-                <tr><td>Level 8</td><td>₹125</td><td id="l8Count">0</td><td id="l8Pay">₹0</td></tr>
-                <tr><td>Level 9</td><td>₹125</td><td id="l9Count">0</td><td id="l9Pay">₹0</td></tr>
-            </table>
-        </div>
-        
-        <!-- Direct Students List -->
-        <div class="team-list-box">
-            <h3>📋 Direct Students List</h3>
-            <div id="directStudentContainer">
-                <p style="text-align: center; font-size: 12px; color: #777; margin: 5px 0;">Loading students...</p>
+        <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2 mb-4 border-b border-slate-700 pb-3">
+                <i class="fa-solid fa-wallet text-blue-500"></i> Bonus Balance Sheet
+            </h3>
+            <div class="space-y-3 text-sm">
+                <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-800">
+                    <span class="text-slate-400 font-medium">Total Limit</span>
+                    <span id="totalLimit" class="font-bold text-white tracking-wider">₹ 0</span>
+                </div>
+                <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-800">
+                    <span class="text-slate-400 font-medium">Total Earning</span>
+                    <span id="earningAmount" class="font-bold text-emerald-400 tracking-wider">₹ 0</span>
+                </div>
+                <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-800">
+                    <span class="text-slate-400 font-medium">Remaining Limit</span>
+                    <span id="remainingLimit" class="font-bold text-blue-400 tracking-wider">₹ 0</span>
+                </div>
             </div>
         </div>
         
-        <!-- Buttons -->
-        <button class="action-btn btn-cyan" onclick="openModal('passwordModal')">🔐 Change Password</button>
-        <button class="action-btn btn-cyan" onclick="openModal('bankModal')">🏦 Bank & KYC Details</button>
-        <button class="action-btn btn-admin" id="adminActivationBtn" onclick="openModal('adminModal')">👑 Admin Active Panel (Haresh Patel)</button>
-        <button class="action-btn btn-logout" onclick="logout()">🚪 Logout</button>
-    </div>
-</div>
-
-<!-- Password Modal -->
-<div class="modal" id="passwordModal">
-    <div class="modal-content">
-        <h3 style="color: #2c2518; margin-top: 0;">🔐 Change Password</h3>
-        <label style="font-size: 13px; font-weight: bold;">Enter New Password:</label>
-        <input type="password" id="newPassword" placeholder="Enter new password">
-        <button class="action-btn btn-cyan" onclick="updatePassword()">Update Password</button>
-        <button class="action-btn" style="background: #ccc; color: #333;" onclick="closeModal('passwordModal')">Cancel</button>
-    </div>
-</div>
-
-<!-- Bank Modal -->
-<div class="modal" id="bankModal">
-    <div class="modal-content">
-        <h3 style="color: #2c2518; margin-top: 0;">🏦 Bank & KYC Details</h3>
-        <label style="font-size: 13px; font-weight: bold;">Account Holder Name:</label>
-        <input type="text" id="accName" placeholder="Enter account holder name">
-        
-        <label style="font-size: 13px; font-weight: bold;">Account Number:</label>
-        <input type="text" id="accNo" placeholder="Enter account number">
-        
-        <label style="font-size: 13px; font-weight: bold;">IFSC Code:</label>
-        <input type="text" id="ifscCode" placeholder="Enter IFSC code">
-        
-        <button class="action-btn btn-cyan" onclick="saveBankDetails()">Save Details</button>
-        <button class="action-btn" style="background: #ccc; color: #333;" onclick="closeModal('bankModal')">Cancel</button>
-    </div>
-</div>
-
-<!-- Admin Activation Modal -->
-<div class="modal" id="adminModal">
-    <div class="modal-content">
-        <h3 style="color: #d32f2f; margin-top: 0;">👑 Admin Active Panel</h3>
-        <label style="font-size: 13px; font-weight: bold;">Enter User ID / Mobile:</label>
-        <input type="text" id="actInput" placeholder="Enter Mobile or User ID" oninput="fetchUserDetailsForActivation()" style="text-transform: uppercase;">
-        
-        <div id="foundUserInfo">
-            <p style="margin: 0; color: #2c2518;"><strong>Name:</strong> <span id="fName">-</span></p>
-            <p style="margin: 4px 0 0; color: #2c2518;"><strong>Status:</strong> <span id="fStatus" style="font-weight: bold; color: #d32f2f;">-</span></p>
+        <!-- Income Structure Table -->
+        <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg overflow-hidden">
+            <h3 class="text-sm font-bold text-white bg-slate-800/50 p-4 border-b border-slate-700 flex items-center gap-2">
+                <i class="fa-solid fa-chart-line text-emerald-400"></i> Level Wise Income
+            </h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs whitespace-nowrap">
+                    <thead class="bg-[#0f172a] text-slate-400 uppercase tracking-wider">
+                        <tr>
+                            <th class="p-3 font-semibold">Level</th>
+                            <th class="p-3 font-semibold text-center">Rate</th>
+                            <th class="p-3 font-semibold text-center">Team</th>
+                            <th class="p-3 font-semibold text-right">Payout</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800 text-slate-300">
+                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 1</td><td class="p-3 text-center text-blue-400 font-mono">₹1000</td><td id="l1Count" class="p-3 text-center">0</td><td id="l1Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 2</td><td class="p-3 text-center text-blue-400 font-mono">₹500</td><td id="l2Count" class="p-3 text-center">0</td><td id="l2Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 3</td><td class="p-3 text-center text-blue-400 font-mono">₹250</td><td id="l3Count" class="p-3 text-center">0</td><td id="l3Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 4</td><td class="p-3 text-center text-blue-400 font-mono">₹250</td><td id="l4Count" class="p-3 text-center">0</td><td id="l4Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 5</td><td class="p-3 text-center text-blue-400 font-mono">₹250</td><td id="l5Count" class="p-3 text-center">0</td><td id="l5Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 6</td><td class="p-3 text-center text-blue-400 font-mono">₹125</td><td id="l6Count" class="p-3 text-center">0</td><td id="l6Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 7</td><td class="p-3 text-center text-blue-400 font-mono">₹125</td><td id="l7Count" class="p-3 text-center">0</td><td id="l7Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 8</td><td class="p-3 text-center text-blue-400 font-mono">₹125</td><td id="l8Count" class="p-3 text-center">0</td><td id="l8Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 9</td><td class="p-3 text-center text-blue-400 font-mono">₹125</td><td id="l9Count" class="p-3 text-center">0</td><td id="l9Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-
-        <button class="action-btn btn-cyan" id="activateBtn" onclick="executeAdminActivation()" style="display: none; background: #2e7d32;">✅ Activate User (+₹50,000)</button>
-        <button class="action-btn" style="background: #ccc; color: #333;" onclick="closeModal('adminModal')">Cancel</button>
+        
+        <!-- Direct Students List -->
+        <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5">
+            <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3">
+                <i class="fa-solid fa-list-ul text-blue-400"></i> Direct Members
+            </h3>
+            <div id="directStudentContainer" class="space-y-3 max-h-52 overflow-y-auto pr-1">
+                <p class="text-center text-xs text-slate-500 py-4">Loading students...</p>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="space-y-3 pt-4">
+            <button onclick="openModal('passwordModal')" class="w-full bg-[#1e293b] hover:bg-slate-700 border border-slate-600 text-slate-200 font-semibold py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm">
+                <i class="fa-solid fa-lock text-blue-400"></i> Change Password
+            </button>
+            <button onclick="openModal('bankModal')" class="w-full bg-[#1e293b] hover:bg-slate-700 border border-slate-600 text-slate-200 font-semibold py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm">
+                <i class="fa-solid fa-building-columns text-emerald-400"></i> Bank & KYC Details
+            </button>
+            
+            <button id="adminActivationBtn" onclick="openModal('adminModal')" class="w-full bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/50 text-blue-400 font-bold py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm hidden">
+                <i class="fa-solid fa-crown text-amber-400"></i> Admin Active Panel
+            </button>
+            
+            <button onclick="logout()" class="w-full bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 font-semibold py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm mt-4">
+                <i class="fa-solid fa-power-off"></i> Secure Logout
+            </button>
+        </div>
     </div>
-</div>
+
+    <!-- Modals (Popups) -->
+    
+    <!-- Password Modal -->
+    <div id="passwordModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-full max-w-sm shadow-2xl">
+            <h3 class="text-lg font-bold text-white mb-4"><i class="fa-solid fa-lock text-blue-400 mr-2"></i> Update Password</h3>
+            <input type="password" id="newPassword" placeholder="Enter new password" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3.5 text-sm text-white mb-5 outline-none focus:border-blue-500 transition">
+            <div class="flex gap-3">
+                <button onclick="updatePassword()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-sm font-semibold transition">Save</button>
+                <button onclick="closeModal('passwordModal')" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold transition">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bank Modal -->
+    <div id="bankModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-full max-w-sm shadow-2xl">
+            <h3 class="text-lg font-bold text-white mb-4"><i class="fa-solid fa-building-columns text-emerald-400 mr-2"></i> KYC Details</h3>
+            
+            <label class="text-xs text-slate-400 mb-1 block ml-1">Account Name</label>
+            <input type="text" id="accName" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-3 outline-none focus:border-emerald-500">
+            
+            <label class="text-xs text-slate-400 mb-1 block ml-1">Account Number</label>
+            <input type="text" id="accNo" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-3 outline-none focus:border-emerald-500">
+            
+            <label class="text-xs text-slate-400 mb-1 block ml-1">IFSC Code</label>
+            <input type="text" id="ifscCode" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-6 outline-none focus:border-emerald-500 uppercase">
+            
+            <div class="flex gap-3">
+                <button onclick="saveBankDetails()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-sm font-semibold transition">Save KYC</button>
+                <button onclick="closeModal('bankModal')" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold transition">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Activation Modal -->
+    <div id="adminModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-[#1e293b] border border-blue-500/30 p-6 rounded-2xl w-full max-w-sm shadow-2xl">
+            <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i class="fa-solid fa-crown text-amber-400"></i> Admin Panel</h3>
+            
+            <label class="text-xs text-slate-400 mb-1 block ml-1">Target User ID or Mobile</label>
+            <input type="text" id="actInput" placeholder="e.g. MAHAN9396 or 98765..." class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3.5 text-sm text-white mb-4 outline-none focus:border-blue-500 uppercase">
+            
+            <button onclick="fetchUserDetailsForActivation()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-sm font-semibold mb-4 transition flex justify-center items-center gap-2">
+                <i class="fa-solid fa-magnifying-glass"></i> Search User
+            </button>
+            
+            <!-- Result Box -->
+            <div id="foundUserInfo" class="hidden bg-[#0f172a] border border-slate-600 p-4 rounded-xl mb-4">
+                <p class="text-xs text-slate-400 mb-1">Found User:</p>
+                <p id="fName" class="font-bold text-white text-sm truncate">-</p>
+                <div class="flex items-center gap-2 mt-2 pt-2 border-t border-slate-800">
+                    <span class="text-xs text-slate-400">Current Status:</span>
+                    <span id="fStatus" class="text-xs font-bold px-2 py-1 rounded bg-slate-800">-</span>
+                </div>
+            </div>
+
+            <button id="activateBtn" onclick="executeAdminActivation()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-sm font-semibold mb-3 hidden transition shadow-lg shadow-emerald-500/20">
+                ✅ Make Active (+₹50k Limit)
+            </button>
+            <button onclick="closeModal('adminModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold transition">Close</button>
+        </div>
+    </div>
 
 <script>
+    // SUPABASE CONNECTION
     const SUPABASE_URL = "https://wzrbsvwmrymkpzwmgypb.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6cmJzdndtcnlta3B6d21neXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDc1NzQsImV4cCI6MjEwMzMyMzU3NH0.5ulY5LW3AQEPFDP__iOSJssgNafTSe9Yu4gEqZF7sLc";
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -311,31 +226,40 @@
         const localUser = JSON.parse(userDataStr);
         const searchVal = localUser.user_id || localUser.mobile;
 
-        // Fetch FRESH data from DB
+        // Ensure we always get live fresh data
         try {
             const { data, error } = await _supabase
                 .from('users')
                 .select('*')
                 .or(`user_id.eq.${searchVal},mobile.eq.${searchVal}`)
                 .maybeSingle();
-            currentUser = data || localUser;
+            
+            if(data) {
+                currentUser = data;
+                // Update local storage silently so it stays fresh
+                localStorage.setItem('mahan_user', JSON.stringify(data)); 
+            } else {
+                currentUser = localUser;
+            }
         } catch (e) {
             currentUser = localUser;
         }
 
-        // Apply Data to UI
+        // SET PROFILE UI
         document.getElementById('dashName').innerText = currentUser.name || 'Member';
         document.getElementById('dashId').innerText = currentUser.user_id || 'MAHAN----';
         document.getElementById('dashMobile').innerText = currentUser.mobile || '----------';
 
-        await loadDirectMembersAndCalculate(currentUser.user_id, currentUser);
-        
+        // Load Bank Details if they exist
         if (currentUser.bank_name) document.getElementById('accName').value = currentUser.bank_name;
         if (currentUser.bank_acc) document.getElementById('accNo').value = currentUser.bank_acc;
         if (currentUser.bank_ifsc) document.getElementById('ifscCode').value = currentUser.bank_ifsc;
+
+        // FETCH TEAM AND CALCULATE EARNINGS
+        await fetchNetworkData(currentUser.user_id, currentUser);
     };
 
-    async function loadDirectMembersAndCalculate(myUserId, user) {
+    async function fetchNetworkData(myUserId, userObj) {
         const container = document.getElementById('directStudentContainer');
         try {
             const { data, error } = await _supabase
@@ -343,37 +267,40 @@
                 .select('*')
                 .eq('sponsor', myUserId);
 
-            let directStudentList = data || [];
-            document.getElementById('directTeamCount').innerText = directStudentList.length;
+            let directs = data || [];
+            document.getElementById('directTeamCount').innerText = directs.length;
 
-            if (directStudentList.length === 0) {
-                container.innerHTML = `<p style="text-align: center; font-size: 12px; color: #777; margin: 5px 0;">No direct students found.</p>`;
+            if (directs.length === 0) {
+                container.innerHTML = `<p class="text-center text-xs text-slate-500 py-4">No direct network found yet.</p>`;
             } else {
                 container.innerHTML = '';
-                directStudentList.forEach(member => {
+                directs.forEach(member => {
                     const isActive = (member.status || '').toLowerCase() === 'active';
-                    const badgeClass = isActive ? 'badge-active' : 'badge-unactive';
-                    const badgeText = isActive ? '(Active)' : '(Unactive)';
+                    const badgeClass = isActive ? 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20' : 'text-slate-400 bg-slate-700/50 border-slate-600';
+                    const badgeText = isActive ? 'ACTIVE' : 'UNACTIVE';
 
                     const div = document.createElement('div');
-                    div.className = 'member-item';
+                    div.className = 'flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-700/50 shadow-sm';
                     div.innerHTML = `
-                        <span><i class="fa-solid fa-user" style="color: #d4af37; margin-right: 5px;"></i> ${member.name} (${member.user_id})</span>
-                        <span class="${badgeClass}">${badgeText}</span>
+                        <div>
+                            <p class="text-sm font-semibold text-white"><i class="fa-solid fa-user-circle text-blue-400 mr-1.5"></i> ${member.name}</p>
+                            <p class="text-[10px] text-slate-400 ml-6 font-mono">${member.user_id}</p>
+                        </div>
+                        <span class="text-[10px] font-bold px-2.5 py-1 rounded-md border ${badgeClass}">${badgeText}</span>
                     `;
                     container.appendChild(div);
                 });
             }
 
-            // Calculation Logic
-            let l1 = directStudentList.length, l2 = 0, l3 = 0, l4 = 0, l5 = 0, l6 = 0, l7 = 0, l8 = 0, l9 = 0;
+            // Calculations based on rates provided
+            let l1 = directs.length, l2 = 0, l3 = 0, l4 = 0, l5 = 0, l6 = 0, l7 = 0, l8 = 0, l9 = 0;
             let p1 = l1 * 1000, p2 = l2 * 500, p3 = l3 * 250, p4 = l4 * 250, p5 = l5 * 250;
             let p6 = l6 * 125, p7 = l7 * 125, p8 = l8 * 125, p9 = l9 * 125;
 
-            let totalTeamCount = l1 + l2 + l3 + l4 + l5 + l6 + l7 + l8 + l9;
-            let calculatedEarning = p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9;
+            let totalTeam = l1 + l2 + l3 + l4 + l5 + l6 + l7 + l8 + l9;
+            let totalEarned = p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9;
 
-            document.getElementById('totalTeam').innerText = totalTeamCount;
+            document.getElementById('totalTeam').innerText = totalTeam;
 
             const counts = [l1,l2,l3,l4,l5,l6,l7,l8,l9];
             const pays = [p1,p2,p3,p4,p5,p6,p7,p8,p9];
@@ -382,57 +309,106 @@
                 document.getElementById('l'+i+'Pay').innerText = "₹" + pays[i-1];
             }
 
-            // Status Check
-            if (user.status && (user.status.toLowerCase() === 'active')) {
-                document.getElementById('dashStatusText').innerText = "Status: (Active)";
-                document.getElementById('profileCardBg').style.background = "linear-gradient(135deg, #11998e, #38ef7d)";
-                
-                let currentLimit = user.total_limit || 50000;
-                let remaining = currentLimit - calculatedEarning;
+            // Handle ACTIVE vs UNACTIVE UI
+            const statusBadge = document.getElementById('dashStatusText');
+            const cardBg = document.getElementById('profileCardBg');
 
-                document.getElementById('totalLimit').innerText = "₹ " + currentLimit.toLocaleString();
-                document.getElementById('earningAmount').innerText = "₹ " + calculatedEarning.toLocaleString();
+            if (userObj.status && (userObj.status.toLowerCase() === 'active')) {
+                statusBadge.innerText = "Status: ACTIVE";
+                statusBadge.className = "text-xs font-bold text-emerald-400 bg-emerald-400/10 inline-block px-4 py-1.5 rounded-full border border-emerald-400/20 tracking-wider shadow-inner";
+                cardBg.classList.add('border-emerald-500/40');
+                cardBg.classList.remove('border-slate-700');
+                
+                let limit = userObj.total_limit || 50000;
+                let remaining = limit - totalEarned;
+
+                document.getElementById('totalLimit').innerText = "₹ " + limit.toLocaleString();
+                document.getElementById('earningAmount').innerText = "₹ " + totalEarned.toLocaleString();
                 document.getElementById('remainingLimit').innerText = "₹ " + Math.max(0, remaining).toLocaleString();
             } else {
-                document.getElementById('dashStatusText').innerText = "Status: (Unactive)";
+                statusBadge.innerText = "Status: UNACTIVE";
+                statusBadge.className = "text-xs font-bold text-slate-400 bg-slate-800 inline-block px-4 py-1.5 rounded-full border border-slate-600 tracking-wider shadow-inner";
+                
                 document.getElementById('totalLimit').innerText = "₹ 0";
                 document.getElementById('earningAmount').innerText = "₹ 0";
                 document.getElementById('remainingLimit').innerText = "₹ 0";
             }
 
-            // SHOW ADMIN PANEL BUTTON FOR ADMIN USERS
-            if (user.user_id === 'MAHAN101' || user.user_id === 'MAHAN9396' || user.mobile === '9999999999') {
-                document.getElementById('adminActivationBtn').style.display = 'block';
+            // Show Admin Panel ONLY for authorized IDs
+            if (userObj.user_id === 'MAHAN101' || userObj.user_id === 'MAHAN9396' || userObj.mobile === '9999999999') {
+                document.getElementById('adminActivationBtn').classList.remove('hidden');
             }
 
         } catch (err) {
-            container.innerHTML = `<p style="text-align: center; font-size: 12px; color: #d32f2f;">Error loading data.</p>`;
+            container.innerHTML = `<p class="text-center text-xs text-red-400 py-4">Network sync failed.</p>`;
         }
     }
 
-    // Modal Functions
-    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    // Modal Handling
+    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
     function closeModal(id) { 
-        document.getElementById(id).style.display = 'none'; 
+        document.getElementById(id).classList.add('hidden'); 
         if(id === 'adminModal') {
             document.getElementById('actInput').value = '';
-            document.getElementById('foundUserInfo').style.display = 'none';
-            document.getElementById('activateBtn').style.display = 'none';
+            document.getElementById('foundUserInfo').classList.add('hidden');
+            document.getElementById('activateBtn').classList.add('hidden');
+            foundTargetUser = null;
         }
     }
 
-    // SMART ADMIN ACTIVATION BY MOBILE OR ID
+    // UPDATE QUERIES (Requires RLS Update Policy in Supabase)
+    
+    async function updatePassword() {
+        const newPass = document.getElementById('newPassword').value.trim();
+        if (!newPass) { alert('Enter a new password!'); return; }
+
+        const { data, error } = await _supabase
+            .from('users')
+            .update({ password: newPass })
+            .eq('user_id', currentUser.user_id)
+            .select();
+            
+        if (error) { 
+            alert('Security Update Failed: ' + error.message); 
+        } else { 
+            alert('✅ Password changed successfully!'); 
+            closeModal('passwordModal'); 
+        }
+    }
+
+    async function saveBankDetails() {
+        const bank_name = document.getElementById('accName').value.trim();
+        const bank_acc = document.getElementById('accNo').value.trim();
+        const bank_ifsc = document.getElementById('ifscCode').value.trim();
+
+        const { data, error } = await _supabase
+            .from('users')
+            .update({ bank_name, bank_acc, bank_ifsc })
+            .eq('user_id', currentUser.user_id)
+            .select();
+            
+        if (error) { 
+            alert('KYC Update Failed: ' + error.message); 
+        } else { 
+            alert('✅ Bank Details saved securely!'); 
+            closeModal('bankModal'); 
+        }
+    }
+
+    // SMART ADMIN ACTIVATION
     async function fetchUserDetailsForActivation() {
-        const val = document.getElementById('actInput').value.trim();
+        const val = document.getElementById('actInput').value.trim().toUpperCase();
         const infoBox = document.getElementById('foundUserInfo');
         const activateBtn = document.getElementById('activateBtn');
 
-        if (val.length < 3) {
-            infoBox.style.display = 'none';
-            activateBtn.style.display = 'none';
-            foundTargetUser = null;
-            return;
-        }
+        if (!val) { alert("Please type User ID or Mobile No."); return; }
+
+        // UI Feedback
+        infoBox.classList.remove('hidden');
+        document.getElementById('fName').innerText = "Searching global database...";
+        document.getElementById('fStatus').innerText = "...";
+        document.getElementById('fStatus').className = "text-xs font-bold px-2 py-1 rounded bg-slate-800 text-slate-400";
+        activateBtn.classList.add('hidden');
 
         const { data, error } = await _supabase
             .from('users')
@@ -441,57 +417,50 @@
             .maybeSingle();
 
         if (error || !data) {
-            infoBox.style.display = 'none';
-            activateBtn.style.display = 'none';
+            document.getElementById('fName').innerHTML = "<span class='text-red-400'>No user found matching this criteria.</span>";
+            document.getElementById('fStatus').innerText = "N/A";
             foundTargetUser = null;
             return;
         }
 
         foundTargetUser = data;
-        document.getElementById('fName').innerText = `${data.name} (ID: ${data.user_id})`;
-        document.getElementById('fStatus').innerText = (data.status || 'Unactive').toUpperCase();
-        infoBox.style.display = 'block';
-        activateBtn.style.display = 'block';
+        document.getElementById('fName').innerText = `${data.name} (${data.user_id})`;
+        
+        const currentStatus = (data.status || 'Unactive').toLowerCase();
+        const statusBadge = document.getElementById('fStatus');
+        
+        if(currentStatus === 'active') {
+            statusBadge.innerText = "ALREADY ACTIVE";
+            statusBadge.className = "text-xs font-bold px-2 py-1 rounded bg-emerald-900/50 text-emerald-400 border border-emerald-500/30";
+            activateBtn.classList.add('hidden'); 
+        } else {
+            statusBadge.innerText = "UNACTIVE";
+            statusBadge.className = "text-xs font-bold px-2 py-1 rounded bg-red-900/50 text-red-400 border border-red-500/30";
+            activateBtn.classList.remove('hidden'); 
+        }
     }
 
     async function executeAdminActivation() {
         if (!foundTargetUser) return;
         
         const btn = document.getElementById('activateBtn');
-        btn.innerText = "Activating...";
+        btn.innerText = "Processing...";
 
-        const { error } = await _supabase
+        const { data, error } = await _supabase
             .from('users')
             .update({ status: 'Active', total_limit: 50000 })
-            .eq('user_id', foundTargetUser.user_id);
+            .eq('user_id', foundTargetUser.user_id)
+            .select();
 
         if (error) {
-            alert('Activation Error: ' + error.message);
-            btn.innerText = "✅ Activate User (+₹50,000)";
+            alert('Admin System Error: ' + error.message);
+            btn.innerText = "✅ Make Active (+₹50k Limit)";
         } else {
-            alert(`Success! ${foundTargetUser.name} is now ACTIVE!`);
+            alert(`🎉 Success! Account for ${foundTargetUser.name} has been ACTIVATED.`);
             closeModal('adminModal');
+            // Hard reload to reflect limits everywhere
             location.reload(); 
         }
-    }
-
-    async function updatePassword() {
-        const newPass = document.getElementById('newPassword').value.trim();
-        if (!newPass) { alert('Enter a new password!'); return; }
-
-        const { error } = await _supabase.from('users').update({ password: newPass }).eq('user_id', currentUser.user_id);
-        if (error) { alert('Error: ' + error.message); } 
-        else { alert('Password changed successfully!'); closeModal('passwordModal'); }
-    }
-
-    async function saveBankDetails() {
-        const bank_name = document.getElementById('accName').value.trim();
-        const bank_acc = document.getElementById('accNo').value.trim();
-        const bank_ifsc = document.getElementById('ifscCode').value.trim();
-
-        const { error } = await _supabase.from('users').update({ bank_name, bank_acc, bank_ifsc }).eq('user_id', currentUser.user_id);
-        if (error) { alert('Error: ' + error.message); } 
-        else { alert('Bank Details saved successfully!'); closeModal('bankModal'); }
     }
 
     function logout() {
@@ -504,4 +473,6 @@
 </html>
 
 
-                     
+
+
+        
