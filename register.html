@@ -122,6 +122,7 @@
             const sponsor = document.getElementById('sponsor').value.trim();
 
             try {
+                alert("નવો કોડ ચાલી રહ્યો છે! નવું ID બનશે.");
                 // સ્ટેપ 1: ચેક કરો કે Sponsor ડેટાબેઝમાં છે કે નહિ
                 const { data: sponsorData, error: sponsorError } = await _supabase
                     .from('users')
