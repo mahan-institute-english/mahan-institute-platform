@@ -35,7 +35,7 @@
             </div>
             <div>
                 <label class="text-xs text-slate-400">Sponsor ID / Referral Code</label>
-                <!-- રેફરલ લિંકથી આવતા ID માટે આ બોક્સ છે -->
+                <!-- રેફરલ લિંકથી આવતા ID માટે -->
                 <input type="text" id="sponsor" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white focus:border-emerald-500 outline-none placeholder-slate-500" placeholder="Enter Sponsor ID (e.g. MAHAN101)">
             </div>
             <button type="submit" id="submitBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-lg transition text-sm shadow">Register Now</button>
@@ -80,18 +80,18 @@
             if (ref) {
                 const sponsorInput = document.getElementById('sponsor');
                 sponsorInput.value = ref;
-                sponsorInput.readOnly = true; // યુઝર આને બદલી નહિ શકે
+                sponsorInput.readOnly = true; 
                 sponsorInput.classList.add('bg-slate-800', 'text-slate-400');
             }
         };
 
-        // 100% Unique ID જનરેટ કરવાનું ફંક્શન
-        async function generateUniqueMAHANId() {
+        // 100% Unique ID જનરેટ કરવાનું ફંક્શન (હવે STU થી બનશે)
+        async function generateUniqueId() {
             let isUnique = false;
             let newId = "";
             while (!isUnique) {
                 const randomNum = Math.floor(100000 + Math.random() * 900000); // 6 આંકડાનો નંબર
-                newId = "MAHAN" + randomNum;
+                newId = "STU" + randomNum; // યુઝરની સાવ નવી ઓળખ
                 
                 const { data } = await _supabase
                     .from('users')
@@ -112,7 +112,7 @@
             const submitBtn = document.getElementById('submitBtn');
             
             submitBtn.disabled = true;
-            msg.innerText = "Checking Details & Generating Unique ID...";
+            msg.innerText = "Checking Details & Generating STU ID...";
             msg.className = "text-xs text-center text-amber-400";
 
             const name = document.getElementById('name').value.trim();
@@ -122,7 +122,6 @@
             const sponsor = document.getElementById('sponsor').value.trim();
 
             try {
-                alert("નવો કોડ ચાલી રહ્યો છે! નવું ID બનશે.");
                 // સ્ટેપ 1: ચેક કરો કે Sponsor ડેટાબેઝમાં છે કે નહિ
                 const { data: sponsorData, error: sponsorError } = await _supabase
                     .from('users')
@@ -137,8 +136,8 @@
                     return; 
                 }
 
-                // સ્ટેપ 2: ડેટાબેઝમાં ચેક કરીને નવું Unique ID બનાવો
-                const user_id = await generateUniqueMAHANId();
+                // સ્ટેપ 2: STU સિરીઝનું નવું Unique ID બનાવો
+                const user_id = await generateUniqueId();
                 const referral_code = user_id;
 
                 // સ્ટેપ 3: ડેટા સેવ કરો
@@ -153,7 +152,6 @@
                     return;
                 }
 
-                // રજીસ્ટ્રેશન ફોર્મ છુપાવો અને Welcome Box બતાવો
                 document.getElementById('regForm').classList.add('hidden');
                 msg.classList.add('hidden');
 
@@ -162,11 +160,10 @@
                 document.getElementById('wPass').innerText = password;
                 document.getElementById('wSponsor').innerText = sponsor;
                 
-                // તમારી રેફરલ લિંક સિસ્ટમ એમને એમ કામ કરતી રહેશે
+                // કેશ પ્રોબ્લેમ સોલ્વ કરવા માટે લિંકમાં વર્ઝન (v) એડ કર્યું છે
                 const refLink = `https://mahan-institute-english.github.io/mahan-institute-platform/register.html?v=${Date.now()}&ref=${user_id}`;
                 document.getElementById('wLink').innerText = refLink;
 
-                // WhatsApp શેરિંગ બટન
                 const waText = `🌟 *Welcome to MAHAN Institute* 🌟\n\nDear *${name}*,\nYour registration is successfully completed!\n\n🆔 User ID: *${user_id}*\n🔑 Password: *${password}*\n👥 Sponsor: ${sponsor}\n\n🔗 *Your Referral Link:*\n${refLink}\n\nJoin us and start your learning & earning journey!`;
                 document.getElementById('whatsappBtn').setAttribute('href', `https://api.whatsapp.com/send?text=${encodeURIComponent(waText)}`);
 
@@ -180,4 +177,4 @@
         });
     </script>
 </body>
-</html>
+                    </html>
