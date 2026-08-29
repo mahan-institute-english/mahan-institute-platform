@@ -28,7 +28,7 @@
         </div>
         
         <!-- Profile Card -->
-        <div id="profileCardBg" class="bg-[#1e293b] border border-slate-700 p-6 rounded-2xl shadow-2xl relative overflow-hidden transition-all duration-500">
+        <div class="bg-[#1e293b] border border-slate-700 p-6 rounded-2xl shadow-2xl relative overflow-hidden transition-all duration-500">
             <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl"></div>
             
             <div class="relative z-10 text-center space-y-2">
@@ -44,10 +44,17 @@
                         <i class="fa-solid fa-phone text-emerald-400 mr-1"></i> <span id="dashMobile">-----</span>
                     </span>
                 </div>
+
+                <!-- QR Code Activate Button (Shows only if Unactive) -->
+                <div id="activationDiv" class="pt-3 hidden">
+                    <button onclick="openModal('qrModal')" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm animate-pulse">
+                        <i class="fa-solid fa-qrcode text-lg"></i> Activate Account Now
+                    </button>
+                </div>
                 
-                <!-- NEW: WhatsApp Share Button -->
-                <div class="pt-4">
-                    <button onclick="shareReferralWhatsApp()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm shadow-green-900/50">
+                <!-- Share Button -->
+                <div class="pt-3">
+                    <button onclick="shareReferralWhatsApp()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm">
                         <i class="fa-brands fa-whatsapp text-lg"></i> Share Referral Link
                     </button>
                 </div>
@@ -76,7 +83,7 @@
             <div class="space-y-3 text-sm">
                 <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-800">
                     <span class="text-slate-400 font-medium">Total Limit</span>
-                    <span id="totalLimit" class="font-bold text-white tracking-wider">₹ 50,000</span>
+                    <span class="font-bold text-white tracking-wider">₹ 50,000</span>
                 </div>
                 <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-800">
                     <span class="text-slate-400 font-medium">Total Earning</span>
@@ -118,38 +125,47 @@
                 </table>
             </div>
         </div>
-        
-        <!-- NEW: Hide Directs & Details Button -->
+
         <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5 text-center">
             <h3 class="text-sm font-bold text-white mb-2"><i class="fa-solid fa-list-ul text-blue-400 mr-2"></i> Direct Team Data</h3>
-            <p class="text-xs text-slate-400 mb-4">View your direct team members and their active status details.</p>
-            <button onclick="openModal('directModal')" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-2.5 px-6 rounded-xl transition shadow-lg">
-                View Direct Details
-            </button>
+            <button onclick="openModal('directModal')" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-2.5 px-6 rounded-xl transition shadow-lg">View Direct Details</button>
         </div>
         
-        <!-- Other Buttons -->
         <div class="space-y-3 pt-4">
-            <button class="w-full bg-[#1e293b] border border-slate-600 text-slate-200 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm">
-                <i class="fa-solid fa-lock text-blue-400"></i> Change Password
-            </button>
-            <button class="w-full bg-[#1e293b] border border-slate-600 text-slate-200 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm">
-                <i class="fa-solid fa-building-columns text-emerald-400"></i> Bank & KYC Details
-            </button>
-            <button onclick="logout()" class="w-full bg-red-500/10 border border-red-500/30 text-red-400 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm mt-4">
-                <i class="fa-solid fa-power-off"></i> Secure Logout
-            </button>
+            <button class="w-full bg-[#1e293b] border border-slate-600 text-slate-200 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm"><i class="fa-solid fa-lock text-blue-400"></i> Change Password</button>
+            <button class="w-full bg-[#1e293b] border border-slate-600 text-slate-200 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm"><i class="fa-solid fa-building-columns text-emerald-400"></i> Bank & KYC Details</button>
+            <button onclick="logout()" class="w-full bg-red-500/10 border border-red-500/30 text-red-400 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm mt-4"><i class="fa-solid fa-power-off"></i> Secure Logout</button>
         </div>
     </div>
 
-    <!-- Modal for Direct Students Details -->
+    <!-- Direct Members Modal -->
     <div id="directModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
         <div class="bg-[#1e293b] border border-slate-600 p-5 rounded-2xl w-full max-w-sm shadow-2xl relative">
             <h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2"><i class="fa-solid fa-users text-blue-400 mr-2"></i> Direct Members List</h3>
-            <div id="directStudentContainer" class="space-y-3 max-h-72 overflow-y-auto pr-2 mb-4">
-                <p class="text-center text-xs text-slate-500 py-4">Loading students...</p>
+            <div id="directStudentContainer" class="space-y-3 max-h-72 overflow-y-auto pr-2 mb-4"></div>
+            <button onclick="closeModal('directModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-2.5 rounded-xl text-sm font-semibold">Close</button>
+        </div>
+    </div>
+
+    <!-- QR Code Payment Modal -->
+    <div id="qrModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-full max-w-sm shadow-2xl text-center">
+            <h3 class="text-lg font-bold text-white mb-2"><i class="fa-solid fa-qrcode text-emerald-400 mr-2"></i> Account Activation</h3>
+            <p class="text-xs text-slate-400 mb-4">Scan QR code using PhonePe/GPay to pay activation fee and enter UTR number.</p>
+            
+            <div class="bg-white p-3 rounded-xl inline-block mb-4 shadow-lg">
+                <!-- અહી તમારા અસલી UPI ID નો QR કોડ મૂકી શકાશે. હાલ ડમી QR છે. -->
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=YOUR_UPI@ybl&pn=MAHAN_INSTITUTE" alt="Payment QR" class="w-36 h-36">
             </div>
-            <button onclick="closeModal('directModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-2.5 rounded-xl text-sm font-semibold transition">Close</button>
+            
+            <input type="text" id="utrNumber" placeholder="Enter 12-digit UTR / Ref No." class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-emerald-500 font-mono text-center uppercase">
+            
+            <p id="qrMsg" class="text-xs mb-3 hidden"></p>
+
+            <div class="flex gap-3">
+                <button onclick="submitUTR()" id="utrBtn" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-sm font-bold transition">Submit Request</button>
+                <button onclick="closeModal('qrModal')" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-bold transition">Cancel</button>
+            </div>
         </div>
     </div>
 
@@ -165,7 +181,6 @@
         if (!userDataStr) { window.location.href = "login.html"; return; }
         currentUser = JSON.parse(userDataStr);
 
-        // પ્રોફાઇલ ડેટા સેટ કરો
         document.getElementById('dashName').innerText = currentUser.name;
         document.getElementById('dashId').innerText = currentUser.user_id;
         document.getElementById('dashMobile').innerText = currentUser.mobile;
@@ -177,12 +192,13 @@
         } else {
             statusEl.innerText = "Status: UNACTIVE";
             statusEl.className = "text-xs font-bold text-red-400 bg-red-400/10 inline-block px-3 py-1 rounded-full border border-red-400/20 tracking-widest";
+            // Unactive હોય તો જ QR Payment બટન દેખાય
+            document.getElementById('activationDiv').classList.remove('hidden');
         }
 
         fetchNetworkData();
     };
 
-    // WhatsApp માં લિંક શેર કરવાનું ફંક્શન
     function shareReferralWhatsApp() {
         const refLink = `https://mahan-institute-english.github.io/mahan-institute-platform/register.html?ref=${currentUser.user_id}`;
         const waText = `🚀 *Join MAHAN Institute!*\n\nLearn, Grow & Earn with our Premium Platform.\n\n🔗 *Click here to register free:*\n${refLink}`;
@@ -206,44 +222,100 @@
                 }
             });
 
-            // Direct Students (Level 1)
-            let directStudents = networkMap[myIdNorm] || [];
-            document.getElementById('directTeamCount').innerText = directStudents.length;
+            // Level 1 to 9 Logic Rebuilt
+            let currentLevelUsers = networkMap[myIdNorm] || [];
+            document.getElementById('directTeamCount').innerText = currentLevelUsers.length;
 
-            // લિસ્ટ છુપાવેલું છે, પોપઅપ માટે ડેટા તૈયાર કરો
-            if (directStudents.length === 0) {
+            if (currentLevelUsers.length === 0) {
                 container.innerHTML = `<p class="text-center text-xs text-slate-500 py-4">No direct network found yet.</p>`;
             } else {
                 container.innerHTML = '';
-                directStudents.forEach(member => {
+                currentLevelUsers.forEach(member => {
                     const isActive = (member.status || '').toLowerCase() === 'active';
                     const badgeClass = isActive ? 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20' : 'text-slate-400 bg-slate-700/50 border-slate-600';
                     const badgeText = isActive ? 'ACTIVE' : 'UNACTIVE';
-
                     container.innerHTML += `
                         <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-700/50 shadow-sm mb-2">
-                            <div>
-                                <p class="text-sm font-semibold text-white"><i class="fa-solid fa-user-circle text-blue-400 mr-1.5"></i> ${member.name}</p>
-                                <p class="text-[10px] text-slate-400 ml-6 font-mono">${member.user_id}</p>
-                            </div>
+                            <div><p class="text-sm font-semibold text-white"><i class="fa-solid fa-user-circle text-blue-400 mr-1.5"></i> ${member.name}</p>
+                            <p class="text-[10px] text-slate-400 ml-6 font-mono">${member.user_id}</p></div>
                             <span class="text-[10px] font-bold px-2.5 py-1 rounded-md border ${badgeClass}">${badgeText}</span>
-                        </div>
-                    `;
+                        </div>`;
                 });
             }
+
+            // 9 Levels Earning Calculation
+            const payoutRates = [1000, 500, 250, 250, 250, 125, 125, 125, 125];
+            let totalEarning = 0;
+            let totalTeamCount = 0;
+            let levelCounts = [0,0,0,0,0,0,0,0,0];
+            let activeCounts = [0,0,0,0,0,0,0,0,0];
+
+            for (let i = 0; i < 9; i++) {
+                levelCounts[i] = currentLevelUsers.length;
+                activeCounts[i] = currentLevelUsers.filter(u => (u.status || '').toLowerCase() === 'active').length;
+
+                let income = activeCounts[i] * payoutRates[i];
+                totalEarning += income;
+                totalTeamCount += levelCounts[i];
+
+                document.getElementById(`l${i+1}Count`).innerText = levelCounts[i];
+                document.getElementById(`l${i+1}Pay`).innerText = `₹${income}`;
+
+                let nextLevelUsers = [];
+                currentLevelUsers.forEach(u => {
+                    const downlines = networkMap[String(u.user_id).trim().toUpperCase()] || [];
+                    nextLevelUsers = nextLevelUsers.concat(downlines);
+                });
+                currentLevelUsers = nextLevelUsers;
+            }
+
+            document.getElementById('totalTeam').innerText = totalTeamCount;
+            document.getElementById('earningAmount').innerText = `₹${totalEarning}`;
+            document.getElementById('remainingLimit').innerText = `₹${50000 - totalEarning}`;
+
         } catch (err) {
             console.error(err);
         }
     }
 
-    // Modal Control Functions
+    async function submitUTR() {
+        const utr = document.getElementById('utrNumber').value.trim();
+        const msg = document.getElementById('qrMsg');
+        const btn = document.getElementById('utrBtn');
+        
+        if(utr.length < 8) {
+            msg.innerText = "Please enter a valid UTR number.";
+            msg.className = "text-xs text-red-400 mb-3 block";
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerText = "Sending...";
+        
+        // નોંધ: આ UTR ને એડમિન પેનલમાં જોવા માટે Supabase માં 'payments' નામનું ટેબલ બનાવવું પડશે.
+        // હાલ પૂરતું આ રિક્વેસ્ટ ડેટાબેઝમાં જશે (જો ટેબલ હશે તો).
+        try {
+            const { error } = await _supabase.from('payments').insert([
+                { user_id: currentUser.user_id, utr_number: utr, status: 'Pending' }
+            ]);
+            
+            if(error) throw error;
+
+           msg.innerText = "Request Sent! Admin will approve soon.";
+            msg.className = "text-xs text-emerald-400 mb-3 block font-bold";
+            setTimeout(() => { closeModal('qrModal'); }, 2000);
+            
+        } catch (err) {
+            msg.innerText = "Database error (Create 'payments' table first)";
+            msg.className = "text-xs text-amber-400 mb-3 block";
+            btn.disabled = false;
+            btn.innerText = "Submit Request";
+        }
+    }
+
     function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-
-    function logout() {
-        localStorage.removeItem('mahan_user');
-        window.location.href = "login.html";
-    }
+    function logout() { localStorage.removeItem('mahan_user'); window.location.href = "login.html"; }
 </script>
 </body>
-    </html>
+</html>
