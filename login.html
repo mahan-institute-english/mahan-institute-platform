@@ -12,7 +12,6 @@
     
     <div class="max-w-md w-full bg-slate-800/80 backdrop-blur-sm border border-slate-700 p-8 rounded-2xl shadow-2xl space-y-6">
         
-        <!-- Logo & Header -->
         <div class="text-center space-y-2">
             <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-600/20 text-blue-500 mb-2">
                 <i class="fa-solid fa-right-to-bracket text-2xl"></i>
@@ -21,9 +20,7 @@
             <p class="text-sm text-slate-400">Enter your User ID/Mobile and Password</p>
         </div>
         
-        <!-- Login Form -->
         <form id="loginForm" class="space-y-5 pt-4">
-            <!-- User ID / Mobile Input -->
             <div class="space-y-1">
                 <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">User ID / Mobile Number</label>
                 <div class="relative">
@@ -34,7 +31,6 @@
                 </div>
             </div>
 
-            <!-- Password Input -->
             <div class="space-y-1">
                 <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Password</label>
                 <div class="relative">
@@ -45,18 +41,14 @@
                 </div>
             </div>
 
-            <!-- Error Message Box -->
             <p id="msg" class="text-sm text-center hidden"></p>
 
-            <!-- Login Button -->
             <button type="submit" id="loginBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition duration-200 shadow-lg shadow-blue-600/30">
                 SIGN IN TO DASHBOARD
             </button>
         </form>
 
-        <!-- Footer Links -->
-        <div class="flex flex-col items-center space-y-3 pt-4 border-t border-slate-700/50">
-            <a href="#" class="text-sm text-blue-400 hover:text-blue-300 transition">Forgot Password? Click here</a>
+        <div class="flex flex-col items-center pt-4 border-t border-slate-700/50">
             <p class="text-sm text-slate-400">
                 Don't have an account? <a href="register.html" class="text-blue-400 hover:text-blue-300 font-semibold transition">Register Free</a>
             </p>
@@ -64,31 +56,27 @@
     </div>
 
     <script>
-        // Supabase Credentials
         const SUPABASE_URL = "https://wzrbsvwmrymkpzwmgypb.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6cmJzdndtcnlta3B6d21neXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDc1NzQsImV4cCI6MjEwMzMyMzU3NH0.5ulY5LW3AQEPFDP__iOSJssgNafTSe9Yu4gEqZF7sLc";
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
             const msg = document.getElementById('msg');
             const loginBtn = document.getElementById('loginBtn');
             const loginId = document.getElementById('loginId').value.trim();
             const password = document.getElementById('password').value.trim();
 
-            // બટન લોડિંગ સ્ટેટ
             loginBtn.disabled = true;
             loginBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Checking...';
             msg.className = "text-sm text-center text-amber-400 block";
             msg.innerText = "Verifying details...";
 
             try {
-                // ડેટાબેઝમાં ચેક કરો: User ID અથવા Mobile બન્નેમાંથી ગમે તે એક મેચ થવું જોઈએ
                 const { data, error } = await _supabase
                     .from('users')
                     .select('*')
-                    .or(`user_id.eq.${loginId},mobile.eq.${loginId}`) // જાદુઈ કોડ: ID અથવા Mobile
+                    .or(`user_id.eq.${loginId},mobile.eq.${loginId}`)
                     .eq('password', password)
                     .maybeSingle();
 
@@ -100,16 +88,11 @@
                     return;
                 }
 
-                // જો લોગીન સાચું હોય, તો યુઝરનો ડેટા બ્રાઉઝરમાં સેવ કરો જેથી ડેશબોર્ડમાં કામ આવે
                 localStorage.setItem('mahan_user', JSON.stringify(data));
-
                 msg.innerText = "✅ Login Successful! Redirecting...";
                 msg.className = "text-sm text-center text-emerald-400 block bg-emerald-900/20 py-2 rounded-lg";
                 
-                // ડેશબોર્ડ પર મોકલી દો (અહી તમારા ડેશબોર્ડ પેજનું નામ નાખજો)
-                setTimeout(() => {
-                    window.location.href = "dashboard.html"; 
-                }, 1000);
+                setTimeout(() => { window.location.href = "dashboard.html"; }, 1000);
 
             } catch (err) {
                 msg.innerText = "Network Error. Please try again.";
