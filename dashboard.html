@@ -13,6 +13,16 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
+        /* Live News Ticker Animation */
+        @keyframes ticker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .animate-ticker {
+            display: inline-block;
+            white-space: nowrap;
+            animation: ticker 20s linear infinite;
+        }
     </style>
 </head>
 <body class="bg-[#0f172a] text-slate-200 min-h-screen p-4 pb-12">
@@ -20,7 +30,7 @@
     <div class="max-w-md mx-auto space-y-5">
         
         <!-- Premium CSS Logo -->
-        <div class="flex flex-col items-center justify-center space-y-3 pt-3 pb-5 border-b border-slate-800/80">
+        <div class="flex flex-col items-center justify-center space-y-3 pt-3 pb-4">
             <div class="relative flex items-center justify-center px-5 py-2.5 bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl shadow-[0_8px_16px_rgba(0,0,0,0.4)] border border-slate-700/50">
                 <div class="absolute top-0 inset-x-4 h-[1px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent opacity-50"></div>
                 <span class="text-3xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-emerald-500 to-teal-600" style="font-family: 'Arial Black', sans-serif;">
@@ -34,6 +44,20 @@
                     <span class="text-lg font-black tracking-widest text-blue-500 uppercase leading-none">Institute</span>
                 </div>
                 <h2 class="text-[9px] font-bold text-emerald-500 pt-1.5 uppercase tracking-[0.3em]">Premium English & Development</h2>
+            </div>
+        </div>
+
+        <!-- NEW: Live News Ticker Bar -->
+        <div class="bg-blue-900/30 border border-blue-500/30 rounded-xl p-2.5 flex items-center overflow-hidden relative shadow-inner">
+            <div class="flex-shrink-0 z-10 bg-[#0f172a] pr-3 flex items-center border-r border-blue-500/30">
+                <i class="fa-solid fa-bullhorn text-amber-400 animate-pulse"></i>
+                <span class="text-[10px] font-bold text-amber-400 ml-2 uppercase tracking-widest">LIVE</span>
+            </div>
+            <div class="flex-1 overflow-hidden relative pl-2">
+                <!-- આ લખાણ આપણે પછી Admin પેનલમાંથી બદલી શકીશું -->
+                <div class="animate-ticker text-xs font-semibold text-emerald-300 tracking-wide" id="liveNewsText">
+                    🎉 Welcome to MAHAN Institute! Start learning and earning today. Watch the live training video below for more details!
+                </div>
             </div>
         </div>
         
@@ -110,7 +134,20 @@
             </button>
         </div>
         
-        <!-- NEW: Level Wise Income Button (Replaces the big table) -->
+        <!-- NEW: Success Story / Live Class Video Box -->
+        <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5 text-center">
+            <h3 class="text-sm font-bold text-white mb-1 flex items-center justify-center gap-2">
+                <i class="fa-brands fa-youtube text-red-500"></i> Live Classes & Updates
+            </h3>
+            <p class="text-[10px] text-slate-400 mb-4">Watch our latest success stories and training videos.</p>
+            
+            <div class="relative w-full aspect-video rounded-xl overflow-hidden border border-slate-600 shadow-[0_0_15px_rgba(0,0,0,0.5)]">
+                <!-- આ વિડીયો લિંક આપણે Admin પેનલથી બદલી શકીશું -->
+                <iframe id="dashVideo" class="w-full h-full" src="https://www.youtube.com/embed/jfKfPfyJRdk?rel=0" title="MAHAN Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        <!-- Level Wise Income Button -->
         <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5 text-center">
             <h3 class="text-sm font-bold text-white mb-2"><i class="fa-solid fa-chart-line text-emerald-400 mr-2"></i> Level Wise Income</h3>
             <p class="text-xs text-slate-400 mb-4">Track your 9-level team growth and commission.</p>
@@ -120,9 +157,36 @@
         <!-- Direct Team Button -->
         <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5 text-center">
             <h3 class="text-sm font-bold text-white mb-2"><i class="fa-solid fa-list-ul text-blue-400 mr-2"></i> Direct Team Data</h3>
+            <p class="text-xs text-slate-400 mb-4">View your direct team and their total earnings.</p>
             <button onclick="openModal('directModal')" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-2.5 px-6 rounded-xl transition shadow-lg">View Direct Details</button>
         </div>
+
+        <!-- NEW: Social Media Hub -->
+        <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5">
+            <h3 class="text-sm font-bold text-white mb-4 text-center border-b border-slate-700 pb-3">
+                Join Our Community
+            </h3>
+            <div class="grid grid-cols-4 gap-3">
+                <a href="#" id="ytLink" target="_blank" class="bg-gradient-to-br from-red-500 to-red-700 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg shadow-red-900/50 hover:scale-105 transition">
+                    <i class="fa-brands fa-youtube text-2xl text-white mb-1"></i>
+                    <span class="text-[8px] font-bold text-white uppercase tracking-wider">YouTube</span>
+                </a>
+                <a href="#" id="igLink" target="_blank" class="bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg shadow-pink-900/50 hover:scale-105 transition">
+                    <i class="fa-brands fa-instagram text-2xl text-white mb-1"></i>
+                    <span class="text-[8px] font-bold text-white uppercase tracking-wider">Instagram</span>
+                </a>
+                <a href="#" id="fbLink" target="_blank" class="bg-gradient-to-br from-blue-600 to-blue-800 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg shadow-blue-900/50 hover:scale-105 transition">
+                    <i class="fa-brands fa-facebook-f text-2xl text-white mb-1"></i>
+                    <span class="text-[8px] font-bold text-white uppercase tracking-wider">Facebook</span>
+                </a>
+                <a href="#" id="waLink" target="_blank" class="bg-gradient-to-br from-green-500 to-emerald-700 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg shadow-green-900/50 hover:scale-105 transition">
+                    <i class="fa-brands fa-whatsapp text-2xl text-white mb-1"></i>
+                    <span class="text-[8px] font-bold text-white uppercase tracking-wider">Group</span>
+                </a>
+            </div>
+        </div>
         
+        <!-- Settings -->
         <div class="space-y-3 pt-4">
             <button onclick="openModal('passwordModal')" class="w-full bg-[#1e293b] border border-slate-600 text-slate-200 hover:bg-slate-700 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm transition">
                 <i class="fa-solid fa-lock text-blue-400"></i> Change Password
@@ -138,13 +202,13 @@
 
     <!-- Modals Section -->
 
-    <!-- NEW: Level Wise Income Modal -->
+    <!-- Level Wise Income Modal (Full Screen) -->
     <div id="levelModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-[#1e293b] border border-slate-600 p-5 rounded-2xl w-full max-w-sm shadow-2xl relative">
+        <div class="bg-[#1e293b] border border-slate-600 p-5 rounded-2xl w-[95%] max-w-md max-h-[90vh] shadow-2xl relative flex flex-col">
             <h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2"><i class="fa-solid fa-chart-line text-emerald-400 mr-2"></i> Level Wise Income</h3>
-            <div class="overflow-x-auto max-h-72 overflow-y-auto mb-4 border border-slate-700 rounded-xl">
+            <div class="flex-1 overflow-y-auto border border-slate-700 rounded-xl mb-4">
                 <table class="w-full text-left text-xs whitespace-nowrap">
-                    <thead class="bg-[#0f172a] text-slate-400 uppercase tracking-wider sticky top-0">
+                    <thead class="bg-[#0f172a] text-slate-400 uppercase tracking-wider sticky top-0 z-10">
                         <tr><th class="p-3 font-semibold">Level</th><th class="p-3 font-semibold text-center">Rate</th><th class="p-3 font-semibold text-center">Team</th><th class="p-3 font-semibold text-right">Payout</th></tr>
                     </thead>
                     <tbody class="divide-y divide-slate-800 text-slate-300">
@@ -160,13 +224,33 @@
                     </tbody>
                 </table>
             </div>
-            <button onclick="closeModal('levelModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-2.5 rounded-xl text-sm font-semibold">Close</button>
+            <button onclick="closeModal('levelModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold">Close</button>
         </div>
     </div>
     
+    <!-- Direct Members Modal (Full Screen & Earning Update) -->
+    <div id="directModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-[#1e293b] border border-slate-600 p-5 rounded-2xl w-[95%] max-w-md max-h-[90vh] shadow-2xl relative flex flex-col">
+            <h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2"><i class="fa-solid fa-users text-blue-400 mr-2"></i> Direct Members List</h3>
+            <div id="directStudentContainer" class="flex-1 overflow-y-auto pr-2 mb-4 space-y-3"></div>
+            <button onclick="closeModal('directModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold">Close</button>
+        </div>
+    </div>
+
+    <!-- History Modal (Full Screen) -->
+    <div id="historyModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-[#1e293b] border border-slate-600 p-5 rounded-2xl w-[95%] max-w-md max-h-[90vh] shadow-2xl relative flex flex-col">
+            <h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2"><i class="fa-solid fa-clock-rotate-left text-blue-400 mr-2"></i> Payout History</h3>
+            <div id="historyContainer" class="flex-1 overflow-y-auto pr-2 mb-4 space-y-3">
+                <p class="text-center text-xs text-slate-500 py-4">Loading history...</p>
+            </div>
+            <button onclick="closeModal('historyModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold">Close</button>
+        </div>
+    </div>
+
     <!-- Change Password Modal -->
     <div id="passwordModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-full max-w-sm shadow-2xl">
+        <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-[95%] max-w-sm shadow-2xl">
             <h3 class="text-lg font-bold text-white mb-4"><i class="fa-solid fa-lock text-blue-400 mr-2"></i> Update Password</h3>
             <input type="text" id="newPassword" placeholder="Enter new password" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3.5 text-sm text-white mb-4 outline-none focus:border-blue-500 transition">
             <p id="passMsg" class="text-xs mb-3 hidden"></p>
@@ -179,7 +263,7 @@
 
     <!-- Bank & KYC Modal -->
     <div id="bankModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-full max-w-sm shadow-2xl">
+        <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-[95%] max-w-sm shadow-2xl">
             <h3 class="text-lg font-bold text-white mb-4"><i class="fa-solid fa-building-columns text-emerald-400 mr-2"></i> Bank & KYC Details</h3>
             <input type="text" id="accName" placeholder="Account Holder Name" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-3 outline-none focus:border-emerald-500">
             <input type="text" id="accNo" placeholder="Account Number" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-3 outline-none focus:border-emerald-500">
@@ -194,7 +278,7 @@
 
     <!-- Withdraw Modal -->
     <div id="withdrawModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-full max-w-sm shadow-2xl text-center">
+        <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-[95%] max-w-sm shadow-2xl text-center">
             <h3 class="text-lg font-bold text-white mb-2"><i class="fa-solid fa-money-bill-transfer text-emerald-400 mr-2"></i> Withdraw Funds</h3>
             
             <div id="withdrawFormArea" class="hidden">
@@ -220,29 +304,9 @@
         </div>
     </div>
 
-    <!-- History Modal -->
-    <div id="historyModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-[#1e293b] border border-slate-600 p-5 rounded-2xl w-full max-w-sm shadow-2xl relative">
-            <h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2"><i class="fa-solid fa-clock-rotate-left text-blue-400 mr-2"></i> Payout History</h3>
-            <div id="historyContainer" class="space-y-3 max-h-72 overflow-y-auto pr-2 mb-4">
-                <p class="text-center text-xs text-slate-500 py-4">Loading history...</p>
-            </div>
-            <button onclick="closeModal('historyModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-2.5 rounded-xl text-sm font-semibold">Close</button>
-        </div>
-    </div>
-
-    <!-- Direct Modal -->
-    <div id="directModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-[#1e293b] border border-slate-600 p-5 rounded-2xl w-full max-w-sm shadow-2xl relative">
-            <h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2"><i class="fa-solid fa-users text-blue-400 mr-2"></i> Direct Members List</h3>
-            <div id="directStudentContainer" class="space-y-3 max-h-72 overflow-y-auto pr-2 mb-4"></div>
-            <button onclick="closeModal('directModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-2.5 rounded-xl text-sm font-semibold">Close</button>
-        </div>
-    </div>
-
     <!-- QR Modal -->
     <div id="qrModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-full max-w-sm shadow-2xl text-center">
+        <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-[95%] max-w-sm shadow-2xl text-center">
             <h3 class="text-lg font-bold text-white mb-2"><i class="fa-solid fa-qrcode text-emerald-400 mr-2"></i> Account Activation</h3>
             <p class="text-xs text-slate-400 mb-4">Scan QR code using PhonePe/GPay to pay activation fee and enter UTR number.</p>
             <div class="bg-white p-3 rounded-xl inline-block mb-4 shadow-lg">
@@ -316,6 +380,23 @@
                 }
             });
 
+            const payoutRates = [1000, 500, 250, 250, 250, 125, 125, 125, 125];
+
+            function getUserTotalEarning(uid) {
+                let earn = 0;
+                let cLevel = networkMap[String(uid).trim().toUpperCase()] || [];
+                for (let i = 0; i < 9; i++) {
+                    let actCount = cLevel.filter(u => (u.status || '').toLowerCase() === 'active').length;
+                    earn += actCount * payoutRates[i];
+                    let nxLevel = [];
+                    cLevel.forEach(u => {
+                        nxLevel = nxLevel.concat(networkMap[String(u.user_id).trim().toUpperCase()] || []);
+                    });
+                    cLevel = nxLevel;
+                }
+                return earn;
+            }
+
             let currentLevelUsers = networkMap[myIdNorm] || [];
             document.getElementById('directTeamCount').innerText = currentLevelUsers.length;
 
@@ -327,16 +408,22 @@
                     const isActive = (member.status || '').toLowerCase() === 'active';
                     const badgeClass = isActive ? 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20' : 'text-slate-400 bg-slate-700/50 border-slate-600';
                     const badgeText = isActive ? 'ACTIVE' : 'UNACTIVE';
+                    
+                    const mEarn = getUserTotalEarning(member.user_id);
+                    const earnHtml = isActive ? `<p class="text-[11px] font-black text-emerald-400 mt-1"><i class="fa-solid fa-coins mr-1"></i> Earned: ₹${mEarn}</p>` : `<p class="text-[11px] font-bold text-slate-500 mt-1">Earned: ₹${mEarn}</p>`;
+
                     container.innerHTML += `
                         <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-700/50 shadow-sm mb-2">
-                            <div><p class="text-sm font-semibold text-white"><i class="fa-solid fa-user-circle text-blue-400 mr-1.5"></i> ${member.name}</p>
-                            <p class="text-[10px] text-slate-400 ml-6 font-mono">${member.user_id}</p></div>
+                            <div>
+                                <p class="text-sm font-semibold text-white"><i class="fa-solid fa-user-circle text-blue-400 mr-1.5"></i> ${member.name}</p>
+                                <p class="text-[10px] text-slate-400 ml-6 font-mono">${member.user_id}</p>
+                                <div class="ml-6">${earnHtml}</div>
+                            </div>
                             <span class="text-[10px] font-bold px-2.5 py-1 rounded-md border ${badgeClass}">${badgeText}</span>
                         </div>`;
                 });
             }
 
-            const payoutRates = [1000, 500, 250, 250, 250, 125, 125, 125, 125];
             let totalEarning = 0;
             let totalTeamCount = 0;
             let levelCounts = [0,0,0,0,0,0,0,0,0];
@@ -457,41 +544,5 @@
                 data.forEach(w => {
                     const d = new Date(w.created_at).toLocaleDateString('en-IN');
                     const isPaid = w.status === 'Paid';
-                    const sColor = isPaid ? 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20' : 'text-amber-400 bg-amber-400/10 border-amber-400/20';
-                    container.innerHTML += `
-                        <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-700/50 shadow-sm mb-2">
-                            <div><p class="text-sm font-bold text-white">₹${w.amount}</p>
-                            <p class="text-[10px] text-slate-400 font-mono">${d}</p></div>
-                            <span class="text-[10px] font-bold px-2.5 py-1 rounded-md border ${sColor}">${w.status}</span>
-                        </div>`;
-                });
-            }
-        } catch (err) { console.error(err); }
-    }
-
-    async function submitUTR() {
-        const utr = document.getElementById('utrNumber').value.trim();
-        const msg = document.getElementById('qrMsg');
-        const btn = document.getElementById('utrBtn');
-        if(utr.length < 8) { msg.innerText = "Please enter a valid UTR number."; msg.className = "text-xs text-red-400 mb-3 block"; return; }
-        btn.disabled = true; btn.innerText = "Sending...";
-        try {
-            const { error } = await _supabase.from('payments').insert([ { user_id: currentUser.user_id, utr_number: utr, status: 'Pending' } ]);
-            if(error) throw error;
-            msg.innerText = "Request Sent! Admin will approve soon."; msg.className = "text-xs text-emerald-400 mb-3 block font-bold";
-            setTimeout(() => { closeModal('qrModal'); btn.disabled=false; btn.innerText="Submit Request"; msg.classList.add('hidden'); document.getElementById('utrNumber').value=''; }, 2000);
-        } catch (err) {
-            msg.innerText = "Create 'payments' table in Supabase first!"; msg.className = "text-xs text-amber-400 mb-3 block";
-            btn.disabled = false; btn.innerText = "Submit Request";
-        }
-    }
-
-    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
-    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-    function logout() { localStorage.removeItem('mahan_user'); window.location.href = "login.html"; }
-</script>
-</body>
-</html>
-
-
-        
+ 
+                
