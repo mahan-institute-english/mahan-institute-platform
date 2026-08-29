@@ -10,9 +10,39 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>body { font-family: 'Poppins', sans-serif; }</style>
 </head>
-<body class="bg-[#0f172a] text-slate-200 min-h-screen p-4 pb-12">
+<body class="bg-[#0f172a] text-slate-200 min-h-screen p-4 font-sans">
 
-    <div class="max-w-2xl mx-auto space-y-6">
+    <!-- SECURITY LAYER 1: Admin Login Gate -->
+    <div id="adminLoginGate" class="flex flex-col items-center justify-center min-h-[80vh]">
+        <div class="bg-slate-800 border border-amber-500/50 p-8 rounded-2xl shadow-[0_0_30px_rgba(245,158,11,0.15)] w-full max-w-sm text-center relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber-500/20 rounded-full blur-2xl"></div>
+            
+            <i class="fa-solid fa-shield-halved text-5xl text-amber-500 mb-4 relative z-10"></i>
+            <h2 class="text-xl font-bold text-white tracking-widest uppercase mb-1 relative z-10">Admin Access</h2>
+            <p class="text-[10px] text-slate-400 uppercase tracking-widest mb-6 relative z-10">Master Control Room</p>
+            
+            <div class="space-y-4 relative z-10">
+                <div class="relative">
+                    <i class="fa-solid fa-user-shield absolute left-3 top-3.5 text-slate-500"></i>
+                    <input type="text" id="adminId" placeholder="Admin ID" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl py-3 pl-10 pr-3 text-sm text-white focus:border-amber-500 outline-none uppercase font-mono">
+                </div>
+                <div class="relative">
+                    <i class="fa-solid fa-key absolute left-3 top-3.5 text-slate-500"></i>
+                    <input type="password" id="adminPass" placeholder="Admin Password" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl py-3 pl-10 pr-3 text-sm text-white focus:border-amber-500 outline-none font-mono">
+                </div>
+                <p id="adminLoginMsg" class="text-xs font-bold hidden"></p>
+                <button onclick="unlockAdmin()" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-unlock"></i> UNLOCK PANEL
+                </button>
+                <button onclick="window.location.href='dashboard.html'" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-2.5 rounded-xl transition text-xs mt-2">
+                    Back to Dashboard
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN ADMIN PANEL (Hidden by Default) -->
+    <div id="mainAdminPanel" class="max-w-2xl mx-auto space-y-6 hidden pb-12">
         
         <!-- Admin Header -->
         <div class="bg-gradient-to-r from-slate-800 to-slate-900 border border-amber-500/30 p-5 rounded-2xl shadow-2xl flex justify-between items-center relative overflow-hidden">
@@ -23,11 +53,11 @@
                 </div>
                 <div>
                     <h1 class="text-xl font-bold text-white tracking-wider uppercase">Admin Panel</h1>
-                    <p class="text-xs text-amber-500 font-mono tracking-widest">Master Control Room</p>
+                    <p class="text-xs text-amber-500 font-mono tracking-widest">System Unlocked</p>
                 </div>
             </div>
-            <button onclick="window.location.href='dashboard.html'" class="relative z-10 bg-slate-700/50 hover:bg-slate-700 border border-slate-600 text-white px-4 py-2 rounded-lg text-xs font-bold transition">
-                <i class="fa-solid fa-arrow-left mr-1"></i> Back
+            <button onclick="lockSystem()" class="relative z-10 bg-red-600/20 hover:bg-red-600 border border-red-500/50 text-red-400 hover:text-white px-4 py-2 rounded-lg text-xs font-bold transition">
+                <i class="fa-solid fa-lock mr-1"></i> Lock
             </button>
         </div>
         
@@ -36,23 +66,22 @@
             <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl text-center shadow-lg">
                 <i class="fa-solid fa-users text-blue-400 text-xl mb-1"></i>
                 <h3 class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total Users</h3>
-                <p id="totalUsers" class="text-xl font-black text-white mt-1"><i class="fa-solid fa-spinner fa-spin text-sm"></i></p>
+                <p id="totalUsers" class="text-xl font-black text-white mt-1">0</p>
             </div>
             <div class="bg-slate-800 border border-emerald-500/30 p-4 rounded-xl text-center shadow-lg">
                 <i class="fa-solid fa-user-check text-emerald-400 text-xl mb-1"></i>
                 <h3 class="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Active</h3>
-                <p id="activeUsers" class="text-xl font-black text-white mt-1"><i class="fa-solid fa-spinner fa-spin text-sm"></i></p>
+                <p id="activeUsers" class="text-xl font-black text-white mt-1">0</p>
             </div>
             <div class="bg-slate-800 border border-red-500/30 p-4 rounded-xl text-center shadow-lg">
                 <i class="fa-solid fa-user-xmark text-red-400 text-xl mb-1"></i>
                 <h3 class="text-[10px] text-red-500 font-bold uppercase tracking-wider">Unactive</h3>
-                <p id="unactiveUsers" class="text-xl font-black text-white mt-1"><i class="fa-solid fa-spinner fa-spin text-sm"></i></p>
+                <p id="unactiveUsers" class="text-xl font-black text-white mt-1">0</p>
             </div>
-            <div class="bg-slate-800 border border-amber-500/30 p-4 rounded-xl text-center shadow-lg">
+            <div class="bg-slate-800 border border-amber-500/30 p-4 rounded-xl text-center shadow-lg flex flex-col justify-center">
                 <i class="fa-solid fa-file-excel text-amber-400 text-xl mb-1"></i>
-                <h3 class="text-[10px] text-amber-500 font-bold uppercase tracking-wider">Backup Data</h3>
-                <button onclick="downloadExcel()" class="mt-2 w-full bg-amber-600 hover:bg-amber-700 text-white text-[10px] font-bold py-1.5 rounded transition shadow-lg">
-                    Download CSV
+                <button onclick="downloadExcel()" class="mt-1 w-full bg-amber-600 hover:bg-amber-700 text-white text-[10px] font-bold py-1.5 rounded transition shadow-lg">
+                    Backup CSV
                 </button>
             </div>
         </div>
@@ -60,11 +89,11 @@
         <!-- Manual Activation & Search Section -->
         <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-xl">
             <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3">
-                <i class="fa-solid fa-magnifying-glass text-blue-400"></i> Search & Activate Student
+                <i class="fa-solid fa-magnifying-glass text-blue-400"></i> Search & Manage Student
             </h3>
             
             <div class="flex gap-3 mb-4">
-                <input type="text" id="searchInput" placeholder="Enter User ID or Mobile (e.g. STU123456)" class="flex-1 bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-emerald-500 uppercase font-mono">
+                <input type="text" id="searchInput" placeholder="Enter User ID or Mobile" class="flex-1 bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-emerald-500 uppercase font-mono">
                 <button onclick="searchUser()" id="searchBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-5 rounded-xl text-sm font-bold transition shadow-lg">
                     Search
                 </button>
@@ -90,18 +119,30 @@
                     <div><p class="text-[10px] text-slate-500">Join Date</p><p id="sDate" class="text-xs text-slate-300"></p></div>
                 </div>
 
-                <!-- Admin Action Buttons -->
+                <!-- Admin Action Buttons (Triggers Warning Modal first) -->
                 <div class="flex gap-3 pt-3 border-t border-slate-700 mt-3">
-                    <button id="btnActivate" onclick="changeStatus('Active')" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-lg text-xs font-bold transition shadow-lg hidden">
+                    <button id="btnActivate" onclick="promptStatusChange('Active')" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-lg text-xs font-bold transition shadow-lg hidden">
                         <i class="fa-solid fa-check-circle mr-1"></i> Make Active
                     </button>
-                    <button id="btnUnactivate" onclick="changeStatus('Unactive')" class="flex-1 bg-red-600/20 hover:bg-red-600/40 text-red-400 border border-red-500/50 py-2.5 rounded-lg text-xs font-bold transition hidden">
+                    <button id="btnUnactivate" onclick="promptStatusChange('Unactive')" class="flex-1 bg-red-600/20 hover:bg-red-600/40 text-red-400 border border-red-500/50 py-2.5 rounded-lg text-xs font-bold transition hidden">
                         <i class="fa-solid fa-times-circle mr-1"></i> Make Unactive
                     </button>
                 </div>
             </div>
         </div>
+    </div>
 
+    <!-- SECURITY LAYER 2: Confirmation Modal (Warning Box) -->
+    <div id="confirmModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-800 border border-slate-600 p-6 rounded-2xl w-full max-w-sm shadow-2xl text-center">
+            <h3 id="confirmTitle" class="text-lg font-bold text-white mb-2"></h3>
+            <p id="confirmDesc" class="text-xs text-slate-300 mb-6 bg-[#0f172a] p-3 rounded-lg border border-slate-700"></p>
+            
+            <div class="flex gap-3">
+                <button id="confirmBtn" onclick="executeStatusChange()" class="flex-1 py-3 rounded-xl text-sm font-bold transition shadow-lg"></button>
+                <button onclick="closeConfirmModal()" class="flex-1 bg-slate-600 hover:bg-slate-500 text-white py-3 rounded-xl text-sm font-bold transition">Cancel</button>
+            </div>
+        </div>
     </div>
 
 <script>
@@ -111,31 +152,69 @@
 
     let allUsersData = [];
     let currentSearchedId = null;
+    let pendingStatusAction = '';
 
-    window.onload = async () => {
-        const userDataStr = localStorage.getItem('mahan_user');
-        if (!userDataStr) { window.location.href = "login.html"; return; }
-        
-        const currentUser = JSON.parse(userDataStr);
-        
-        // --- ADMIN SECURITY LOCK ---
-        // માત્ર MAHAN101 અથવા 7016623939 થી લોગીન હોય તો જ આ પેજ ખુલશે
-        if (currentUser.user_id !== 'MAHAN101' && currentUser.mobile !== '7016623939') {
-            document.body.innerHTML = '<div class="flex flex-col items-center justify-center min-h-screen text-center"><i class="fa-solid fa-shield-halved text-6xl text-red-500 mb-4"></i><h1 class="text-2xl font-bold text-white mb-2">ACCESS DENIED</h1><p class="text-slate-400 mb-6">You are not authorized to view the Admin Panel.</p><button onclick="window.location.href=\'dashboard.html\'" class="bg-blue-600 px-6 py-2 rounded-lg text-white font-bold">Go to Dashboard</button></div>';
+    // Step 1: Admin Login Gate Logic
+    async function unlockAdmin() {
+        const id = document.getElementById('adminId').value.trim().toUpperCase();
+        const pass = document.getElementById('adminPass').value.trim();
+        const msg = document.getElementById('adminLoginMsg');
+
+        // માત્ર મુખ્ય એડમિન આઈડી જ અહી ચાલશે
+        if(id !== 'MAHAN101' && id !== '7016623939') {
+            msg.innerText = "❌ Access Denied: Not an Admin ID!";
+            msg.className = "text-xs font-bold text-red-400 block";
+            return;
+        }
+        if(!pass) {
+            msg.innerText = "Please enter password.";
+            msg.className = "text-xs font-bold text-red-400 block";
             return;
         }
 
-        fetchDashboardStats();
-    };
+        msg.innerText = "Verifying Security Credentials...";
+        msg.className = "text-xs font-bold text-amber-400 block";
 
-    // આખા ડેટાબેઝના આંકડા લાવવા
+        try {
+            // ડેટાબેઝમાં પાસવર્ડ ચેક કરો
+            const { data, error } = await _supabase.from('users')
+                .select('*')
+                .or(`user_id.eq.${id},mobile.eq.${id}`)
+                .eq('password', pass)
+                .maybeSingle();
+
+            if (error || !data) {
+                msg.innerText = "❌ Incorrect Password! Try again.";
+                msg.className = "text-xs font-bold text-red-400 block";
+                return;
+            }
+
+            // પાસવર્ડ સાચો છે -> ગેટ ખોલો
+            document.getElementById('adminLoginGate').classList.add('hidden');
+            document.getElementById('mainAdminPanel').classList.remove('hidden');
+            fetchDashboardStats();
+
+        } catch (err) {
+             msg.innerText = "Network Error!";
+             msg.className = "text-xs font-bold text-red-400 block";
+        }
+    }
+
+    // System Lock Function
+    function lockSystem() {
+        document.getElementById('mainAdminPanel').classList.add('hidden');
+        document.getElementById('adminLoginGate').classList.remove('hidden');
+        document.getElementById('adminPass').value = '';
+        document.getElementById('adminLoginMsg').classList.add('hidden');
+    }
+
+    // Live Dashboard Stats
     async function fetchDashboardStats() {
         try {
             const { data, error } = await _supabase.from('users').select('*');
             if (error) throw error;
             
-            allUsersData = data; // બેકઅપ માટે ડેટા સેવ રાખ્યો
-
+            allUsersData = data; 
             const total = data.length;
             const active = data.filter(u => (u.status || '').toLowerCase() === 'active').length;
             const unactive = total - active;
@@ -143,12 +222,10 @@
             document.getElementById('totalUsers').innerText = total;
             document.getElementById('activeUsers').innerText = active;
             document.getElementById('unactiveUsers').innerText = unactive;
-        } catch (err) {
-            console.error(err);
-        }
+        } catch (err) { console.error(err); }
     }
 
-    // યુઝર સર્ચ કરવાનું લોજિક
+    // Search Student
     async function searchUser() {
         const searchVal = document.getElementById('searchInput').value.trim().toUpperCase();
         const msg = document.getElementById('searchMsg');
@@ -156,7 +233,6 @@
         const btn = document.getElementById('searchBtn');
 
         if(!searchVal) return;
-
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
         msg.classList.add('hidden');
         box.classList.add('hidden');
@@ -172,18 +248,15 @@
                 msg.className = "text-xs text-center text-red-400 block mb-3 font-semibold";
             } else {
                 currentSearchedId = data.user_id;
-                
                 document.getElementById('sName').innerText = data.name;
                 document.getElementById('sId').innerText = data.user_id;
                 document.getElementById('sMobile').innerText = data.mobile;
                 document.getElementById('sSponsor').innerText = data.sponsor || 'None';
                 document.getElementById('sLoc').innerText = `${data.city || '-'}, ${data.state || '-'}`;
                 
-                // તારીખ સેટ કરવી
                 const d = new Date(data.created_at);
                 document.getElementById('sDate').innerText = d.toLocaleDateString('en-IN') || '-';
 
-                // Status Badge & Buttons
                 const sBadge = document.getElementById('sStatus');
                 const btnAct = document.getElementById('btnActivate');
                 const btnUnact = document.getElementById('btnUnactivate');
@@ -199,71 +272,82 @@
                     btnAct.classList.remove('hidden');
                     btnUnact.classList.add('hidden');
                 }
-
                 box.classList.remove('hidden');
             }
-        } catch (err) {
-            console.error(err);
-        }
+        } catch (err) { console.error(err); }
         btn.innerHTML = 'Search';
     }
 
-    // યુઝરને Active/Unactive કરવાનું ફંક્શન
-    async function changeStatus(newStatus) {
+    // Step 2: Warning Modal Logic
+    function promptStatusChange(status) {
         if (!currentSearchedId) return;
+        pendingStatusAction = status;
         
-        if(!confirm(`Are you sure you want to make ${currentSearchedId} ${newStatus}?`)) return;
+        const modal = document.getElementById('confirmModal');
+        const title = document.getElementById('confirmTitle');
+        const desc = document.getElementById('confirmDesc');
+        const btn = document.getElementById('confirmBtn');
+
+        if(status === 'Active') {
+            title.innerHTML = '<i class="fa-solid fa-check-circle text-emerald-400 mr-2"></i> Confirm Activation';
+            desc.innerHTML = `Are you sure you want to <strong>ACTIVATE</strong> student <span class="text-amber-400">${currentSearchedId}</span>?`;
+            btn.innerText = "Yes, Make Active";
+            btn.className = "flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-sm font-bold transition shadow-lg shadow-emerald-600/30";
+        } else {
+            title.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-red-500 mr-2"></i> Warning: Deactivation';
+            desc.innerHTML = `Are you sure you want to <strong>UNACTIVE</strong> student <span class="text-amber-400">${currentSearchedId}</span>? <br><br> They will lose their dashboard earnings access!`;
+            btn.innerText = "Yes, Make Unactive";
+            btn.className = "flex-1 bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl text-sm font-bold transition shadow-lg shadow-red-600/30";
+        }
+        modal.classList.remove('hidden');
+    }
+
+    function closeConfirmModal() {
+        document.getElementById('confirmModal').classList.add('hidden');
+        pendingStatusAction = '';
+    }
+
+    async function executeStatusChange() {
+        const btn = document.getElementById('confirmBtn');
+        btn.innerText = "Processing...";
+        btn.disabled = true;
 
         try {
             const { error } = await _supabase
                 .from('users')
-                .update({ status: newStatus })
+                .update({ status: pendingStatusAction })
                 .eq('user_id', currentSearchedId);
 
             if (error) throw error;
-
-            alert(`✅ Success! Student is now ${newStatus}.`);
-            searchUser(); // ડેટા રિફ્રેશ કરવા ફરી સર્ચ ફંક્શન કોલ કરો
-            fetchDashboardStats(); // આંકડા રિફ્રેશ કરો
+            
+            closeConfirmModal();
+            searchUser(); 
+            fetchDashboardStats(); 
             
         } catch (err) {
-            alert("Error updating status: " + err.message);
+            alert("Error: " + err.message);
+            closeConfirmModal();
         }
+        btn.disabled = false;
     }
 
-    // Excel (CSV) Download કરવાનું માસ્ટર લોજિક
+    // CSV Download
     function downloadExcel() {
-        if (!allUsersData || allUsersData.length === 0) {
-            alert("No data available to download.");
-            return;
-        }
-
-        // CSV હેડર (Column ના નામ)
+        if (!allUsersData || allUsersData.length === 0) { alert("No data available."); return; }
         const headers = ["User ID", "Name", "Mobile", "Password", "Status", "Sponsor ID", "State", "City", "Join Date"];
-        
-        // ડેટાને CSV ફોર્મેટમાં ગોઠવો
         const csvRows = [];
         csvRows.push(headers.join(','));
 
         allUsersData.forEach(user => {
             const dateStr = user.created_at ? new Date(user.created_at).toLocaleDateString('en-IN') : '-';
             const row = [
-                `"${user.user_id}"`,
-                `"${user.name}"`,
-                `"${user.mobile}"`,
-                `"${user.password}"`,
-                `"${user.status}"`,
-                `"${user.sponsor}"`,
-                `"${user.state || ''}"`,
-                `"${user.city || ''}"`,
-                `"${dateStr}"`
+                `"${user.user_id}"`, `"${user.name}"`, `"${user.mobile}"`, `"${user.password}"`,
+                `"${user.status}"`, `"${user.sponsor}"`, `"${user.state || ''}"`, `"${user.city || ''}"`, `"${dateStr}"`
             ];
             csvRows.push(row.join(','));
         });
 
         const csvString = csvRows.join('\n');
-        
-        // ફાઈલ ડાઉનલોડ કરો
         const blob = new Blob([csvString], { type: 'text/csv' });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -275,4 +359,4 @@
     }
 </script>
 </body>
-                                                                                                                     </html>
+                    </html>
