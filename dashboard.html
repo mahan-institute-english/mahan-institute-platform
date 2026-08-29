@@ -19,6 +19,7 @@
 
     <div class="max-w-md mx-auto space-y-5">
         
+        <!-- Header -->
         <div class="text-center pt-2 pb-3 border-b border-slate-800">
             <h1 class="text-2xl font-bold text-white tracking-wider">
                 MAHAN <span class="text-blue-500">INSTITUTE</span>
@@ -26,6 +27,7 @@
             <p class="text-xs text-slate-400">Premium English & Development</p>
         </div>
         
+        <!-- Profile Card -->
         <div id="profileCardBg" class="bg-[#1e293b] border border-slate-700 p-6 rounded-2xl shadow-2xl relative overflow-hidden transition-all duration-500">
             <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl"></div>
             
@@ -42,9 +44,17 @@
                         <i class="fa-solid fa-phone text-emerald-400 mr-1"></i> <span id="dashMobile">-----</span>
                     </span>
                 </div>
+                
+                <!-- NEW: WhatsApp Share Button -->
+                <div class="pt-4">
+                    <button onclick="shareReferralWhatsApp()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm shadow-green-900/50">
+                        <i class="fa-brands fa-whatsapp text-lg"></i> Share Referral Link
+                    </button>
+                </div>
             </div>
         </div>
         
+        <!-- Stats -->
         <div class="grid grid-cols-2 gap-4">
             <div class="bg-[#1e293b] border border-slate-700 p-4 rounded-2xl text-center shadow-lg">
                 <div class="text-blue-400 mb-2"><i class="fa-solid fa-users text-2xl"></i></div>
@@ -58,6 +68,7 @@
             </div>
         </div>
         
+        <!-- Bonus Balance Sheet -->
         <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5">
             <h3 class="text-sm font-bold text-white flex items-center gap-2 mb-4 border-b border-slate-700 pb-3">
                 <i class="fa-solid fa-wallet text-blue-500"></i> Bonus Balance Sheet
@@ -65,7 +76,7 @@
             <div class="space-y-3 text-sm">
                 <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-800">
                     <span class="text-slate-400 font-medium">Total Limit</span>
-                    <span id="totalLimit" class="font-bold text-white tracking-wider">₹ 0</span>
+                    <span id="totalLimit" class="font-bold text-white tracking-wider">₹ 50,000</span>
                 </div>
                 <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-800">
                     <span class="text-slate-400 font-medium">Total Earning</span>
@@ -73,11 +84,12 @@
                 </div>
                 <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-800">
                     <span class="text-slate-400 font-medium">Remaining Limit</span>
-                    <span id="remainingLimit" class="font-bold text-blue-400 tracking-wider">₹ 0</span>
+                    <span id="remainingLimit" class="font-bold text-blue-400 tracking-wider">₹ 50,000</span>
                 </div>
             </div>
         </div>
         
+        <!-- Level Wise Income -->
         <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg overflow-hidden">
             <h3 class="text-sm font-bold text-white bg-slate-800/50 p-4 border-b border-slate-700 flex items-center gap-2">
                 <i class="fa-solid fa-chart-line text-emerald-400"></i> Level Wise Income
@@ -107,312 +119,131 @@
             </div>
         </div>
         
-        <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5">
-            <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3">
-                <i class="fa-solid fa-list-ul text-blue-400"></i> Direct Members
-            </h3>
-            <div id="directStudentContainer" class="space-y-3 max-h-52 overflow-y-auto pr-1">
-                <p class="text-center text-xs text-slate-500 py-4">Loading students...</p>
-            </div>
+        <!-- NEW: Hide Directs & Details Button -->
+        <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5 text-center">
+            <h3 class="text-sm font-bold text-white mb-2"><i class="fa-solid fa-list-ul text-blue-400 mr-2"></i> Direct Team Data</h3>
+            <p class="text-xs text-slate-400 mb-4">View your direct team members and their active status details.</p>
+            <button onclick="openModal('directModal')" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-2.5 px-6 rounded-xl transition shadow-lg">
+                View Direct Details
+            </button>
         </div>
         
+        <!-- Other Buttons -->
         <div class="space-y-3 pt-4">
-            <button onclick="openModal('passwordModal')" class="w-full bg-[#1e293b] hover:bg-slate-700 border border-slate-600 text-slate-200 font-semibold py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm">
+            <button class="w-full bg-[#1e293b] border border-slate-600 text-slate-200 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm">
                 <i class="fa-solid fa-lock text-blue-400"></i> Change Password
             </button>
-            <button onclick="openModal('bankModal')" class="w-full bg-[#1e293b] hover:bg-slate-700 border border-slate-600 text-slate-200 font-semibold py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm">
+            <button class="w-full bg-[#1e293b] border border-slate-600 text-slate-200 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm">
                 <i class="fa-solid fa-building-columns text-emerald-400"></i> Bank & KYC Details
             </button>
-            
-            <button id="adminActivationBtn" onclick="openModal('adminModal')" class="w-full bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/50 text-blue-400 font-bold py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm hidden">
-                <i class="fa-solid fa-crown text-amber-400"></i> Admin Active Panel
-            </button>
-            
-            <button onclick="logout()" class="w-full bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 font-semibold py-3.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm mt-4">
+            <button onclick="logout()" class="w-full bg-red-500/10 border border-red-500/30 text-red-400 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm mt-4">
                 <i class="fa-solid fa-power-off"></i> Secure Logout
             </button>
         </div>
     </div>
 
-    <div id="passwordModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-full max-w-sm shadow-2xl">
-            <h3 class="text-lg font-bold text-white mb-4"><i class="fa-solid fa-lock text-blue-400 mr-2"></i> Update Password</h3>
-            <input type="password" id="newPassword" placeholder="Enter new password" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3.5 text-sm text-white mb-5 outline-none focus:border-blue-500 transition">
-            <div class="flex gap-3">
-                <button onclick="updatePassword()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-sm font-semibold transition">Save</button>
-                <button onclick="closeModal('passwordModal')" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold transition">Cancel</button>
+    <!-- Modal for Direct Students Details -->
+    <div id="directModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-[#1e293b] border border-slate-600 p-5 rounded-2xl w-full max-w-sm shadow-2xl relative">
+            <h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2"><i class="fa-solid fa-users text-blue-400 mr-2"></i> Direct Members List</h3>
+            <div id="directStudentContainer" class="space-y-3 max-h-72 overflow-y-auto pr-2 mb-4">
+                <p class="text-center text-xs text-slate-500 py-4">Loading students...</p>
             </div>
+            <button onclick="closeModal('directModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-2.5 rounded-xl text-sm font-semibold transition">Close</button>
         </div>
     </div>
 
-    <div id="bankModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-full max-w-sm shadow-2xl">
-            <h3 class="text-lg font-bold text-white mb-4"><i class="fa-solid fa-building-columns text-emerald-400 mr-2"></i> KYC Details</h3>
-            <input type="text" id="accName" placeholder="Account Holder Name" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-3 outline-none focus:border-emerald-500">
-            <input type="text" id="accNo" placeholder="Account Number" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-3 outline-none focus:border-emerald-500">
-            <input type="text" id="ifscCode" placeholder="IFSC Code" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-6 outline-none focus:border-emerald-500 uppercase">
-            <div class="flex gap-3">
-                <button onclick="saveBankDetails()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-sm font-semibold transition">Save KYC</button>
-                <button onclick="closeModal('bankModal')" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold transition">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="adminModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-[#1e293b] border border-blue-500/30 p-6 rounded-2xl w-full max-w-sm shadow-2xl">
-            <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2"><i class="fa-solid fa-crown text-amber-400"></i> Admin Panel</h3>
-            <input type="text" id="actInput" placeholder="Target User ID or Mobile" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3.5 text-sm text-white mb-4 outline-none focus:border-blue-500 uppercase">
-            <button onclick="fetchUserDetailsForActivation()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-sm font-semibold mb-4 transition flex justify-center items-center gap-2">
-                <i class="fa-solid fa-magnifying-glass"></i> Search User
-            </button>
-            <div id="foundUserInfo" class="hidden bg-[#0f172a] border border-slate-600 p-4 rounded-xl mb-4">
-                <p class="text-xs text-slate-400 mb-1">Found User:</p>
-                <p id="fName" class="font-bold text-white text-sm truncate">-</p>
-                <div class="flex items-center gap-2 mt-2 pt-2 border-t border-slate-800">
-                    <span class="text-xs text-slate-400">Current Status:</span>
-                    <span id="fStatus" class="text-xs font-bold px-2 py-1 rounded bg-slate-800">-</span>
-                </div>
-            </div>
-            <button id="activateBtn" onclick="executeAdminActivation()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-sm font-semibold mb-3 hidden transition shadow-lg shadow-emerald-500/20">
-                ✅ Make Active (+₹50k Limit)
-            </button>
-            <button onclick="closeModal('adminModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold transition">Close</button>
-        </div>
-    </div>
 <script>
     const SUPABASE_URL = "https://wzrbsvwmrymkpzwmgypb.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6cmJzdndtcnlta3B6d21neXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDc1NzQsImV4cCI6MjEwMzMyMzU3NH0.5ulY5LW3AQEPFDP__iOSJssgNafTSe9Yu4gEqZF7sLc";
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     let currentUser = null;
-    let foundTargetUser = null;
 
     window.onload = async () => {
         const userDataStr = localStorage.getItem('mahan_user');
         if (!userDataStr) { window.location.href = "login.html"; return; }
+        currentUser = JSON.parse(userDataStr);
 
-        const localUser = JSON.parse(userDataStr);
-        const searchVal = String(localUser.user_id || localUser.mobile).trim();
+        // પ્રોફાઇલ ડેટા સેટ કરો
+        document.getElementById('dashName').innerText = currentUser.name;
+        document.getElementById('dashId').innerText = currentUser.user_id;
+        document.getElementById('dashMobile').innerText = currentUser.mobile;
+        
+        let statusEl = document.getElementById('dashStatusText');
+        if((currentUser.status || '').toLowerCase() === 'active') {
+            statusEl.innerText = "Status: ACTIVE";
+            statusEl.className = "text-xs font-bold text-emerald-400 bg-emerald-400/10 inline-block px-3 py-1 rounded-full border border-emerald-400/20 tracking-widest";
+        } else {
+            statusEl.innerText = "Status: UNACTIVE";
+            statusEl.className = "text-xs font-bold text-red-400 bg-red-400/10 inline-block px-3 py-1 rounded-full border border-red-400/20 tracking-widest";
+        }
 
-        try {
-            const { data } = await _supabase.from('users').select('*').or(`user_id.eq.${searchVal},mobile.eq.${searchVal}`).maybeSingle();
-            if(data) {
-                currentUser = data;
-                localStorage.setItem('mahan_user', JSON.stringify(data)); 
-            } else { currentUser = localUser; }
-        } catch (e) { currentUser = localUser; }
-
-        document.getElementById('dashName').innerText = currentUser.name || 'Member';
-        document.getElementById('dashId').innerText = currentUser.user_id || 'MAHAN----';
-        document.getElementById('dashMobile').innerText = currentUser.mobile || '----------';
-
-        if (currentUser.bank_name) document.getElementById('accName').value = currentUser.bank_name;
-        if (currentUser.bank_acc) document.getElementById('accNo').value = currentUser.bank_acc;
-        if (currentUser.bank_ifsc) document.getElementById('ifscCode').value = currentUser.bank_ifsc;
-
-        await fetchNetworkData(currentUser.user_id, currentUser);
+        fetchNetworkData();
     };
 
-    async function fetchNetworkData(myUserId, userObj) {
+    // WhatsApp માં લિંક શેર કરવાનું ફંક્શન
+    function shareReferralWhatsApp() {
+        const refLink = `https://mahan-institute-english.github.io/mahan-institute-platform/register.html?ref=${currentUser.user_id}`;
+        const waText = `🚀 *Join MAHAN Institute!*\n\nLearn, Grow & Earn with our Premium Platform.\n\n🔗 *Click here to register free:*\n${refLink}`;
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(waText)}`, '_blank');
+    }
+
+    async function fetchNetworkData() {
         const container = document.getElementById('directStudentContainer');
         try {
             const { data: allUsers, error } = await _supabase.from('users').select('*');
-            if (error || !allUsers) { throw error; }
+            if (error || !allUsers) throw error;
 
-            const myIdNorm = String(myUserId).trim().toUpperCase();
+            const myIdNorm = String(currentUser.user_id).trim().toUpperCase();
             const networkMap = {};
             
             allUsers.forEach(u => {
-                const spRaw = u.sponsor || u.referral_code || u.sponsor_id || u.ref_id || '';
-                const sp = String(spRaw).trim().toUpperCase();
+                const sp = String(u.sponsor || '').trim().toUpperCase();
                 if(sp) {
                     if(!networkMap[sp]) networkMap[sp] = [];
                     networkMap[sp].push(u);
                 }
             });
 
-            // Level 1 (Directs)
-            let currentLevelUsers = networkMap[myIdNorm] || [];
-            let directStudentList = currentLevelUsers; 
+            // Direct Students (Level 1)
+            let directStudents = networkMap[myIdNorm] || [];
+            document.getElementById('directTeamCount').innerText = directStudents.length;
 
-            document.getElementById('directTeamCount').innerText = directStudentList.length;
-
-            if (directStudentList.length === 0) {
+            // લિસ્ટ છુપાવેલું છે, પોપઅપ માટે ડેટા તૈયાર કરો
+            if (directStudents.length === 0) {
                 container.innerHTML = `<p class="text-center text-xs text-slate-500 py-4">No direct network found yet.</p>`;
             } else {
                 container.innerHTML = '';
-                directStudentList.forEach(member => {
+                directStudents.forEach(member => {
                     const isActive = (member.status || '').toLowerCase() === 'active';
                     const badgeClass = isActive ? 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20' : 'text-slate-400 bg-slate-700/50 border-slate-600';
                     const badgeText = isActive ? 'ACTIVE' : 'UNACTIVE';
 
-                    const div = document.createElement('div');
-                    div.className = 'flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-700/50 shadow-sm mb-2';
-                    div.innerHTML = `
-                        <div>
-                            <p class="text-sm font-semibold text-white"><i class="fa-solid fa-user-circle text-blue-400 mr-1.5"></i> ${member.name}</p>
-                            <p class="text-[10px] text-slate-400 ml-6 font-mono">${member.user_id}</p>
+                    container.innerHTML += `
+                        <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-700/50 shadow-sm mb-2">
+                            <div>
+                                <p class="text-sm font-semibold text-white"><i class="fa-solid fa-user-circle text-blue-400 mr-1.5"></i> ${member.name}</p>
+                                <p class="text-[10px] text-slate-400 ml-6 font-mono">${member.user_id}</p>
+                            </div>
+                            <span class="text-[10px] font-bold px-2.5 py-1 rounded-md border ${badgeClass}">${badgeText}</span>
                         </div>
-                        <span class="text-[10px] font-bold px-2.5 py-1 rounded-md border ${badgeClass}">${badgeText}</span>
                     `;
-                    container.appendChild(div);
                 });
-            }
-
-            // 9 Levels Logic
-            let levelCounts = [0,0,0,0,0,0,0,0,0]; 
-            let activeCounts = [0,0,0,0,0,0,0,0,0];
-
-            for (let i = 0; i < 9; i++) {
-                levelCounts[i] = currentLevelUsers.length;
-                activeCounts[i] = currentLevelUsers.filter(u => (u.status || '').toLowerCase() === 'active').length;
-
-                let nextLevelUsers = [];
-                currentLevelUsers.forEach(u => {
-                    const downlines = networkMap[String(u.user_id).trim().toUpperCase()] || [];
-                    nextLevelUsers = nextLevelUsers.concat(downlines);
-                });
-                currentLevelUsers = nextLevelUsers;
-            }
-
-            // Payout calculation ONLY for ACTIVE users
-            let p1 = activeCounts[0] * 1000, p2 = activeCounts[1] * 500, p3 = activeCounts[2] * 250;
-            let p4 = activeCounts[3] * 250, p5 = activeCounts[4] * 250, p6 = activeCounts[5] * 125;
-            let p7 = activeCounts[6] * 125, p8 = activeCounts[7] * 125, p9 = activeCounts[8] * 125;
-
-            let totalTeam = levelCounts.reduce((a, b) => a + b, 0);
-            let totalEarned = p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9;
-
-            document.getElementById('totalTeam').innerText = totalTeam;
-
-            const pays = [p1,p2,p3,p4,p5,p6,p7,p8,p9];
-            for(let i=1; i<=9; i++) {
-                document.getElementById('l'+i+'Count').innerText = levelCounts[i-1];
-                document.getElementById('l'+i+'Pay').innerText = "₹" + pays[i-1];
-            }
-
-            const statusBadge = document.getElementById('dashStatusText');
-            const cardBg = document.getElementById('profileCardBg');
-
-            if (userObj.status && (userObj.status.toLowerCase() === 'active')) {
-                statusBadge.innerText = "Status: ACTIVE";
-                statusBadge.className = "text-xs font-bold text-emerald-400 bg-emerald-400/10 inline-block px-4 py-1.5 rounded-full border border-emerald-400/20 tracking-wider shadow-inner";
-                cardBg.classList.add('border-emerald-500/40');
-                cardBg.classList.remove('border-slate-700');
-                
-                let limit = userObj.total_limit || 50000;
-                let remaining = limit - totalEarned;
-
-                document.getElementById('totalLimit').innerText = "₹ " + limit.toLocaleString();
-                document.getElementById('earningAmount').innerText = "₹ " + totalEarned.toLocaleString();
-                document.getElementById('remainingLimit').innerText = "₹ " + Math.max(0, remaining).toLocaleString();
-                
-                // === લાઈવ એરર ટ્રેકિંગ સિસ્ટમ (અપડેટ) ===
-                const myIdForUpdate = String(userObj.user_id).trim();
-                const { data: updateData, error: syncErr } = await _supabase
-                    .from('users')
-                    .update({ 
-                        total_earning: totalEarned, 
-                        remaining_limit: Math.max(0, remaining) 
-                    })
-                    .eq('user_id', myIdForUpdate)
-                    .select();
-                
-                if (syncErr) {
-                    alert("⚠️ DB Update Error: " + syncErr.message);
-                } else if (!updateData || updateData.length === 0) {
-                    alert("⚠️ ડેટાબેઝમાં ID મેચ થતું નથી! કૃપા કરીને Supabase માં જઈને તમારા user_id (" + myIdForUpdate + ") ની પાછળ કોઈ સ્પેસ (જગ્યા) હોય તો કાઢી નાખો.");
-                }
-                // ==========================================
-                
-            } else {
-                statusBadge.innerText = "Status: UNACTIVE";
-                statusBadge.className = "text-xs font-bold text-slate-400 bg-slate-800 inline-block px-4 py-1.5 rounded-full border border-slate-600 tracking-wider shadow-inner";
-                document.getElementById('totalLimit').innerText = "₹ 0";
-                document.getElementById('earningAmount').innerText = "₹ 0";
-                document.getElementById('remainingLimit').innerText = "₹ 0";
-            }
-
-            if (userObj.user_id === 'MAHAN101' || userObj.user_id === 'MAHAN9396' || userObj.mobile === '9999999999' || userObj.role === 'admin') {
-                document.getElementById('adminActivationBtn').classList.remove('hidden');
             }
         } catch (err) {
-            container.innerHTML = `<p class="text-center text-xs text-red-400 py-4">Network sync failed. Check DB Permissions.</p>`;
+            console.error(err);
         }
     }
 
+    // Modal Control Functions
     function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
-    function closeModal(id) { 
-        document.getElementById(id).classList.add('hidden'); 
-        if(id === 'adminModal') {
-            document.getElementById('actInput').value = '';
-            document.getElementById('foundUserInfo').classList.add('hidden');
-            document.getElementById('activateBtn').classList.add('hidden');
-            foundTargetUser = null;
-        }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+    function logout() {
+        localStorage.removeItem('mahan_user');
+        window.location.href = "login.html";
     }
-
-    async function updatePassword() {
-        const newPass = document.getElementById('newPassword').value.trim();
-        if (!newPass) { alert('Enter a new password!'); return; }
-        const { error } = await _supabase.from('users').update({ password: newPass }).eq('user_id', currentUser.user_id).select();
-        if (error) { alert('Failed: ' + error.message); } else { alert('✅ Password changed!'); closeModal('passwordModal'); }
-    }
-
-    async function saveBankDetails() {
-        const bank_name = document.getElementById('accName').value.trim();
-        const bank_acc = document.getElementById('accNo').value.trim();
-        const bank_ifsc = document.getElementById('ifscCode').value.trim();
-        const { error } = await _supabase.from('users').update({ bank_name, bank_acc, bank_ifsc }).eq('user_id', currentUser.user_id).select();
-        if (error) { alert('Failed: ' + error.message); } else { alert('✅ Bank Details saved!'); closeModal('bankModal'); }
-    }
-
-    async function fetchUserDetailsForActivation() {
-        const val = document.getElementById('actInput').value.trim().toUpperCase();
-        const infoBox = document.getElementById('foundUserInfo');
-        const activateBtn = document.getElementById('activateBtn');
-        if (!val) { alert("Please type User ID or Mobile No."); return; }
-
-        infoBox.classList.remove('hidden');
-        document.getElementById('fName').innerText = "Searching...";
-        document.getElementById('fStatus').innerText = "...";
-        activateBtn.classList.add('hidden');
-
-        const { data, error } = await _supabase.from('users').select('*').or(`user_id.eq.${val},mobile.eq.${val}`).maybeSingle();
-
-        if (error || !data) {
-            document.getElementById('fName').innerHTML = "<span class='text-red-400'>No user found.</span>";
-            document.getElementById('fStatus').innerText = "N/A";
-            foundTargetUser = null; return;
-        }
-
-        foundTargetUser = data;
-        document.getElementById('fName').innerText = `${data.name} (${data.user_id})`;
-        const currentStatus = (data.status || 'Unactive').toLowerCase();
-        const statusBadge = document.getElementById('fStatus');
-        
-        if(currentStatus === 'active') {
-            statusBadge.innerText = "ALREADY ACTIVE";
-            statusBadge.className = "text-xs font-bold px-2 py-1 rounded bg-emerald-900/50 text-emerald-400 border border-emerald-500/30";
-        } else {
-            statusBadge.innerText = "UNACTIVE";
-            statusBadge.className = "text-xs font-bold px-2 py-1 rounded bg-red-900/50 text-red-400 border border-red-500/30";
-            activateBtn.classList.remove('hidden'); 
-        }
-    }
-
-    async function executeAdminActivation() {
-        if (!foundTargetUser) return;
-        const btn = document.getElementById('activateBtn');
-        btn.innerText = "Processing...";
-        const { error } = await _supabase.from('users').update({ status: 'Active', total_limit: 50000 }).eq('user_id', foundTargetUser.user_id).select();
-        if (error) { alert('Error: ' + error.message); btn.innerText = "✅ Make Active (+₹50k Limit)"; } 
-        else { alert(`🎉 Success! ${foundTargetUser.name} is now ACTIVATED.`); closeModal('adminModal'); location.reload(); }
-    }
-
-    function logout() { localStorage.removeItem('mahan_user'); window.location.href = "login.html"; }
 </script>
-
-
-    
-    
+</body>
+    </html>
