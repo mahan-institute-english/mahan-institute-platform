@@ -11,9 +11,8 @@
 <body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-4 font-sans">
     <div class="max-w-lg w-full bg-slate-800 border border-slate-700 p-6 rounded-xl shadow-xl space-y-4 my-4">
         
-        <!-- Premium CSS Logo (Emerald Green Edition) for Registration -->
+        <!-- Premium CSS Logo (Emerald Green Edition) -->
         <div class="flex flex-col items-center justify-center space-y-3 mb-6 mt-2">
-            <!-- MAHAN Green Badge -->
             <div class="relative flex items-center justify-center px-5 py-2.5 bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl shadow-[0_8px_16px_rgba(0,0,0,0.4)] border border-slate-700/50">
                 <div class="absolute top-0 inset-x-4 h-[1px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent opacity-50"></div>
                 <span class="text-3xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-emerald-500 to-teal-600" style="font-family: 'Arial Black', sans-serif;">
@@ -22,7 +21,6 @@
                 <div class="absolute -top-1.5 -right-1.5 w-3 h-3 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-full animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.8)] border-2 border-slate-900"></div>
             </div>
             
-            <!-- Brand Name & Sign Up Text -->
             <div class="flex flex-col items-center justify-center text-center space-y-1">
                 <div class="flex items-baseline space-x-1.5">
                     <span class="text-lg font-black tracking-widest text-white uppercase leading-none">MAHAN</span>
@@ -52,7 +50,7 @@
                 <input type="text" id="name" required class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-lg py-2.5 px-3 text-sm text-white focus:border-emerald-500 outline-none" placeholder="Enter Full Name">
             </div>
 
-            <!-- Mobile & Re-enter Mobile (2 Columns) -->
+            <!-- Mobile Details -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="text-xs text-slate-400 font-semibold uppercase">Mobile Number</label>
@@ -70,33 +68,23 @@
                 <input type="password" id="password" required class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-lg py-2.5 px-3 text-sm text-white focus:border-emerald-500 outline-none" placeholder="••••••••">
             </div>
 
-            <!-- State & City (2 Columns) -->
+            <!-- Dynamic State & City -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="text-xs text-slate-400 font-semibold uppercase">State</label>
-                    <select id="state" required class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-lg py-2.5 px-3 text-sm text-white focus:border-emerald-500 outline-none appearance-none">
+                    <select id="state" required onchange="updateCities()" class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-lg py-2.5 px-3 text-sm text-white focus:border-emerald-500 outline-none appearance-none">
                         <option value="">Select State</option>
-                        <option value="Gujarat">Gujarat</option>
-                        <option value="Maharashtra">Maharashtra</option>
-                        <option value="Rajasthan">Rajasthan</option>
-                        <option value="Other">Other</option>
                     </select>
                 </div>
                 <div>
                     <label class="text-xs text-slate-400 font-semibold uppercase">City</label>
                     <select id="city" required class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-lg py-2.5 px-3 text-sm text-white focus:border-emerald-500 outline-none appearance-none">
                         <option value="">Select City</option>
-                        <option value="Morbi">Morbi</option>
-                        <option value="Rajkot">Rajkot</option>
-                        <option value="Ahmedabad">Ahmedabad</option>
-                        <option value="Surat">Surat</option>
-                        <option value="Vadodara">Vadodara</option>
-                        <option value="Other">Other</option>
                     </select>
                 </div>
             </div>
 
-            <!-- Terms and Conditions -->
+            <!-- Terms -->
             <div class="pt-2">
                 <label class="flex items-center space-x-3 cursor-pointer">
                     <input type="checkbox" id="terms" required class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-emerald-600 focus:ring-emerald-500 focus:ring-2">
@@ -105,13 +93,13 @@
             </div>
 
             <button type="submit" id="submitBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-lg transition duration-200 shadow-lg mt-2">
-                Register
+                Register Now
             </button>
         </form>
 
         <p id="msg" class="text-xs text-center hidden"></p>
 
-        <!-- Welcome Letter Box -->
+        <!-- Welcome Box -->
         <div id="welcomeBox" class="hidden bg-slate-900 border border-emerald-500/50 p-4 rounded-xl space-y-3 mt-4">
             <div class="text-center">
                 <span class="bg-emerald-500/20 text-emerald-400 text-xs px-3 py-1 rounded-full font-bold">🎉 Registration Successful!</span>
@@ -137,34 +125,73 @@
     </div>
 
     <script>
+        // Supabase Setup
         const SUPABASE_URL = "https://wzrbsvwmrymkpzwmgypb.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6cmJzdndtcnlta3B6d21neXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDc1NzQsImV4cCI6MjEwMzMyMzU3NH0.5ulY5LW3AQEPFDP__iOSJssgNafTSe9Yu4gEqZF7sLc";
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+        // India States & Cities Data
+        const indiaData = {
+            "Gujarat": ["Morbi", "Rajkot", "Ahmedabad", "Surat", "Vadodara", "Bhavnagar", "Jamnagar", "Gandhinagar", "Junagadh", "Kutch"],
+            "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik", "Thane", "Aurangabad", "Solapur", "Kolhapur"],
+            "Rajasthan": ["Jaipur", "Jodhpur", "Udaipur", "Kota", "Bikaner", "Ajmer", "Bhilwara", "Alwar"],
+            "Delhi": ["New Delhi", "North Delhi", "South Delhi", "West Delhi", "East Delhi"],
+            "Uttar Pradesh": ["Lucknow", "Kanpur", "Varanasi", "Agra", "Noida", "Ghaziabad", "Prayagraj", "Meerut"],
+            "Madhya Pradesh": ["Indore", "Bhopal", "Gwalior", "Jabalpur", "Ujjain", "Sagar"],
+            "Karnataka": ["Bengaluru", "Mysuru", "Mangaluru", "Hubballi", "Belagavi"],
+            "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Salem", "Tiruchirappalli"],
+            "Punjab": ["Ludhiana", "Amritsar", "Jalandhar", "Patiala", "Bathinda"],
+            "West Bengal": ["Kolkata", "Howrah", "Darjeeling", "Siliguri", "Asansol"],
+            "Haryana": ["Gurugram", "Faridabad", "Panipat", "Ambala", "Rohtak"],
+            "Bihar": ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur", "Darbhanga"],
+            "Other": ["Other City"]
+        };
+
+        const stateSelect = document.getElementById("state");
+        const citySelect = document.getElementById("city");
+
         window.onload = () => {
+            // 1. Populate States
+            for (let state in indiaData) {
+                stateSelect.options[stateSelect.options.length] = new Option(state, state);
+            }
+
+            // 2. Handle Sponsor ID from URL
             const urlParams = new URLSearchParams(window.location.search);
             const ref = urlParams.get('ref');
             if (ref) {
                 const sponsorInput = document.getElementById('sponsor');
-                sponsorInput.value = ref;
+                sponsorInput.value = ref.toUpperCase();
                 sponsorInput.readOnly = true; 
                 sponsorInput.classList.add('bg-slate-800', 'text-slate-400');
             }
         };
 
+        // Update Cities when State changes
+        function updateCities() {
+            citySelect.length = 1; // Keep only first option
+            const selectedState = stateSelect.value;
+            if (selectedState && indiaData[selectedState]) {
+                indiaData[selectedState].forEach(city => {
+                    citySelect.options[citySelect.options.length] = new Option(city, city);
+                });
+            }
+        }
+
+        // Generate ID
         async function generateUniqueId() {
             let isUnique = false;
             let newId = "";
             while (!isUnique) {
                 const randomNum = Math.floor(100000 + Math.random() * 900000); 
                 newId = "STU" + randomNum; 
-                
                 const { data } = await _supabase.from('users').select('user_id').eq('user_id', newId).maybeSingle();
                 if (!data) isUnique = true; 
             }
             return newId;
         }
 
+        // Form Submit Handler
         document.getElementById('regForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const msg = document.getElementById('msg');
@@ -174,13 +201,16 @@
             const mobile = document.getElementById('mobile').value.trim();
             const reMobile = document.getElementById('reMobile').value.trim();
             const password = document.getElementById('password').value.trim();
-            const sponsor = document.getElementById('sponsor').value.trim();
+            const sponsor = document.getElementById('sponsor').value.trim().toUpperCase();
             const state = document.getElementById('state').value;
             const city = document.getElementById('city').value;
-            const terms = document.getElementById('terms').checked;
 
             if (mobile !== reMobile) {
                 alert("❌ Mobile Number and Re-Enter Mobile Number do not match!");
+                return;
+            }
+            if (!state || !city) {
+                alert("❌ Please select both State and City!");
                 return;
             }
 
@@ -190,6 +220,7 @@
             msg.innerText = "Checking Details & Generating STU ID...";
 
             try {
+                // Check Sponsor
                 const { data: sponsorData, error: sponsorError } = await _supabase
                     .from('users').select('user_id').eq('user_id', sponsor).maybeSingle();
 
@@ -197,25 +228,19 @@
                     msg.innerText = "❌ સ્પોન્સર ID ખોટું છે અથવા મળતું નથી!";
                     msg.className = "text-xs text-center text-red-400 block mt-2";
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = 'Register';
+                    submitBtn.innerHTML = 'Register Now';
                     return; 
                 }
 
+                // Insert User
                 const user_id = await generateUniqueId();
-                const referral_code = user_id;
-
                 const { error } = await _supabase.from('users').insert([
-                    { user_id, name, mobile, password, sponsor, referral_code, state, city, status: 'Unactive' }
+                    { user_id, name, mobile, password, sponsor, referral_code: user_id, state, city, status: 'Unactive' }
                 ]);
 
-                if (error) {
-                    msg.innerText = "Error: " + error.message;
-                    msg.className = "text-xs text-center text-red-400 block mt-2";
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = 'Register';
-                    return;
-                }
+                if (error) throw error;
 
+                // Success UI
                 document.getElementById('regForm').classList.add('hidden');
                 msg.classList.add('hidden');
 
@@ -224,7 +249,7 @@
                 document.getElementById('wPass').innerText = password;
                 document.getElementById('wSponsor').innerText = sponsor;
                 
-                const refLink = `https://mahan-institute-english.github.io/mahan-institute-platform/register.html?v=${Date.now()}&ref=${user_id}`;
+                const refLink = `https://mahan-institute-english.github.io/mahan-institute-platform/register.html?ref=${user_id}`;
                 document.getElementById('wLink').innerText = refLink;
 
                 const waText = `🌟 *Welcome to MAHAN Institute* 🌟\n\nDear *${name}*,\nYour registration is successfully completed!\n\n🆔 User ID: *${user_id}*\n🔑 Password: *${password}*\n👥 Sponsor: ${sponsor}\n\n🔗 *Your Referral Link:*\n${refLink}\n\nJoin us and start your learning & earning journey!`;
@@ -236,24 +261,9 @@
                 msg.innerText = "Error: " + err.message;
                 msg.className = "text-xs text-center text-red-400 block mt-2";
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Register';
+                submitBtn.innerHTML = 'Register Now';
             }
         });
-                    <!-- Dynamic State & City (2 Columns) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="text-xs text-slate-400 font-semibold uppercase">State</label>
-                    <select id="state" required onchange="updateCities()" class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-lg py-2.5 px-3 text-sm text-white focus:border-emerald-500 outline-none appearance-none">
-                        <option value="">Select State</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="text-xs text-slate-400 font-semibold uppercase">City</label>
-                    <select id="city" required class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-lg py-2.5 px-3 text-sm text-white focus:border-emerald-500 outline-none appearance-none">
-                        <option value="">Select City</option>
-                    </select>
-                </div>
-            </div>
     </script>
 </body>
-                        </html>
+                    </html>
