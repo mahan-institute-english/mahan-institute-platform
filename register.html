@@ -68,19 +68,23 @@
                 <input type="password" id="password" required class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-lg py-2.5 px-3 text-sm text-white focus:border-emerald-500 outline-none" placeholder="••••••••">
             </div>
 
-            <!-- Dynamic State & City -->
+            <!-- Dynamic State & City (With 'Other' Input Fields) -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="text-xs text-slate-400 font-semibold uppercase">State</label>
                     <select id="state" required onchange="updateCities()" class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-lg py-2.5 px-3 text-sm text-white focus:border-emerald-500 outline-none appearance-none">
                         <option value="">Select State</option>
                     </select>
+                    <!-- Type Custom State Box -->
+                    <input type="text" id="otherState" placeholder="Type your State" class="w-full mt-2 bg-slate-800 border border-emerald-500/50 rounded-lg py-2 px-3 text-sm text-white focus:border-emerald-500 outline-none hidden transition-all">
                 </div>
                 <div>
                     <label class="text-xs text-slate-400 font-semibold uppercase">City</label>
-                    <select id="city" required class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-lg py-2.5 px-3 text-sm text-white focus:border-emerald-500 outline-none appearance-none">
+                    <select id="city" required onchange="checkOtherCity()" class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-lg py-2.5 px-3 text-sm text-white focus:border-emerald-500 outline-none appearance-none">
                         <option value="">Select City</option>
                     </select>
+                    <!-- Type Custom City Box -->
+                    <input type="text" id="otherCity" placeholder="Type your City" class="w-full mt-2 bg-slate-800 border border-emerald-500/50 rounded-lg py-2 px-3 text-sm text-white focus:border-emerald-500 outline-none hidden transition-all">
                 </div>
             </div>
 
@@ -143,20 +147,23 @@
             "Punjab": ["Ludhiana", "Amritsar", "Jalandhar", "Patiala", "Bathinda"],
             "West Bengal": ["Kolkata", "Howrah", "Darjeeling", "Siliguri", "Asansol"],
             "Haryana": ["Gurugram", "Faridabad", "Panipat", "Ambala", "Rohtak"],
-            "Bihar": ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur", "Darbhanga"],
-            "Other": ["Other City"]
+            "Bihar": ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur", "Darbhanga"]
         };
 
         const stateSelect = document.getElementById("state");
         const citySelect = document.getElementById("city");
+        const otherStateInput = document.getElementById("otherState");
+        const otherCityInput = document.getElementById("otherCity");
 
         window.onload = () => {
-            // 1. Populate States
+            // Populate States
             for (let state in indiaData) {
                 stateSelect.options[stateSelect.options.length] = new Option(state, state);
             }
+            // Add 'Other' option at the end of states
+            stateSelect.options[stateSelect.options.length] = new Option("Other", "Other");
 
-            // 2. Handle Sponsor ID from URL
+            // Handle Sponsor ID from URL
             const urlParams = new URLSearchParams(window.location.search);
             const ref = urlParams.get('ref');
             if (ref) {
@@ -169,12 +176,42 @@
 
         // Update Cities when State changes
         function updateCities() {
-            citySelect.length = 1; // Keep only first option
+            citySelect.length = 1; // Reset city list
             const selectedState = stateSelect.value;
-            if (selectedState && indiaData[selectedState]) {
-                indiaData[selectedState].forEach(city => {
-                    citySelect.options[citySelect.options.length] = new Option(city, city);
-                });
+            
+            if (selectedState === 'Other') {
+                otherStateInput.classList.remove('hidden');
+                otherStateInput.required = true;
+                
+                // Force city to 'Other' automatically
+                citySelect.options[1] = new Option("Other", "Other");
+                citySelect.value = "Other";
+                checkOtherCity();
+            } else {
+                otherStateInput.classList.add('hidden');
+                otherStateInput.required = false;
+                otherStateInput.value = ''; // clear input
+
+                if (selectedState && indiaData[selectedState]) {
+                    indiaData[selectedState].forEach(city => {
+                        citySelect.options[citySelect.options.length] = new Option(city, city);
+                    });
+                    // Always add 'Other' at the end of the city list
+                    citySelect.options[citySelect.options.length] = new Option("Other", "Other");
+                }
+                checkOtherCity();
+            }
+        }
+
+        // Show/Hide custom City input
+        function checkOtherCity() {
+            if (citySelect.value === 'Other') {
+                otherCityInput.classList.remove('hidden');
+                otherCityInput.required = true;
+            } else {
+                otherCityInput.classList.add('hidden');
+                otherCityInput.required = false;
+                otherCityInput.value = ''; // clear input
             }
         }
 
@@ -202,15 +239,24 @@
             const reMobile = document.getElementById('reMobile').value.trim();
             const password = document.getElementById('password').value.trim();
             const sponsor = document.getElementById('sponsor').value.trim().toUpperCase();
-            const state = document.getElementById('state').value;
-            const city = document.getElementById('city').value;
+            
+            // Get final state & city (either dropdown or typed input)
+            let finalState = stateSelect.value;
+            if (finalState === 'Other') {
+                finalState = otherStateInput.value.trim();
+            }
+            
+            let finalCity = citySelect.value;
+            if (finalCity === 'Other') {
+                finalCity = otherCityInput.value.trim();
+            }
 
             if (mobile !== reMobile) {
                 alert("❌ Mobile Number and Re-Enter Mobile Number do not match!");
                 return;
             }
-            if (!state || !city) {
-                alert("❌ Please select both State and City!");
+            if (!finalState || !finalCity) {
+                alert("❌ Please enter both State and City!");
                 return;
             }
 
@@ -235,7 +281,7 @@
                 // Insert User
                 const user_id = await generateUniqueId();
                 const { error } = await _supabase.from('users').insert([
-                    { user_id, name, mobile, password, sponsor, referral_code: user_id, state, city, status: 'Unactive' }
+                    { user_id, name, mobile, password, sponsor, referral_code: user_id, state: finalState, city: finalCity, status: 'Unactive' }
                 ]);
 
                 if (error) throw error;
@@ -266,4 +312,4 @@
         });
     </script>
 </body>
-                    </html>
+    </html>
