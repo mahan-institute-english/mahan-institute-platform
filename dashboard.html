@@ -13,16 +13,8 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
-        /* Live News Ticker Animation */
-        @keyframes ticker {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-        .animate-ticker {
-            display: inline-block;
-            white-space: nowrap;
-            animation: ticker 20s linear infinite;
-        }
+        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .animate-ticker { display: inline-block; white-space: nowrap; animation: ticker 20s linear infinite; }
     </style>
 </head>
 <body class="bg-[#0f172a] text-slate-200 min-h-screen p-4 pb-12">
@@ -33,16 +25,11 @@
         <div class="flex flex-col items-center justify-center space-y-3 pt-3 pb-4">
             <div class="relative flex items-center justify-center px-5 py-2.5 bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl shadow-[0_8px_16px_rgba(0,0,0,0.4)] border border-slate-700/50">
                 <div class="absolute top-0 inset-x-4 h-[1px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent opacity-50"></div>
-                <span class="text-3xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-emerald-500 to-teal-600" style="font-family: 'Arial Black', sans-serif;">
-                    MAHAN
-                </span>
+                <span class="text-3xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-emerald-500 to-teal-600" style="font-family: 'Arial Black', sans-serif;">MAHAN</span>
                 <div class="absolute -top-1.5 -right-1.5 w-3 h-3 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-full animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.8)] border-2 border-slate-900"></div>
             </div>
             <div class="flex flex-col items-center justify-center text-center space-y-1">
-                <div class="flex items-baseline space-x-1.5">
-                    <span class="text-lg font-black tracking-widest text-white uppercase leading-none">MAHAN</span>
-                    <span class="text-lg font-black tracking-widest text-blue-500 uppercase leading-none">Institute</span>
-                </div>
+                <div class="flex items-baseline space-x-1.5"><span class="text-lg font-black tracking-widest text-white uppercase leading-none">MAHAN</span><span class="text-lg font-black tracking-widest text-blue-500 uppercase leading-none">Institute</span></div>
                 <h2 class="text-[9px] font-bold text-emerald-500 pt-1.5 uppercase tracking-[0.3em]">Premium English & Development</h2>
             </div>
         </div>
@@ -50,13 +37,10 @@
         <!-- Live News Ticker Bar -->
         <div class="bg-blue-900/30 border border-blue-500/30 rounded-xl p-2.5 flex items-center overflow-hidden relative shadow-inner">
             <div class="flex-shrink-0 z-10 bg-[#0f172a] pr-3 flex items-center border-r border-blue-500/30">
-                <i class="fa-solid fa-bullhorn text-amber-400 animate-pulse"></i>
-                <span class="text-[10px] font-bold text-amber-400 ml-2 uppercase tracking-widest">LIVE</span>
+                <i class="fa-solid fa-bullhorn text-amber-400 animate-pulse"></i><span class="text-[10px] font-bold text-amber-400 ml-2 uppercase tracking-widest">LIVE</span>
             </div>
             <div class="flex-1 overflow-hidden relative pl-2">
-                <div class="animate-ticker text-xs font-semibold text-emerald-300 tracking-wide" id="liveNewsText">
-                    🎉 Welcome to MAHAN Institute! Start learning and earning today. Watch the live training video below for more details!
-                </div>
+                <div class="animate-ticker text-xs font-semibold text-emerald-300 tracking-wide" id="liveNewsText">Loading news updates...</div>
             </div>
         </div>
         
@@ -70,131 +54,62 @@
                     <span class="bg-[#0f172a] px-3 py-1.5 rounded-lg border border-slate-700 shadow-inner"><i class="fa-solid fa-id-badge text-blue-400 mr-1"></i> <span id="dashId">-----</span></span>
                     <span class="bg-[#0f172a] px-3 py-1.5 rounded-lg border border-slate-700 shadow-inner"><i class="fa-solid fa-phone text-emerald-400 mr-1"></i> <span id="dashMobile">-----</span></span>
                 </div>
-
-                <!-- QR Code Activate Button -->
-                <div id="activationDiv" class="pt-3 hidden">
-                    <button onclick="openModal('qrModal')" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm animate-pulse">
-                        <i class="fa-solid fa-qrcode text-lg"></i> Activate Account Now
-                    </button>
-                </div>
-                
-                <!-- Share Button -->
-                <div class="pt-3">
-                    <button onclick="shareReferralWhatsApp()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm">
-                        <i class="fa-brands fa-whatsapp text-lg"></i> Share Referral Link
-                    </button>
-                </div>
+                <div id="activationDiv" class="pt-3 hidden"><button onclick="openModal('qrModal')" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm animate-pulse"><i class="fa-solid fa-qrcode text-lg"></i> Activate Account Now</button></div>
+                <div class="pt-3"><button onclick="shareReferralWhatsApp()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm"><i class="fa-brands fa-whatsapp text-lg"></i> Share Referral Link</button></div>
             </div>
         </div>
         
         <!-- Stats -->
         <div class="grid grid-cols-2 gap-4">
-            <div class="bg-[#1e293b] border border-slate-700 p-4 rounded-2xl text-center shadow-lg">
-                <div class="text-blue-400 mb-2"><i class="fa-solid fa-users text-2xl"></i></div>
-                <h3 class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Direct Students</h3>
-                <p id="directTeamCount" class="text-2xl font-bold text-white mt-1">0</p>
-                <p id="activeDirectCount" class="text-[10px] text-emerald-400 mt-1 font-bold">0 Active</p>
-            </div>
-            <div class="bg-[#1e293b] border border-slate-700 p-4 rounded-2xl text-center shadow-lg">
-                <div class="text-emerald-400 mb-2"><i class="fa-solid fa-globe text-2xl"></i></div>
-                <h3 class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Total Network</h3>
-                <p id="totalTeam" class="text-2xl font-bold text-white mt-1">0</p>
-            </div>
+            <div class="bg-[#1e293b] border border-slate-700 p-4 rounded-2xl text-center shadow-lg"><div class="text-blue-400 mb-2"><i class="fa-solid fa-users text-2xl"></i></div><h3 class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Direct Students</h3><p id="directTeamCount" class="text-2xl font-bold text-white mt-1">0</p><p id="activeDirectCount" class="text-[10px] text-emerald-400 mt-1 font-bold">0 Active</p></div>
+            <div class="bg-[#1e293b] border border-slate-700 p-4 rounded-2xl text-center shadow-lg"><div class="text-emerald-400 mb-2"><i class="fa-solid fa-globe text-2xl"></i></div><h3 class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Total Network</h3><p id="totalTeam" class="text-2xl font-bold text-white mt-1">0</p></div>
         </div>
         
-        <!-- Bonus Balance Sheet & Withdrawal -->
+        <!-- Bonus Balance Sheet -->
         <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5">
-            <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-3">
-                <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-wallet text-blue-500"></i> Bonus Balance Sheet
-                </h3>
-                <button onclick="openModal('historyModal')" class="text-[10px] bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 border border-blue-500/50 px-3 py-1.5 rounded-lg transition font-bold uppercase tracking-wider">
-                    View Details
-                </button>
-            </div>
-            
+            <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-3"><h3 class="text-sm font-bold text-white flex items-center gap-2"><i class="fa-solid fa-wallet text-blue-500"></i> Bonus Balance Sheet</h3><button onclick="openModal('historyModal')" class="text-[10px] bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 border border-blue-500/50 px-3 py-1.5 rounded-lg transition font-bold uppercase tracking-wider">View Details</button></div>
             <div class="space-y-3 text-sm mb-4">
-                <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-800">
-                    <span class="text-slate-400 font-medium">Total Limit</span>
-                    <span class="font-bold text-white tracking-wider">₹ 50,000</span>
-                </div>
-                <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-800">
-                    <span class="text-slate-400 font-medium">Total Earning</span>
-                    <span id="earningAmount" class="font-bold text-emerald-400 tracking-wider">₹ 0</span>
-                </div>
-                <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-800">
-                    <span class="text-slate-400 font-medium">Remaining Limit</span>
-                    <span id="remainingLimit" class="font-bold text-blue-400 tracking-wider">₹ 50,000</span>
-                </div>
+                <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-800"><span class="text-slate-400 font-medium">Total Limit</span><span class="font-bold text-white tracking-wider">₹ 50,000</span></div>
+                <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-800"><span class="text-slate-400 font-medium">Total Earning</span><span id="earningAmount" class="font-bold text-emerald-400 tracking-wider">₹ 0</span></div>
+                <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-800"><span class="text-slate-400 font-medium">Remaining Limit</span><span id="remainingLimit" class="font-bold text-blue-400 tracking-wider">₹ 50,000</span></div>
             </div>
-            
-            <button onclick="openWithdrawModal()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm">
-                <i class="fa-solid fa-money-bill-transfer"></i> Request Withdrawal
-            </button>
+            <button onclick="openWithdrawModal()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm"><i class="fa-solid fa-money-bill-transfer"></i> Request Withdrawal</button>
         </div>
         
-        <!-- Success Story / Live Class Video Box -->
+        <!-- Success Story Video Box -->
         <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5 text-center">
-            <h3 class="text-sm font-bold text-white mb-1 flex items-center justify-center gap-2">
-                <i class="fa-brands fa-youtube text-red-500"></i> Live Classes & Updates
-            </h3>
+            <h3 class="text-sm font-bold text-white mb-1 flex items-center justify-center gap-2"><i class="fa-brands fa-youtube text-red-500"></i> Live Classes & Updates</h3>
             <p class="text-[10px] text-slate-400 mb-4">Watch our latest success stories and training videos.</p>
-            
             <div class="relative w-full aspect-video rounded-xl overflow-hidden border border-slate-600 shadow-[0_0_15px_rgba(0,0,0,0.5)]">
-                <iframe id="dashVideo" class="w-full h-full" src="https://www.youtube.com/embed/jfKfPfyJRdk?rel=0" title="MAHAN Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe id="dashVideo" class="w-full h-full" src="" title="MAHAN Video" frameborder="0" allowfullscreen></iframe>
             </div>
-        </div>
-
-        <!-- Level Wise Income Button -->
-        <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5 text-center">
-            <h3 class="text-sm font-bold text-white mb-2"><i class="fa-solid fa-chart-line text-emerald-400 mr-2"></i> Level Wise Income</h3>
-            <p class="text-xs text-slate-400 mb-4">Track your 9-level team growth and commission.</p>
-            <button onclick="openModal('levelModal')" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-2.5 px-6 rounded-xl transition shadow-lg">View Income Details</button>
-        </div>
-
-        <!-- Direct Team Button -->
-        <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5 text-center">
-            <h3 class="text-sm font-bold text-white mb-2"><i class="fa-solid fa-list-ul text-blue-400 mr-2"></i> Direct Team Data</h3>
-            <p class="text-xs text-slate-400 mb-4">View your direct team and their total earnings.</p>
-            <button onclick="openModal('directModal')" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-2.5 px-6 rounded-xl transition shadow-lg">View Direct Details</button>
         </div>
 
         <!-- Social Media Hub -->
         <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5">
             <h3 class="text-sm font-bold text-white mb-4 text-center border-b border-slate-700 pb-3">Join Our Community</h3>
             <div class="grid grid-cols-4 gap-3">
-                <a href="#" id="ytLink" target="_blank" class="bg-gradient-to-br from-red-500 to-red-700 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg shadow-red-900/50 hover:scale-105 transition">
-                    <i class="fa-brands fa-youtube text-2xl text-white mb-1"></i><span class="text-[8px] font-bold text-white uppercase tracking-wider">YouTube</span>
-                </a>
-                <a href="#" id="igLink" target="_blank" class="bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg shadow-pink-900/50 hover:scale-105 transition">
-                    <i class="fa-brands fa-instagram text-2xl text-white mb-1"></i><span class="text-[8px] font-bold text-white uppercase tracking-wider">Instagram</span>
-                </a>
-                <a href="#" id="fbLink" target="_blank" class="bg-gradient-to-br from-blue-600 to-blue-800 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg shadow-blue-900/50 hover:scale-105 transition">
-                    <i class="fa-brands fa-facebook-f text-2xl text-white mb-1"></i><span class="text-[8px] font-bold text-white uppercase tracking-wider">Facebook</span>
-                </a>
-                <a href="#" id="waLink" target="_blank" class="bg-gradient-to-br from-green-500 to-emerald-700 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg shadow-green-900/50 hover:scale-105 transition">
-                    <i class="fa-brands fa-whatsapp text-2xl text-white mb-1"></i><span class="text-[8px] font-bold text-white uppercase tracking-wider">Group</span>
-                </a>
+                <a href="#" id="ytLink" target="_blank" class="bg-gradient-to-br from-red-500 to-red-700 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg shadow-red-900/50 hover:scale-105 transition"><i class="fa-brands fa-youtube text-2xl text-white mb-1"></i><span class="text-[8px] font-bold text-white uppercase tracking-wider">YouTube</span></a>
+                <a href="#" id="igLink" target="_blank" class="bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg shadow-pink-900/50 hover:scale-105 transition"><i class="fa-brands fa-instagram text-2xl text-white mb-1"></i><span class="text-[8px] font-bold text-white uppercase tracking-wider">Insta</span></a>
+                <a href="#" id="fbLink" target="_blank" class="bg-gradient-to-br from-blue-600 to-blue-800 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg shadow-blue-900/50 hover:scale-105 transition"><i class="fa-brands fa-facebook-f text-2xl text-white mb-1"></i><span class="text-[8px] font-bold text-white uppercase tracking-wider">Facebook</span></a>
+                <a href="#" id="waLink" target="_blank" class="bg-gradient-to-br from-green-500 to-emerald-700 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg shadow-green-900/50 hover:scale-105 transition"><i class="fa-brands fa-whatsapp text-2xl text-white mb-1"></i><span class="text-[8px] font-bold text-white uppercase tracking-wider">Group</span></a>
             </div>
         </div>
+
+        <!-- Buttons -->
+        <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5 text-center"><h3 class="text-sm font-bold text-white mb-2"><i class="fa-solid fa-chart-line text-emerald-400 mr-2"></i> Level Wise Income</h3><button onclick="openModal('levelModal')" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-2.5 px-6 rounded-xl transition shadow-lg">View Income Details</button></div>
+        <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5 text-center"><h3 class="text-sm font-bold text-white mb-2"><i class="fa-solid fa-list-ul text-blue-400 mr-2"></i> Direct Team Data</h3><button onclick="openModal('directModal')" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-2.5 px-6 rounded-xl transition shadow-lg">View Direct Details</button></div>
         
         <!-- Settings -->
         <div class="space-y-3 pt-4">
-            <button onclick="openModal('passwordModal')" class="w-full bg-[#1e293b] border border-slate-600 text-slate-200 hover:bg-slate-700 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm transition">
-                <i class="fa-solid fa-lock text-blue-400"></i> Change Password
-            </button>
-            <button onclick="openModal('bankModal')" class="w-full bg-[#1e293b] border border-slate-600 text-slate-200 hover:bg-slate-700 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm transition">
-                <i class="fa-solid fa-building-columns text-emerald-400"></i> Bank & KYC Details
-            </button>
-            <button onclick="logout()" class="w-full bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm mt-4 transition">
-                <i class="fa-solid fa-power-off"></i> Secure Logout
-            </button>
+            <button onclick="openModal('passwordModal')" class="w-full bg-[#1e293b] border border-slate-600 text-slate-200 hover:bg-slate-700 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm transition"><i class="fa-solid fa-lock text-blue-400"></i> Change Password</button>
+            <button onclick="openModal('bankModal')" class="w-full bg-[#1e293b] border border-slate-600 text-slate-200 hover:bg-slate-700 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm transition"><i class="fa-solid fa-building-columns text-emerald-400"></i> Bank & KYC Details</button>
+            <button onclick="logout()" class="w-full bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm mt-4 transition"><i class="fa-solid fa-power-off"></i> Secure Logout</button>
         </div>
     </div>
 
-    <!-- Modals Section -->
-
-    <!-- Level Wise Income Modal (Full Screen) -->
+    <!-- Modals (Hidden) -->
+    <!-- Level Modal -->
     <div id="levelModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
         <div class="bg-[#1e293b] border border-slate-600 p-5 rounded-2xl w-[95%] max-w-md max-h-[90vh] shadow-2xl relative flex flex-col">
             <h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2"><i class="fa-solid fa-chart-line text-emerald-400 mr-2"></i> Level Wise Income</h3>
@@ -220,7 +135,7 @@
         </div>
     </div>
     
-    <!-- Direct Members Modal -->
+    <!-- Direct Modal -->
     <div id="directModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
         <div class="bg-[#1e293b] border border-slate-600 p-5 rounded-2xl w-[95%] max-w-md max-h-[90vh] shadow-2xl relative flex flex-col">
             <h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2"><i class="fa-solid fa-users text-blue-400 mr-2"></i> Direct Members List</h3>
@@ -233,38 +148,31 @@
     <div id="historyModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
         <div class="bg-[#1e293b] border border-slate-600 p-5 rounded-2xl w-[95%] max-w-md max-h-[90vh] shadow-2xl relative flex flex-col">
             <h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2"><i class="fa-solid fa-clock-rotate-left text-blue-400 mr-2"></i> Payout History</h3>
-            <div id="historyContainer" class="flex-1 overflow-y-auto pr-2 mb-4 space-y-3">
-                <p class="text-center text-xs text-slate-500 py-4">Loading history...</p>
-            </div>
+            <div id="historyContainer" class="flex-1 overflow-y-auto pr-2 mb-4 space-y-3"><p class="text-center text-xs text-slate-500 py-4">Loading history...</p></div>
             <button onclick="closeModal('historyModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold">Close</button>
         </div>
     </div>
 
-    <!-- Change Password Modal -->
+    <!-- Password Modal -->
     <div id="passwordModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
         <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-[95%] max-w-sm shadow-2xl">
             <h3 class="text-lg font-bold text-white mb-4"><i class="fa-solid fa-lock text-blue-400 mr-2"></i> Update Password</h3>
             <input type="text" id="newPassword" placeholder="Enter new password" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3.5 text-sm text-white mb-4 outline-none focus:border-blue-500 transition">
             <p id="passMsg" class="text-xs mb-3 hidden"></p>
-            <div class="flex gap-3">
-                <button onclick="updatePassword()" id="passBtn" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-sm font-semibold transition">Save</button>
-                <button onclick="closeModal('passwordModal')" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold transition">Cancel</button>
-            </div>
+            <div class="flex gap-3"><button onclick="updatePassword()" id="passBtn" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl text-sm font-semibold transition">Save</button><button onclick="closeModal('passwordModal')" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold transition">Cancel</button></div>
         </div>
     </div>
 
-    <!-- Bank & KYC Modal -->
+    <!-- Bank Modal -->
     <div id="bankModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
         <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-[95%] max-w-sm shadow-2xl">
             <h3 class="text-lg font-bold text-white mb-4"><i class="fa-solid fa-building-columns text-emerald-400 mr-2"></i> Bank & KYC Details</h3>
             <input type="text" id="accName" placeholder="Account Holder Name" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-3 outline-none focus:border-emerald-500">
             <input type="text" id="accNo" placeholder="Account Number" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-3 outline-none focus:border-emerald-500">
             <input type="text" id="ifscCode" placeholder="IFSC Code" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-emerald-500 uppercase">
-            <p id="bankMsg" class="text-xs mb-3 hidden"></p>
-            <div class="flex gap-3">
-                <button onclick="saveBankDetails()" id="bankBtn" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-sm font-semibold transition">Save KYC</button>
-                <button onclick="closeModal('bankModal')" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold transition">Cancel</button>
-            </div>
+        
+           <p id="bankMsg" class="text-xs mb-3 hidden"></p>
+            <div class="flex gap-3"><button onclick="saveBankDetails()" id="bankBtn" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-sm font-semibold transition">Save KYC</button><button onclick="closeModal('bankModal')" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold transition">Cancel</button></div>
         </div>
     </div>
 
@@ -272,25 +180,15 @@
     <div id="withdrawModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
         <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-[95%] max-w-sm shadow-2xl text-center">
             <h3 class="text-lg font-bold text-white mb-2"><i class="fa-solid fa-money-bill-transfer text-emerald-400 mr-2"></i> Withdraw Funds</h3>
-            
             <div id="withdrawFormArea" class="hidden">
                 <p class="text-xs text-slate-400 mb-4">Enter amount to withdraw directly to your bank account.</p>
-                <div class="bg-[#0f172a] border border-emerald-500/30 shadow-inner p-3 rounded-xl mb-4">
-                    <p class="text-[10px] text-slate-400 uppercase tracking-widest">Available Balance</p>
-                    <p id="modalAvailBal" class="text-2xl font-black text-emerald-400">₹0</p>
-                </div>
+                <div class="bg-[#0f172a] border border-emerald-500/30 shadow-inner p-3 rounded-xl mb-4"><p class="text-[10px] text-slate-400 uppercase tracking-widest">Available Balance</p><p id="modalAvailBal" class="text-2xl font-black text-emerald-400">₹0</p></div>
                 <input type="number" id="withdrawAmount" placeholder="Enter Amount" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-emerald-500 font-mono text-center">
                 <p id="withdrawMsg" class="text-xs mb-3 hidden"></p>
-                <div class="flex gap-3">
-                    <button onclick="submitWithdraw()" id="wSubmitBtn" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-sm font-bold transition">Withdraw</button>
-                    <button onclick="closeModal('withdrawModal')" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-bold transition">Cancel</button>
-                </div>
+                <div class="flex gap-3"><button onclick="submitWithdraw()" id="wSubmitBtn" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-sm font-bold transition">Withdraw</button><button onclick="closeModal('withdrawModal')" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-bold transition">Cancel</button></div>
             </div>
-
             <div id="withdrawErrorArea" class="hidden py-4">
-                <i class="fa-solid fa-triangle-exclamation text-4xl text-amber-500 mb-3"></i>
-                <h4 class="text-sm font-bold text-white mb-2">Requirement Not Met</h4>
-                <p class="text-xs text-slate-400 mb-5">You need at least <strong class="text-amber-400">5 Active Direct Members</strong> to unlock withdrawal. Keep building your network!</p>
+                <i class="fa-solid fa-triangle-exclamation text-4xl text-amber-500 mb-3"></i><h4 class="text-sm font-bold text-white mb-2">Requirement Not Met</h4><p class="text-xs text-slate-400 mb-5">You need at least <strong class="text-amber-400">5 Active Direct Members</strong> to unlock withdrawal.</p>
                 <button onclick="closeModal('withdrawModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-bold transition">Close</button>
             </div>
         </div>
@@ -301,20 +199,14 @@
         <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-[95%] max-w-sm shadow-2xl text-center">
             <h3 class="text-lg font-bold text-white mb-2"><i class="fa-solid fa-qrcode text-emerald-400 mr-2"></i> Account Activation</h3>
             <p class="text-xs text-slate-400 mb-4">Scan QR code using PhonePe/GPay to pay activation fee and enter UTR number.</p>
-            <div class="bg-white p-3 rounded-xl inline-block mb-4 shadow-lg">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=YOUR_UPI@ybl&pn=MAHAN_INSTITUTE" alt="Payment QR" class="w-36 h-36">
-            </div>
+            <div class="bg-white p-3 rounded-xl inline-block mb-4 shadow-lg"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=YOUR_UPI@ybl&pn=MAHAN_INSTITUTE" alt="Payment QR" class="w-36 h-36"></div>
             <input type="text" id="utrNumber" placeholder="Enter 12-digit UTR / Ref No." class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-emerald-500 font-mono text-center uppercase">
             <p id="qrMsg" class="text-xs mb-3 hidden"></p>
-            <div class="flex gap-3">
-                <button onclick="submitUTR()" id="utrBtn" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-sm font-bold transition">Submit Request</button>
-                <button onclick="closeModal('qrModal')" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-bold transition">Cancel</button>
-            </div>
+            <div class="flex gap-3"><button onclick="submitUTR()" id="utrBtn" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-sm font-bold transition">Submit Request</button><button onclick="closeModal('qrModal')" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-bold transition">Cancel</button></div>
         </div>
     </div>
 
 <script>
-    // System Configurations
     const SUPABASE_URL = "https://wzrbsvwmrymkpzwmgypb.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6cmJzdndtcnlta3B6d21neXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDc1NzQsImV4cCI6MjEwMzMyMzU3NH0.5ulY5LW3AQEPFDP__iOSJssgNafTSe9Yu4gEqZF7sLc";
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -323,7 +215,6 @@
     let windowMyActiveDirects = 0;
     let windowAvailableBalance = 0;
 
-    // Safety Try-Catch Wrapper
     window.onload = async () => {
         try {
             const userDataStr = localStorage.getItem('mahan_user');
@@ -350,10 +241,26 @@
 
             await fetchNetworkData();
             await loadWithdrawalHistory();
-        } catch (error) {
-            console.error("Initialization Error:", error);
-        }
+            await fetchPlatformSettings();
+        } catch (error) { console.error("Load Error:", error); }
     };
+
+    // --- NEW: Load Live Settings & Social Media Links from DB ---
+    async function fetchPlatformSettings() {
+        try {
+            const { data, error } = await _supabase.from('settings').select('*').limit(1).maybeSingle();
+            if(data) {
+                if(data.news_text && document.getElementById('liveNewsText')) document.getElementById('liveNewsText').innerText = data.news_text;
+                if(data.video_url && document.getElementById('dashVideo')) document.getElementById('dashVideo').src = data.video_url;
+                
+                // Dynamic Social Media Links
+                if(data.yt_link && document.getElementById('ytLink')) document.getElementById('ytLink').href = data.yt_link;
+                if(data.ig_link && document.getElementById('igLink')) document.getElementById('igLink').href = data.ig_link;
+                if(data.fb_link && document.getElementById('fbLink')) document.getElementById('fbLink').href = data.fb_link;
+                if(data.wa_link && document.getElementById('waLink')) document.getElementById('waLink').href = data.wa_link;
+            }
+        } catch (err) { console.error("Settings Error:", err); }
+    }
 
     function shareReferralWhatsApp() {
         const refLink = `https://mahan-institute-english.github.io/mahan-institute-platform/register.html?ref=${currentUser.user_id}`;
@@ -372,27 +279,20 @@
             
             allUsers.forEach(u => {
                 const sp = String(u.sponsor || '').trim().toUpperCase();
-                if(sp) {
-                    if(!networkMap[sp]) networkMap[sp] = [];
-                    networkMap[sp].push(u);
-                }
+                if(sp) { if(!networkMap[sp]) networkMap[sp] = []; networkMap[sp].push(u); }
             });
 
             const payoutRates = [1000, 500, 250, 250, 250, 125, 125, 125, 125];
 
             function getUserTotalEarning(uid) {
-                let earn = 0;
-                let cLevel = networkMap[String(uid).trim().toUpperCase()] || [];
+                let earn = 0; let cLevel = networkMap[String(uid).trim().toUpperCase()] || [];
                 for (let i = 0; i < 9; i++) {
                     let actCount = cLevel.filter(u => (u.status || '').toLowerCase() === 'active').length;
                     earn += actCount * payoutRates[i];
                     let nxLevel = [];
-                    cLevel.forEach(u => {
-                        nxLevel = nxLevel.concat(networkMap[String(u.user_id).trim().toUpperCase()] || []);
-                    });
+                    cLevel.forEach(u => { nxLevel = nxLevel.concat(networkMap[String(u.user_id).trim().toUpperCase()] || []); });
                     cLevel = nxLevel;
-                }
-                return earn;
+                } return earn;
             }
 
             let currentLevelUsers = networkMap[myIdNorm] || [];
@@ -406,48 +306,25 @@
                     const isActive = (member.status || '').toLowerCase() === 'active';
                     const badgeClass = isActive ? 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20' : 'text-slate-400 bg-slate-700/50 border-slate-600';
                     const badgeText = isActive ? 'ACTIVE' : 'UNACTIVE';
-                    
                     const mEarn = getUserTotalEarning(member.user_id);
                     const earnHtml = isActive ? `<p class="text-[11px] font-black text-emerald-400 mt-1"><i class="fa-solid fa-coins mr-1"></i> Earned: ₹${mEarn}</p>` : `<p class="text-[11px] font-bold text-slate-500 mt-1">Earned: ₹${mEarn}</p>`;
-
                     if(container) container.innerHTML += `
                         <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-700/50 shadow-sm mb-2">
-                            <div>
-                                <p class="text-sm font-semibold text-white"><i class="fa-solid fa-user-circle text-blue-400 mr-1.5"></i> ${member.name}</p>
-                                <p class="text-[10px] text-slate-400 ml-6 font-mono">${member.user_id}</p>
-                                <div class="ml-6">${earnHtml}</div>
-                            </div>
+                            <div><p class="text-sm font-semibold text-white"><i class="fa-solid fa-user-circle text-blue-400 mr-1.5"></i> ${member.name}</p><p class="text-[10px] text-slate-400 ml-6 font-mono">${member.user_id}</p><div class="ml-6">${earnHtml}</div></div>
                             <span class="text-[10px] font-bold px-2.5 py-1 rounded-md border ${badgeClass}">${badgeText}</span>
                         </div>`;
                 });
             }
 
-            let totalEarning = 0;
-            let totalTeamCount = 0;
-            let levelCounts = [0,0,0,0,0,0,0,0,0];
-            let activeCounts = [0,0,0,0,0,0,0,0,0];
-
+            let totalEarning = 0; let totalTeamCount = 0; let levelCounts = [0,0,0,0,0,0,0,0,0]; let activeCounts = [0,0,0,0,0,0,0,0,0];
             for (let i = 0; i < 9; i++) {
-                levelCounts[i] = currentLevelUsers.length;
-                activeCounts[i] = currentLevelUsers.filter(u => (u.status || '').toLowerCase() === 'active').length;
-
-                if(i === 0) {
-                    windowMyActiveDirects = activeCounts[0];
-                    if(document.getElementById('activeDirectCount')) document.getElementById('activeDirectCount').innerText = `${windowMyActiveDirects} Active`;
-                }
-
-                let income = activeCounts[i] * payoutRates[i];
-                totalEarning += income;
-                totalTeamCount += levelCounts[i];
-
+                levelCounts[i] = currentLevelUsers.length; activeCounts[i] = currentLevelUsers.filter(u => (u.status || '').toLowerCase() === 'active').length;
+                if(i === 0) { windowMyActiveDirects = activeCounts[0]; if(document.getElementById('activeDirectCount')) document.getElementById('activeDirectCount').innerText = `${windowMyActiveDirects} Active`; }
+                let income = activeCounts[i] * payoutRates[i]; totalEarning += income; totalTeamCount += levelCounts[i];
                 if(document.getElementById(`l${i+1}Count`)) document.getElementById(`l${i+1}Count`).innerText = levelCounts[i];
                 if(document.getElementById(`l${i+1}Pay`)) document.getElementById(`l${i+1}Pay`).innerText = `₹${income}`;
-
                 let nextLevelUsers = [];
-                currentLevelUsers.forEach(u => {
-                    const downlines = networkMap[String(u.user_id).trim().toUpperCase()] || [];
-                    nextLevelUsers = nextLevelUsers.concat(downlines);
-                });
+                currentLevelUsers.forEach(u => { nextLevelUsers = nextLevelUsers.concat(networkMap[String(u.user_id).trim().toUpperCase()] || []); });
                 currentLevelUsers = nextLevelUsers;
             }
 
@@ -456,19 +333,15 @@
             if(document.getElementById('remainingLimit')) document.getElementById('remainingLimit').innerText = `₹${50000 - totalEarning}`;
             
             const { data: wData } = await _supabase.from('withdrawals').select('amount').eq('user_id', currentUser.user_id);
-            let totalWithdrawn = 0;
-            if(wData) wData.forEach(w => totalWithdrawn += parseFloat(w.amount));
-            
+            let totalWithdrawn = 0; if(wData) wData.forEach(w => totalWithdrawn += parseFloat(w.amount));
             windowAvailableBalance = totalEarning - totalWithdrawn;
             if(document.getElementById('modalAvailBal')) document.getElementById('modalAvailBal').innerText = `₹${windowAvailableBalance}`;
 
-        } catch (err) { console.error("Network Data Error:", err); }
+        } catch (err) { console.error("Data Error:", err); }
     }
 
     async function updatePassword() {
-        const newPass = document.getElementById('newPassword').value.trim();
-        const msg = document.getElementById('passMsg');
-        const btn = document.getElementById('passBtn');
+        const newPass = document.getElementById('newPassword').value.trim(); const msg = document.getElementById('passMsg'); const btn = document.getElementById('passBtn');
         if(!newPass) { msg.innerText = "Please enter a new password."; msg.className = "text-xs text-red-400 block mb-3 font-bold"; return; }
         btn.disabled = true; btn.innerText = "Saving...";
         try {
@@ -481,11 +354,8 @@
     }
 
     async function saveBankDetails() {
-        const bName = document.getElementById('accName').value.trim();
-        const bAcc = document.getElementById('accNo').value.trim();
-        const bIfsc = document.getElementById('ifscCode').value.trim();
-        const msg = document.getElementById('bankMsg');
-        const btn = document.getElementById('bankBtn');
+        const bName = document.getElementById('accName').value.trim(); const bAcc = document.getElementById('accNo').value.trim(); const bIfsc = document.getElementById('ifscCode').value.trim();
+        const msg = document.getElementById('bankMsg'); const btn = document.getElementById('bankBtn');
         if(!bName || !bAcc || !bIfsc) { msg.innerText = "Please fill all bank details."; msg.className = "text-xs text-red-400 block mb-3 font-bold"; return; }
         btn.disabled = true; btn.innerText = "Saving...";
         try {
@@ -501,93 +371,59 @@
         if((currentUser.status || '').toLowerCase() !== 'active') { alert("Your account must be ACTIVE to withdraw funds."); return; }
         openModal('withdrawModal');
         if(windowMyActiveDirects >= 5) {
-            document.getElementById('withdrawFormArea').classList.remove('hidden');
-            document.getElementById('withdrawErrorArea').classList.add('hidden');
+            document.getElementById('withdrawFormArea').classList.remove('hidden'); document.getElementById('withdrawErrorArea').classList.add('hidden');
         } else {
-            document.getElementById('withdrawFormArea').classList.add('hidden');
-            document.getElementById('withdrawErrorArea').classList.remove('hidden');
+            document.getElementById('withdrawFormArea').classList.add('hidden'); document.getElementById('withdrawErrorArea').classList.remove('hidden');
         }
     }
 
     async function submitWithdraw() {
-        const amtInput = document.getElementById('withdrawAmount').value;
-        const amt = parseFloat(amtInput);
-        const msg = document.getElementById('withdrawMsg');
-        const btn = document.getElementById('wSubmitBtn');
-
+        const amtInput = document.getElementById('withdrawAmount').value; const amt = parseFloat(amtInput); const msg = document.getElementById('withdrawMsg'); const btn = document.getElementById('wSubmitBtn');
         if(!amt || amt <= 0) { msg.innerText = "Enter a valid amount."; msg.className = "text-xs text-red-400 block mb-3 font-bold"; return; }
         if(amt > windowAvailableBalance) { msg.innerText = "Amount exceeds available balance."; msg.className = "text-xs text-red-400 block mb-3 font-bold"; return; }
-        
         btn.disabled = true; btn.innerText = "Processing...";
         try {
             const { error } = await _supabase.from('withdrawals').insert([ { user_id: currentUser.user_id, amount: amt, status: 'Pending' } ]);
             if(error) throw error;
             msg.innerText = "Withdrawal Requested Successfully!"; msg.className = "text-xs text-emerald-400 block mb-3 font-bold";
-            setTimeout(() => { 
-                closeModal('withdrawModal'); fetchNetworkData(); loadWithdrawalHistory();
-                btn.disabled = false; btn.innerText = "Withdraw"; msg.classList.add('hidden'); document.getElementById('withdrawAmount').value = '';
-            }, 1500);
+            setTimeout(() => { closeModal('withdrawModal'); fetchNetworkData(); loadWithdrawalHistory(); btn.disabled = false; btn.innerText = "Withdraw"; msg.classList.add('hidden'); document.getElementById('withdrawAmount').value = ''; }, 1500);
         } catch(err) { msg.innerText = "Error requesting withdrawal."; msg.className = "text-xs text-red-400 block mb-3 font-bold"; btn.disabled = false; btn.innerText = "Withdraw"; }
     }
 
     async function loadWithdrawalHistory() {
-        const container = document.getElementById('historyContainer');
-        if(!container) return;
+        const container = document.getElementById('historyContainer'); if(!container) return;
         try {
             const { data, error } = await _supabase.from('withdrawals').select('*').eq('user_id', currentUser.user_id).order('created_at', { ascending: false });
             if (error) throw error;
-            if (data.length === 0) {
-                container.innerHTML = `<p class="text-center text-xs text-slate-500 py-4">No payout history found.</p>`;
-            } else {
+            if (data.length === 0) { container.innerHTML = `<p class="text-center text-xs text-slate-500 py-4">No payout history found.</p>`; } else {
                 container.innerHTML = '';
                 data.forEach(w => {
                     const d = new Date(w.created_at).toLocaleDateString('en-IN');
                     const isPaid = w.status === 'Paid';
                     const sColor = isPaid ? 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20' : 'text-amber-400 bg-amber-400/10 border-amber-400/20';
-                    container.innerHTML += `
-                        <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-700/50 shadow-sm mb-2">
-                            <div><p class="text-sm font-bold text-white">₹${w.amount}</p>
-                            <p class="text-[10px] text-slate-400 font-mono">${d}</p></div>
-                            <span class="text-[10px] font-bold px-2.5 py-1 rounded-md border ${sColor}">${w.status}</span>
-                        </div>`;
+                    container.innerHTML += `<div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-700/50 shadow-sm mb-2"><div><p class="text-sm font-bold text-white">₹${w.amount}</p><p class="text-[10px] text-slate-400 font-mono">${d}</p></div><span class="text-[10px] font-bold px-2.5 py-1 rounded-md border ${sColor}">${w.status}</span></div>`;
                 });
             }
         } catch (err) { console.error("History Error:", err); }
     }
 
     async function submitUTR() {
-        const utr = document.getElementById('utrNumber').value.trim();
-        const msg = document.getElementById('qrMsg');
-        const btn = document.getElementById('utrBtn');
+        const utr = document.getElementById('utrNumber').value.trim(); const msg = document.getElementById('qrMsg'); const btn = document.getElementById('utrBtn');
         if(utr.length < 8) { msg.innerText = "Please enter a valid UTR number."; msg.className = "text-xs text-red-400 mb-3 block"; return; }
         btn.disabled = true; btn.innerText = "Sending...";
         try {
             const { error } = await _supabase.from('payments').insert([ { user_id: currentUser.user_id, utr_number: utr, status: 'Pending' } ]);
             if(error) throw error;
             msg.innerText = "Request Sent! Admin will approve soon."; msg.className = "text-xs text-emerald-400 mb-3 block font-bold";
-            setTimeout(() => { closeModal('qrModal'); btn.disabled=false; btn.innerText="Submit Request"; msg.classList.add('hidden'); document.getElementById('utrNumber').value=''; }, 2000);
-        } catch (err) {
-            msg.innerText = "Create 'payments' table in Supabase first!"; msg.className = "text-xs text-amber-400 mb-3 block";
-            btn.disabled = false; btn.innerText = "Submit Request";
-        }
+        
+           setTimeout(() => { closeModal('qrModal'); btn.disabled=false; btn.innerText="Submit Request"; msg.classList.add('hidden'); document.getElementById('utrNumber').value=''; }, 2000);
+        } catch (err) { msg.innerText = "Create 'payments' table in Supabase first!"; msg.className = "text-xs text-amber-400 mb-3 block"; btn.disabled = false; btn.innerText = "Submit Request"; }
     }
 
-    // Modal Controls
-    function openModal(id) { 
-        const el = document.getElementById(id);
-        if(el) el.classList.remove('hidden'); 
-    }
-    function closeModal(id) { 
-        const el = document.getElementById(id);
-        if(el) el.classList.add('hidden'); 
-    }
-    function logout() { 
-        localStorage.removeItem('mahan_user'); 
-        window.location.href = "login.html"; 
-    }
+    function openModal(id) { const el = document.getElementById(id); if(el) el.classList.remove('hidden'); }
+    function closeModal(id) { const el = document.getElementById(id); if(el) el.classList.add('hidden'); }
+    function logout() { localStorage.removeItem('mahan_user'); window.location.href = "login.html"; }
 </script>
 </body>
 </html>
-
-
-        
+                
