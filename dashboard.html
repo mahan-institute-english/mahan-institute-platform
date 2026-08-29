@@ -47,14 +47,13 @@
             </div>
         </div>
 
-        <!-- NEW: Live News Ticker Bar -->
+        <!-- Live News Ticker Bar -->
         <div class="bg-blue-900/30 border border-blue-500/30 rounded-xl p-2.5 flex items-center overflow-hidden relative shadow-inner">
             <div class="flex-shrink-0 z-10 bg-[#0f172a] pr-3 flex items-center border-r border-blue-500/30">
                 <i class="fa-solid fa-bullhorn text-amber-400 animate-pulse"></i>
                 <span class="text-[10px] font-bold text-amber-400 ml-2 uppercase tracking-widest">LIVE</span>
             </div>
             <div class="flex-1 overflow-hidden relative pl-2">
-                <!-- આ લખાણ આપણે પછી Admin પેનલમાંથી બદલી શકીશું -->
                 <div class="animate-ticker text-xs font-semibold text-emerald-300 tracking-wide" id="liveNewsText">
                     🎉 Welcome to MAHAN Institute! Start learning and earning today. Watch the live training video below for more details!
                 </div>
@@ -134,7 +133,7 @@
             </button>
         </div>
         
-        <!-- NEW: Success Story / Live Class Video Box -->
+        <!-- Success Story / Live Class Video Box -->
         <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5 text-center">
             <h3 class="text-sm font-bold text-white mb-1 flex items-center justify-center gap-2">
                 <i class="fa-brands fa-youtube text-red-500"></i> Live Classes & Updates
@@ -142,7 +141,6 @@
             <p class="text-[10px] text-slate-400 mb-4">Watch our latest success stories and training videos.</p>
             
             <div class="relative w-full aspect-video rounded-xl overflow-hidden border border-slate-600 shadow-[0_0_15px_rgba(0,0,0,0.5)]">
-                <!-- આ વિડીયો લિંક આપણે Admin પેનલથી બદલી શકીશું -->
                 <iframe id="dashVideo" class="w-full h-full" src="https://www.youtube.com/embed/jfKfPfyJRdk?rel=0" title="MAHAN Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         </div>
@@ -161,27 +159,21 @@
             <button onclick="openModal('directModal')" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-2.5 px-6 rounded-xl transition shadow-lg">View Direct Details</button>
         </div>
 
-        <!-- NEW: Social Media Hub -->
+        <!-- Social Media Hub -->
         <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5">
-            <h3 class="text-sm font-bold text-white mb-4 text-center border-b border-slate-700 pb-3">
-                Join Our Community
-            </h3>
+            <h3 class="text-sm font-bold text-white mb-4 text-center border-b border-slate-700 pb-3">Join Our Community</h3>
             <div class="grid grid-cols-4 gap-3">
                 <a href="#" id="ytLink" target="_blank" class="bg-gradient-to-br from-red-500 to-red-700 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg shadow-red-900/50 hover:scale-105 transition">
-                    <i class="fa-brands fa-youtube text-2xl text-white mb-1"></i>
-                    <span class="text-[8px] font-bold text-white uppercase tracking-wider">YouTube</span>
+                    <i class="fa-brands fa-youtube text-2xl text-white mb-1"></i><span class="text-[8px] font-bold text-white uppercase tracking-wider">YouTube</span>
                 </a>
                 <a href="#" id="igLink" target="_blank" class="bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg shadow-pink-900/50 hover:scale-105 transition">
-                    <i class="fa-brands fa-instagram text-2xl text-white mb-1"></i>
-                    <span class="text-[8px] font-bold text-white uppercase tracking-wider">Instagram</span>
+                    <i class="fa-brands fa-instagram text-2xl text-white mb-1"></i><span class="text-[8px] font-bold text-white uppercase tracking-wider">Instagram</span>
                 </a>
                 <a href="#" id="fbLink" target="_blank" class="bg-gradient-to-br from-blue-600 to-blue-800 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg shadow-blue-900/50 hover:scale-105 transition">
-                    <i class="fa-brands fa-facebook-f text-2xl text-white mb-1"></i>
-                    <span class="text-[8px] font-bold text-white uppercase tracking-wider">Facebook</span>
+                    <i class="fa-brands fa-facebook-f text-2xl text-white mb-1"></i><span class="text-[8px] font-bold text-white uppercase tracking-wider">Facebook</span>
                 </a>
                 <a href="#" id="waLink" target="_blank" class="bg-gradient-to-br from-green-500 to-emerald-700 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg shadow-green-900/50 hover:scale-105 transition">
-                    <i class="fa-brands fa-whatsapp text-2xl text-white mb-1"></i>
-                    <span class="text-[8px] font-bold text-white uppercase tracking-wider">Group</span>
+                    <i class="fa-brands fa-whatsapp text-2xl text-white mb-1"></i><span class="text-[8px] font-bold text-white uppercase tracking-wider">Group</span>
                 </a>
             </div>
         </div>
@@ -228,7 +220,7 @@
         </div>
     </div>
     
-    <!-- Direct Members Modal (Full Screen & Earning Update) -->
+    <!-- Direct Members Modal -->
     <div id="directModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
         <div class="bg-[#1e293b] border border-slate-600 p-5 rounded-2xl w-[95%] max-w-md max-h-[90vh] shadow-2xl relative flex flex-col">
             <h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2"><i class="fa-solid fa-users text-blue-400 mr-2"></i> Direct Members List</h3>
@@ -237,7 +229,7 @@
         </div>
     </div>
 
-    <!-- History Modal (Full Screen) -->
+    <!-- History Modal -->
     <div id="historyModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
         <div class="bg-[#1e293b] border border-slate-600 p-5 rounded-2xl w-[95%] max-w-md max-h-[90vh] shadow-2xl relative flex flex-col">
             <h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2"><i class="fa-solid fa-clock-rotate-left text-blue-400 mr-2"></i> Payout History</h3>
@@ -322,6 +314,7 @@
     </div>
 
 <script>
+    // System Configurations
     const SUPABASE_URL = "https://wzrbsvwmrymkpzwmgypb.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6cmJzdndtcnlta3B6d21neXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDc1NzQsImV4cCI6MjEwMzMyMzU3NH0.5ulY5LW3AQEPFDP__iOSJssgNafTSe9Yu4gEqZF7sLc";
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -330,31 +323,36 @@
     let windowMyActiveDirects = 0;
     let windowAvailableBalance = 0;
 
+    // Safety Try-Catch Wrapper
     window.onload = async () => {
-        const userDataStr = localStorage.getItem('mahan_user');
-        if (!userDataStr) { window.location.href = "login.html"; return; }
-        currentUser = JSON.parse(userDataStr);
+        try {
+            const userDataStr = localStorage.getItem('mahan_user');
+            if (!userDataStr) { window.location.href = "login.html"; return; }
+            currentUser = JSON.parse(userDataStr);
 
-        document.getElementById('dashName').innerText = currentUser.name;
-        document.getElementById('dashId').innerText = currentUser.user_id;
-        document.getElementById('dashMobile').innerText = currentUser.mobile;
-        
-        if(currentUser.bank_name) document.getElementById('accName').value = currentUser.bank_name;
-        if(currentUser.bank_acc) document.getElementById('accNo').value = currentUser.bank_acc;
-        if(currentUser.bank_ifsc) document.getElementById('ifscCode').value = currentUser.bank_ifsc;
+            document.getElementById('dashName').innerText = currentUser.name || '';
+            document.getElementById('dashId').innerText = currentUser.user_id || '';
+            document.getElementById('dashMobile').innerText = currentUser.mobile || '';
+            
+            if(currentUser.bank_name && document.getElementById('accName')) document.getElementById('accName').value = currentUser.bank_name;
+            if(currentUser.bank_acc && document.getElementById('accNo')) document.getElementById('accNo').value = currentUser.bank_acc;
+            if(currentUser.bank_ifsc && document.getElementById('ifscCode')) document.getElementById('ifscCode').value = currentUser.bank_ifsc;
 
-        let statusEl = document.getElementById('dashStatusText');
-        if((currentUser.status || '').toLowerCase() === 'active') {
-            statusEl.innerText = "Status: ACTIVE";
-            statusEl.className = "text-xs font-bold text-emerald-400 bg-emerald-400/10 inline-block px-3 py-1 rounded-full border border-emerald-400/20 tracking-widest";
-        } else {
-            statusEl.innerText = "Status: UNACTIVE";
-            statusEl.className = "text-xs font-bold text-red-400 bg-red-400/10 inline-block px-3 py-1 rounded-full border border-red-400/20 tracking-widest";
-            document.getElementById('activationDiv').classList.remove('hidden');
+            let statusEl = document.getElementById('dashStatusText');
+            if((currentUser.status || '').toLowerCase() === 'active') {
+                statusEl.innerText = "Status: ACTIVE";
+                statusEl.className = "text-xs font-bold text-emerald-400 bg-emerald-400/10 inline-block px-3 py-1 rounded-full border border-emerald-400/20 tracking-widest";
+            } else {
+                statusEl.innerText = "Status: UNACTIVE";
+                statusEl.className = "text-xs font-bold text-red-400 bg-red-400/10 inline-block px-3 py-1 rounded-full border border-red-400/20 tracking-widest";
+                document.getElementById('activationDiv').classList.remove('hidden');
+            }
+
+            await fetchNetworkData();
+            await loadWithdrawalHistory();
+        } catch (error) {
+            console.error("Initialization Error:", error);
         }
-
-        fetchNetworkData();
-        loadWithdrawalHistory();
     };
 
     function shareReferralWhatsApp() {
@@ -398,12 +396,12 @@
             }
 
             let currentLevelUsers = networkMap[myIdNorm] || [];
-            document.getElementById('directTeamCount').innerText = currentLevelUsers.length;
+            if(document.getElementById('directTeamCount')) document.getElementById('directTeamCount').innerText = currentLevelUsers.length;
 
             if (currentLevelUsers.length === 0) {
-                container.innerHTML = `<p class="text-center text-xs text-slate-500 py-4">No direct network found yet.</p>`;
+                if(container) container.innerHTML = `<p class="text-center text-xs text-slate-500 py-4">No direct network found yet.</p>`;
             } else {
-                container.innerHTML = '';
+                if(container) container.innerHTML = '';
                 currentLevelUsers.forEach(member => {
                     const isActive = (member.status || '').toLowerCase() === 'active';
                     const badgeClass = isActive ? 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20' : 'text-slate-400 bg-slate-700/50 border-slate-600';
@@ -412,7 +410,7 @@
                     const mEarn = getUserTotalEarning(member.user_id);
                     const earnHtml = isActive ? `<p class="text-[11px] font-black text-emerald-400 mt-1"><i class="fa-solid fa-coins mr-1"></i> Earned: ₹${mEarn}</p>` : `<p class="text-[11px] font-bold text-slate-500 mt-1">Earned: ₹${mEarn}</p>`;
 
-                    container.innerHTML += `
+                    if(container) container.innerHTML += `
                         <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-700/50 shadow-sm mb-2">
                             <div>
                                 <p class="text-sm font-semibold text-white"><i class="fa-solid fa-user-circle text-blue-400 mr-1.5"></i> ${member.name}</p>
@@ -435,15 +433,15 @@
 
                 if(i === 0) {
                     windowMyActiveDirects = activeCounts[0];
-                    document.getElementById('activeDirectCount').innerText = `${windowMyActiveDirects} Active`;
+                    if(document.getElementById('activeDirectCount')) document.getElementById('activeDirectCount').innerText = `${windowMyActiveDirects} Active`;
                 }
 
                 let income = activeCounts[i] * payoutRates[i];
                 totalEarning += income;
                 totalTeamCount += levelCounts[i];
 
-                document.getElementById(`l${i+1}Count`).innerText = levelCounts[i];
-                document.getElementById(`l${i+1}Pay`).innerText = `₹${income}`;
+                if(document.getElementById(`l${i+1}Count`)) document.getElementById(`l${i+1}Count`).innerText = levelCounts[i];
+                if(document.getElementById(`l${i+1}Pay`)) document.getElementById(`l${i+1}Pay`).innerText = `₹${income}`;
 
                 let nextLevelUsers = [];
                 currentLevelUsers.forEach(u => {
@@ -453,18 +451,18 @@
                 currentLevelUsers = nextLevelUsers;
             }
 
-            document.getElementById('totalTeam').innerText = totalTeamCount;
-            document.getElementById('earningAmount').innerText = `₹${totalEarning}`;
-            document.getElementById('remainingLimit').innerText = `₹${50000 - totalEarning}`;
+            if(document.getElementById('totalTeam')) document.getElementById('totalTeam').innerText = totalTeamCount;
+            if(document.getElementById('earningAmount')) document.getElementById('earningAmount').innerText = `₹${totalEarning}`;
+            if(document.getElementById('remainingLimit')) document.getElementById('remainingLimit').innerText = `₹${50000 - totalEarning}`;
             
             const { data: wData } = await _supabase.from('withdrawals').select('amount').eq('user_id', currentUser.user_id);
             let totalWithdrawn = 0;
             if(wData) wData.forEach(w => totalWithdrawn += parseFloat(w.amount));
             
             windowAvailableBalance = totalEarning - totalWithdrawn;
-            document.getElementById('modalAvailBal').innerText = `₹${windowAvailableBalance}`;
+            if(document.getElementById('modalAvailBal')) document.getElementById('modalAvailBal').innerText = `₹${windowAvailableBalance}`;
 
-        } catch (err) { console.error(err); }
+        } catch (err) { console.error("Network Data Error:", err); }
     }
 
     async function updatePassword() {
@@ -534,6 +532,7 @@
 
     async function loadWithdrawalHistory() {
         const container = document.getElementById('historyContainer');
+        if(!container) return;
         try {
             const { data, error } = await _supabase.from('withdrawals').select('*').eq('user_id', currentUser.user_id).order('created_at', { ascending: false });
             if (error) throw error;
@@ -544,5 +543,51 @@
                 data.forEach(w => {
                     const d = new Date(w.created_at).toLocaleDateString('en-IN');
                     const isPaid = w.status === 'Paid';
- 
-                
+                    const sColor = isPaid ? 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20' : 'text-amber-400 bg-amber-400/10 border-amber-400/20';
+                    container.innerHTML += `
+                        <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-700/50 shadow-sm mb-2">
+                            <div><p class="text-sm font-bold text-white">₹${w.amount}</p>
+                            <p class="text-[10px] text-slate-400 font-mono">${d}</p></div>
+                            <span class="text-[10px] font-bold px-2.5 py-1 rounded-md border ${sColor}">${w.status}</span>
+                        </div>`;
+                });
+            }
+        } catch (err) { console.error("History Error:", err); }
+    }
+
+    async function submitUTR() {
+        const utr = document.getElementById('utrNumber').value.trim();
+        const msg = document.getElementById('qrMsg');
+        const btn = document.getElementById('utrBtn');
+        if(utr.length < 8) { msg.innerText = "Please enter a valid UTR number."; msg.className = "text-xs text-red-400 mb-3 block"; return; }
+        btn.disabled = true; btn.innerText = "Sending...";
+        try {
+            const { error } = await _supabase.from('payments').insert([ { user_id: currentUser.user_id, utr_number: utr, status: 'Pending' } ]);
+            if(error) throw error;
+            msg.innerText = "Request Sent! Admin will approve soon."; msg.className = "text-xs text-emerald-400 mb-3 block font-bold";
+            setTimeout(() => { closeModal('qrModal'); btn.disabled=false; btn.innerText="Submit Request"; msg.classList.add('hidden'); document.getElementById('utrNumber').value=''; }, 2000);
+        } catch (err) {
+            msg.innerText = "Create 'payments' table in Supabase first!"; msg.className = "text-xs text-amber-400 mb-3 block";
+            btn.disabled = false; btn.innerText = "Submit Request";
+        }
+    }
+
+    // Modal Controls
+    function openModal(id) { 
+        const el = document.getElementById(id);
+        if(el) el.classList.remove('hidden'); 
+    }
+    function closeModal(id) { 
+        const el = document.getElementById(id);
+        if(el) el.classList.add('hidden'); 
+    }
+    function logout() { 
+        localStorage.removeItem('mahan_user'); 
+        window.location.href = "login.html"; 
+    }
+</script>
+</body>
+</html>
+
+
+        
