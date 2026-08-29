@@ -3,88 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAHAN - Member Sign In</title>
+    <title>MAHAN - Member Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-4">
-    <div class="max-w-md w-full bg-slate-800 border border-slate-700 p-6 rounded-xl shadow-xl space-y-4">
+<body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-4 font-sans">
+    
+    <div class="max-w-md w-full bg-slate-800/80 backdrop-blur-sm border border-slate-700 p-8 rounded-2xl shadow-2xl space-y-6">
+        
+        <!-- Logo & Header -->
         <div class="text-center space-y-2">
-            <div class="inline-flex bg-blue-600/20 text-blue-400 p-3 rounded-full border border-blue-500/30">
-                <i class="fa-solid fa-right-to-bracket text-xl"></i>
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-600/20 text-blue-500 mb-2">
+                <i class="fa-solid fa-right-to-bracket text-2xl"></i>
             </div>
-            <h2 class="text-xl font-bold text-white">MEMBER SIGN IN</h2>
-            <p class="text-xs text-slate-400">Enter your User ID and Password to access Dashboard</p>
+            <h1 class="text-2xl font-bold text-white tracking-wide uppercase">MEMBER SIGN IN</h1>
+            <p class="text-sm text-slate-400">Enter your User ID/Mobile and Password</p>
         </div>
         
-        <form id="loginForm" class="space-y-3 pt-2">
-            <div>
-                <label class="text-xs text-slate-400">User ID</label>
-                <input type="text" id="userId" required placeholder="e.g. MAHAN9396" class="w-full bg-slate-900 border border-slate-700 rounded p-2.5 text-sm text-white uppercase focus:border-blue-500 outline-none">
+        <!-- Login Form -->
+        <form id="loginForm" class="space-y-5 pt-4">
+            <!-- User ID / Mobile Input -->
+            <div class="space-y-1">
+                <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">User ID / Mobile Number</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-500">
+                        <i class="fa-regular fa-user"></i>
+                    </div>
+                    <input type="text" id="loginId" required class="w-full bg-slate-900 border border-slate-700 rounded-lg py-3 pl-10 pr-3 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition placeholder-slate-600" placeholder="e.g. STU123456 or 9876543210">
+                </div>
             </div>
-            <div>
-                <label class="text-xs text-slate-400">Password</label>
-                <input type="password" id="password" required placeholder="Enter password" class="w-full bg-slate-900 border border-slate-700 rounded p-2.5 text-sm text-white focus:border-blue-500 outline-none">
+
+            <!-- Password Input -->
+            <div class="space-y-1">
+                <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Password</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-500">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <input type="password" id="password" required class="w-full bg-slate-900 border border-slate-700 rounded-lg py-3 pl-10 pr-3 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition placeholder-slate-600" placeholder="••••••••">
+                </div>
             </div>
-            <button type="submit" id="loginBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition text-sm shadow">Sign In to Dashboard</button>
+
+            <!-- Error Message Box -->
+            <p id="msg" class="text-sm text-center hidden"></p>
+
+            <!-- Login Button -->
+            <button type="submit" id="loginBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition duration-200 shadow-lg shadow-blue-600/30">
+                SIGN IN TO DASHBOARD
+            </button>
         </form>
 
-        <p id="msg" class="text-xs text-center"></p>
-
-        <div class="text-center text-xs pt-2 border-t border-slate-700">
-            <span class="text-slate-400">Don't have an account?</span> 
-            <a href="register.html" class="text-emerald-400 font-semibold hover:underline ml-1">Register Free</a>
+        <!-- Footer Links -->
+        <div class="flex flex-col items-center space-y-3 pt-4 border-t border-slate-700/50">
+            <a href="#" class="text-sm text-blue-400 hover:text-blue-300 transition">Forgot Password? Click here</a>
+            <p class="text-sm text-slate-400">
+                Don't have an account? <a href="register.html" class="text-blue-400 hover:text-blue-300 font-semibold transition">Register Free</a>
+            </p>
         </div>
     </div>
 
     <script>
+        // Supabase Credentials
         const SUPABASE_URL = "https://wzrbsvwmrymkpzwmgypb.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6cmJzdndtcnlta3B6d21neXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDc1NzQsImV4cCI6MjEwMzMyMzU3NH0.5ulY5LW3AQEPFDP__iOSJssgNafTSe9Yu4gEqZF7sLc";
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            
             const msg = document.getElementById('msg');
             const loginBtn = document.getElementById('loginBtn');
-            
-            loginBtn.disabled = true;
-            msg.innerText = "Checking credentials...";
-            msg.className = "text-xs text-center text-amber-400";
-
-            const userId = document.getElementById('userId').value.trim();
+            const loginId = document.getElementById('loginId').value.trim();
             const password = document.getElementById('password').value.trim();
 
+            // બટન લોડિંગ સ્ટેટ
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Checking...';
+            msg.className = "text-sm text-center text-amber-400 block";
+            msg.innerText = "Verifying details...";
+
             try {
-                // Query supabase for user_id and password match
+                // ડેટાબેઝમાં ચેક કરો: User ID અથવા Mobile બન્નેમાંથી ગમે તે એક મેચ થવું જોઈએ
                 const { data, error } = await _supabase
                     .from('users')
                     .select('*')
-                    .eq('user_id', userId)
+                    .or(`user_id.eq.${loginId},mobile.eq.${loginId}`) // જાદુઈ કોડ: ID અથવા Mobile
                     .eq('password', password)
-                    .single();
+                    .maybeSingle();
 
                 if (error || !data) {
-                    msg.innerText = "Invalid User ID or Password!";
-                    msg.className = "text-xs text-center text-red-400 font-semibold";
+                    msg.innerText = "❌ ખોટો ID/Mobile અથવા Password!";
+                    msg.className = "text-sm text-center text-red-400 block bg-red-900/20 py-2 rounded-lg";
                     loginBtn.disabled = false;
+                    loginBtn.innerHTML = 'SIGN IN TO DASHBOARD';
                     return;
                 }
 
-                // Save user session in browser storage
+                // જો લોગીન સાચું હોય, તો યુઝરનો ડેટા બ્રાઉઝરમાં સેવ કરો જેથી ડેશબોર્ડમાં કામ આવે
                 localStorage.setItem('mahan_user', JSON.stringify(data));
 
-                msg.innerText = "Login Successful! Redirecting...";
-                msg.className = "text-xs text-center text-emerald-400 font-semibold";
+                msg.innerText = "✅ Login Successful! Redirecting...";
+                msg.className = "text-sm text-center text-emerald-400 block bg-emerald-900/20 py-2 rounded-lg";
                 
+                // ડેશબોર્ડ પર મોકલી દો (અહી તમારા ડેશબોર્ડ પેજનું નામ નાખજો)
                 setTimeout(() => {
-                    window.location.href = "dashboard.html";
+                    window.location.href = "dashboard.html"; 
                 }, 1000);
 
             } catch (err) {
-                msg.innerText = "Error: " + err.message;
-                msg.className = "text-xs text-center text-red-400";
+                msg.innerText = "Network Error. Please try again.";
+                msg.className = "text-sm text-center text-red-400 block";
                 loginBtn.disabled = false;
+                loginBtn.innerHTML = 'SIGN IN TO DASHBOARD';
             }
         });
     </script>
