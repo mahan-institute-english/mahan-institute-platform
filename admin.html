@@ -3,110 +3,276 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAHAN - Admin Master Panel</title>
+    <title>MAHAN - Admin Control Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Poppins', sans-serif; }</style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen p-4">
+<body class="bg-[#0f172a] text-slate-200 min-h-screen p-4 pb-12">
 
-    <div class="max-w-6xl mx-auto space-y-6">
-        <!-- Header -->
-        <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl flex justify-between items-center shadow-lg">
-            <div class="flex items-center space-x-3">
-                <div class="bg-red-600 text-white font-bold px-3 py-2 rounded-lg text-xs tracking-wider flex items-center gap-2 shadow">
-                    <i class="fa-solid fa-shield-halved"></i> ADMIN
+    <div class="max-w-2xl mx-auto space-y-6">
+        
+        <!-- Admin Header -->
+        <div class="bg-gradient-to-r from-slate-800 to-slate-900 border border-amber-500/30 p-5 rounded-2xl shadow-2xl flex justify-between items-center relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl"></div>
+            <div class="relative z-10 flex items-center gap-4">
+                <div class="w-12 h-12 bg-amber-500/20 text-amber-400 rounded-xl flex items-center justify-center border border-amber-500/30 shadow-lg">
+                    <i class="fa-solid fa-crown text-2xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-base font-bold text-white">MAHAN Institute - Master Panel</h1>
-                    <p class="text-xs text-slate-400">Manage All Registered Users & Commission Structure</p>
+                    <h1 class="text-xl font-bold text-white tracking-wider uppercase">Admin Panel</h1>
+                    <p class="text-xs text-amber-500 font-mono tracking-widest">Master Control Room</p>
                 </div>
             </div>
-            <button onclick="logout()" class="bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition border border-red-600/35">
-                <i class="fa-solid fa-right-from-bracket mr-1"></i> Logout
+            <button onclick="window.location.href='dashboard.html'" class="relative z-10 bg-slate-700/50 hover:bg-slate-700 border border-slate-600 text-white px-4 py-2 rounded-lg text-xs font-bold transition">
+                <i class="fa-solid fa-arrow-left mr-1"></i> Back
             </button>
         </div>
+        
+        <!-- Live Statistics -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl text-center shadow-lg">
+                <i class="fa-solid fa-users text-blue-400 text-xl mb-1"></i>
+                <h3 class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total Users</h3>
+                <p id="totalUsers" class="text-xl font-black text-white mt-1"><i class="fa-solid fa-spinner fa-spin text-sm"></i></p>
+            </div>
+            <div class="bg-slate-800 border border-emerald-500/30 p-4 rounded-xl text-center shadow-lg">
+                <i class="fa-solid fa-user-check text-emerald-400 text-xl mb-1"></i>
+                <h3 class="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Active</h3>
+                <p id="activeUsers" class="text-xl font-black text-white mt-1"><i class="fa-solid fa-spinner fa-spin text-sm"></i></p>
+            </div>
+            <div class="bg-slate-800 border border-red-500/30 p-4 rounded-xl text-center shadow-lg">
+                <i class="fa-solid fa-user-xmark text-red-400 text-xl mb-1"></i>
+                <h3 class="text-[10px] text-red-500 font-bold uppercase tracking-wider">Unactive</h3>
+                <p id="unactiveUsers" class="text-xl font-black text-white mt-1"><i class="fa-solid fa-spinner fa-spin text-sm"></i></p>
+            </div>
+            <div class="bg-slate-800 border border-amber-500/30 p-4 rounded-xl text-center shadow-lg">
+                <i class="fa-solid fa-file-excel text-amber-400 text-xl mb-1"></i>
+                <h3 class="text-[10px] text-amber-500 font-bold uppercase tracking-wider">Backup Data</h3>
+                <button onclick="downloadExcel()" class="mt-2 w-full bg-amber-600 hover:bg-amber-700 text-white text-[10px] font-bold py-1.5 rounded transition shadow-lg">
+                    Download CSV
+                </button>
+            </div>
+        </div>
 
-        <!-- Users Table Card -->
-        <div class="bg-slate-800 border border-slate-700 rounded-xl shadow-xl overflow-hidden p-6 space-y-4">
-            <div class="flex justify-between items-center">
-                <h2 class="text-sm font-bold flex items-center gap-2 text-emerald-400">
-                    <i class="fa-solid fa-users"></i> All Registered Users List
-                </h2>
-                <button onclick="fetchAllUsers()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-3 py-1.5 rounded-lg transition shadow">
-                    <i class="fa-solid fa-rotate mr-1"></i> Refresh List
+        <!-- Manual Activation & Search Section -->
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-xl">
+            <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3">
+                <i class="fa-solid fa-magnifying-glass text-blue-400"></i> Search & Activate Student
+            </h3>
+            
+            <div class="flex gap-3 mb-4">
+                <input type="text" id="searchInput" placeholder="Enter User ID or Mobile (e.g. STU123456)" class="flex-1 bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-emerald-500 uppercase font-mono">
+                <button onclick="searchUser()" id="searchBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-5 rounded-xl text-sm font-bold transition shadow-lg">
+                    Search
                 </button>
             </div>
 
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs whitespace-nowrap">
-                    <thead class="bg-slate-900 text-slate-400 uppercase tracking-wider border-b border-slate-700">
-                        <tr>
-                            <th class="p-3">User ID</th>
-                            <th class="p-3">Name</th>
-                            <th class="p-3">Mobile</th>
-                            <th class="p-3">Email</th>
-                            <th class="p-3">Sponsor ID</th>
-                            <th class="p-3">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="userTableBody" class="divide-y divide-slate-700/50">
-                        <tr>
-                            <td colspan="6" class="p-4 text-center text-slate-400">Loading database records...</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <p id="searchMsg" class="text-xs text-center hidden mb-3"></p>
+
+            <!-- Searched User Details -->
+            <div id="userDetailsBox" class="hidden bg-[#0f172a] border border-slate-600 rounded-xl p-4 space-y-3">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-[10px] text-slate-400 uppercase tracking-widest mb-1">Student Name</p>
+                        <p id="sName" class="text-base font-bold text-white"></p>
+                        <p id="sId" class="text-xs text-blue-400 font-mono mt-0.5"></p>
+                    </div>
+                    <span id="sStatus" class="text-[10px] font-bold px-3 py-1 rounded-md border tracking-widest"></span>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-2 border-t border-slate-700 pt-3">
+                    <div><p class="text-[10px] text-slate-500">Mobile</p><p id="sMobile" class="text-xs text-slate-300 font-mono"></p></div>
+                    <div><p class="text-[10px] text-slate-500">Sponsor</p><p id="sSponsor" class="text-xs text-slate-300 font-mono"></p></div>
+                    <div><p class="text-[10px] text-slate-500">State / City</p><p id="sLoc" class="text-xs text-slate-300"></p></div>
+                    <div><p class="text-[10px] text-slate-500">Join Date</p><p id="sDate" class="text-xs text-slate-300"></p></div>
+                </div>
+
+                <!-- Admin Action Buttons -->
+                <div class="flex gap-3 pt-3 border-t border-slate-700 mt-3">
+                    <button id="btnActivate" onclick="changeStatus('Active')" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-lg text-xs font-bold transition shadow-lg hidden">
+                        <i class="fa-solid fa-check-circle mr-1"></i> Make Active
+                    </button>
+                    <button id="btnUnactivate" onclick="changeStatus('Unactive')" class="flex-1 bg-red-600/20 hover:bg-red-600/40 text-red-400 border border-red-500/50 py-2.5 rounded-lg text-xs font-bold transition hidden">
+                        <i class="fa-solid fa-times-circle mr-1"></i> Make Unactive
+                    </button>
+                </div>
             </div>
         </div>
+
     </div>
 
-    <script>
-        const SUPABASE_URL = "https://wzrbsvwmrymkpzwmgypb.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6cmJzdndtcnlta3B6d21neXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDc1NzQsImV4cCI6MjEwMzMyMzU3NH0.5ulY5LW3AQEPFDP__iOSJssgNafTSe9Yu4gEqZF7sLc";
+<script>
+    const SUPABASE_URL = "https://wzrbsvwmrymkpzwmgypb.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6cmJzdndtcnlta3B6d21neXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDc1NzQsImV4cCI6MjEwMzMyMzU3NH0.5ulY5LW3AQEPFDP__iOSJssgNafTSe9Yu4gEqZF7sLc";
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let allUsersData = [];
+    let currentSearchedId = null;
+
+    window.onload = async () => {
+        const userDataStr = localStorage.getItem('mahan_user');
+        if (!userDataStr) { window.location.href = "login.html"; return; }
         
-        const { createClient } = supabase;
-        const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const currentUser = JSON.parse(userDataStr);
+        
+        // --- ADMIN SECURITY LOCK ---
+        // માત્ર MAHAN101 અથવા 7016623939 થી લોગીન હોય તો જ આ પેજ ખુલશે
+        if (currentUser.user_id !== 'MAHAN101' && currentUser.mobile !== '7016623939') {
+            document.body.innerHTML = '<div class="flex flex-col items-center justify-center min-h-screen text-center"><i class="fa-solid fa-shield-halved text-6xl text-red-500 mb-4"></i><h1 class="text-2xl font-bold text-white mb-2">ACCESS DENIED</h1><p class="text-slate-400 mb-6">You are not authorized to view the Admin Panel.</p><button onclick="window.location.href=\'dashboard.html\'" class="bg-blue-600 px-6 py-2 rounded-lg text-white font-bold">Go to Dashboard</button></div>';
+            return;
+        }
 
-        async function fetchAllUsers() {
-            const tbody = document.getElementById('userTableBody');
-            tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">Fetching records from database...</td></tr>`;
+        fetchDashboardStats();
+    };
 
-            try {
-                const { data, error } = await _supabase.from('users').select('*').order('id', { ascending: false });
+    // આખા ડેટાબેઝના આંકડા લાવવા
+    async function fetchDashboardStats() {
+        try {
+            const { data, error } = await _supabase.from('users').select('*');
+            if (error) throw error;
+            
+            allUsersData = data; // બેકઅપ માટે ડેટા સેવ રાખ્યો
 
-                if (error) {
-                    tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-red-400">Database Error: ${error.message}</td></tr>`;
-                    return;
+            const total = data.length;
+            const active = data.filter(u => (u.status || '').toLowerCase() === 'active').length;
+            const unactive = total - active;
+
+            document.getElementById('totalUsers').innerText = total;
+            document.getElementById('activeUsers').innerText = active;
+            document.getElementById('unactiveUsers').innerText = unactive;
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    // યુઝર સર્ચ કરવાનું લોજિક
+    async function searchUser() {
+        const searchVal = document.getElementById('searchInput').value.trim().toUpperCase();
+        const msg = document.getElementById('searchMsg');
+        const box = document.getElementById('userDetailsBox');
+        const btn = document.getElementById('searchBtn');
+
+        if(!searchVal) return;
+
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+        msg.classList.add('hidden');
+        box.classList.add('hidden');
+
+        try {
+            const { data, error } = await _supabase.from('users')
+                .select('*')
+                .or(`user_id.eq.${searchVal},mobile.eq.${searchVal}`)
+                .maybeSingle();
+
+            if (error || !data) {
+                msg.innerText = "❌ No student found with this ID or Mobile.";
+                msg.className = "text-xs text-center text-red-400 block mb-3 font-semibold";
+            } else {
+                currentSearchedId = data.user_id;
+                
+                document.getElementById('sName').innerText = data.name;
+                document.getElementById('sId').innerText = data.user_id;
+                document.getElementById('sMobile').innerText = data.mobile;
+                document.getElementById('sSponsor').innerText = data.sponsor || 'None';
+                document.getElementById('sLoc').innerText = `${data.city || '-'}, ${data.state || '-'}`;
+                
+                // તારીખ સેટ કરવી
+                const d = new Date(data.created_at);
+                document.getElementById('sDate').innerText = d.toLocaleDateString('en-IN') || '-';
+
+                // Status Badge & Buttons
+                const sBadge = document.getElementById('sStatus');
+                const btnAct = document.getElementById('btnActivate');
+                const btnUnact = document.getElementById('btnUnactivate');
+
+                if ((data.status || '').toLowerCase() === 'active') {
+                    sBadge.innerText = 'ACTIVE';
+                    sBadge.className = "text-[10px] font-bold px-3 py-1 rounded-md border tracking-widest text-emerald-400 bg-emerald-400/10 border-emerald-400/20";
+                    btnAct.classList.add('hidden');
+                    btnUnact.classList.remove('hidden');
+                } else {
+                    sBadge.innerText = 'UNACTIVE';
+                    sBadge.className = "text-[10px] font-bold px-3 py-1 rounded-md border tracking-widest text-red-400 bg-red-400/10 border-red-400/20";
+                    btnAct.classList.remove('hidden');
+                    btnUnact.classList.add('hidden');
                 }
 
-                if (!data || data.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-400">No users found in database. Please register a new user first.</td></tr>`;
-                    return;
-                }
-
-                tbody.innerHTML = '';
-                data.forEach(user => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td class="p-3 font-mono text-emerald-400 font-semibold">${user.user_id || '-'}</td>
-                        <td class="p-3 font-medium text-white">${user.name || '-'}</td>
-                        <td class="p-3 text-slate-300">${user.mobile || '-'}</td>
-                        <td class="p-3 text-slate-300">${user.email || '-'}</td>
-                        <td class="p-3 text-slate-400 font-mono">${user.sponsor || '-'}</td>
-                        <td class="p-3"><span class="bg-amber-500/20 text-amber-400 px-2.5 py-1 rounded text-[10px] font-bold">${user.status || 'Unactive'}</span></td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            } catch (err) {
-                tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-red-400">Error: ${err.message}</td></tr>`;
+                box.classList.remove('hidden');
             }
+        } catch (err) {
+            console.error(err);
+        }
+        btn.innerHTML = 'Search';
+    }
+
+    // યુઝરને Active/Unactive કરવાનું ફંક્શન
+    async function changeStatus(newStatus) {
+        if (!currentSearchedId) return;
+        
+        if(!confirm(`Are you sure you want to make ${currentSearchedId} ${newStatus}?`)) return;
+
+        try {
+            const { error } = await _supabase
+                .from('users')
+                .update({ status: newStatus })
+                .eq('user_id', currentSearchedId);
+
+            if (error) throw error;
+
+            alert(`✅ Success! Student is now ${newStatus}.`);
+            searchUser(); // ડેટા રિફ્રેશ કરવા ફરી સર્ચ ફંક્શન કોલ કરો
+            fetchDashboardStats(); // આંકડા રિફ્રેશ કરો
+            
+        } catch (err) {
+            alert("Error updating status: " + err.message);
+        }
+    }
+
+    // Excel (CSV) Download કરવાનું માસ્ટર લોજિક
+    function downloadExcel() {
+        if (!allUsersData || allUsersData.length === 0) {
+            alert("No data available to download.");
+            return;
         }
 
-        function logout() {
-            window.location.href = "login.html";
-        }
+        // CSV હેડર (Column ના નામ)
+        const headers = ["User ID", "Name", "Mobile", "Password", "Status", "Sponsor ID", "State", "City", "Join Date"];
+        
+        // ડેટાને CSV ફોર્મેટમાં ગોઠવો
+        const csvRows = [];
+        csvRows.push(headers.join(','));
 
-        window.onload = fetchAllUsers;
-    </script>
+        allUsersData.forEach(user => {
+            const dateStr = user.created_at ? new Date(user.created_at).toLocaleDateString('en-IN') : '-';
+            const row = [
+                `"${user.user_id}"`,
+                `"${user.name}"`,
+                `"${user.mobile}"`,
+                `"${user.password}"`,
+                `"${user.status}"`,
+                `"${user.sponsor}"`,
+                `"${user.state || ''}"`,
+                `"${user.city || ''}"`,
+                `"${dateStr}"`
+            ];
+            csvRows.push(row.join(','));
+        });
+
+        const csvString = csvRows.join('\n');
+        
+        // ફાઈલ ડાઉનલોડ કરો
+        const blob = new Blob([csvString], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.setAttribute('href', url);
+        a.setAttribute('download', `MAHAN_Database_${new Date().toISOString().slice(0,10)}.csv`);
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+</script>
 </body>
-</html>
+                                                                                                                     </html>
