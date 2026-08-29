@@ -19,7 +19,7 @@
 
     <div class="max-w-md mx-auto space-y-5">
         
-        <!-- Premium CSS Logo (Emerald Green Edition) -->
+        <!-- Premium CSS Logo -->
         <div class="flex flex-col items-center justify-center space-y-3 pt-3 pb-5 border-b border-slate-800/80">
             <div class="relative flex items-center justify-center px-5 py-2.5 bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl shadow-[0_8px_16px_rgba(0,0,0,0.4)] border border-slate-700/50">
                 <div class="absolute top-0 inset-x-4 h-[1px] bg-gradient-to-r from-transparent via-emerald-500 to-transparent opacity-50"></div>
@@ -85,7 +85,6 @@
                 <h3 class="text-sm font-bold text-white flex items-center gap-2">
                     <i class="fa-solid fa-wallet text-blue-500"></i> Bonus Balance Sheet
                 </h3>
-                <!-- View Details Button -->
                 <button onclick="openModal('historyModal')" class="text-[10px] bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 border border-blue-500/50 px-3 py-1.5 rounded-lg transition font-bold uppercase tracking-wider">
                     View Details
                 </button>
@@ -100,9 +99,9 @@
                     <span class="text-slate-400 font-medium">Total Earning</span>
                     <span id="earningAmount" class="font-bold text-emerald-400 tracking-wider">₹ 0</span>
                 </div>
-                <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-blue-900/50 shadow-inner">
-                    <span class="text-slate-300 font-bold">Available to Withdraw</span>
-                    <span id="availableBalance" class="font-bold text-blue-400 tracking-wider text-lg">₹ 0</span>
+                <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-800">
+                    <span class="text-slate-400 font-medium">Remaining Limit</span>
+                    <span id="remainingLimit" class="font-bold text-blue-400 tracking-wider">₹ 50,000</span>
                 </div>
             </div>
             
@@ -111,31 +110,14 @@
             </button>
         </div>
         
-        <!-- Level Wise Income -->
-        <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg overflow-hidden">
-            <h3 class="text-sm font-bold text-white bg-slate-800/50 p-4 border-b border-slate-700 flex items-center gap-2">
-                <i class="fa-solid fa-chart-line text-emerald-400"></i> Level Wise Income
-            </h3>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs whitespace-nowrap">
-                    <thead class="bg-[#0f172a] text-slate-400 uppercase tracking-wider">
-                        <tr><th class="p-3 font-semibold">Level</th><th class="p-3 font-semibold text-center">Rate</th><th class="p-3 font-semibold text-center">Team</th><th class="p-3 font-semibold text-right">Payout</th></tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-800 text-slate-300">
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 1</td><td class="p-3 text-center text-blue-400 font-mono">₹1000</td><td id="l1Count" class="p-3 text-center">0</td><td id="l1Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 2</td><td class="p-3 text-center text-blue-400 font-mono">₹500</td><td id="l2Count" class="p-3 text-center">0</td><td id="l2Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 3</td><td class="p-3 text-center text-blue-400 font-mono">₹250</td><td id="l3Count" class="p-3 text-center">0</td><td id="l3Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 4</td><td class="p-3 text-center text-blue-400 font-mono">₹250</td><td id="l4Count" class="p-3 text-center">0</td><td id="l4Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 5</td><td class="p-3 text-center text-blue-400 font-mono">₹250</td><td id="l5Count" class="p-3 text-center">0</td><td id="l5Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 6</td><td class="p-3 text-center text-blue-400 font-mono">₹125</td><td id="l6Count" class="p-3 text-center">0</td><td id="l6Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 7</td><td class="p-3 text-center text-blue-400 font-mono">₹125</td><td id="l7Count" class="p-3 text-center">0</td><td id="l7Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 8</td><td class="p-3 text-center text-blue-400 font-mono">₹125</td><td id="l8Count" class="p-3 text-center">0</td><td id="l8Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 9</td><td class="p-3 text-center text-blue-400 font-mono">₹125</td><td id="l9Count" class="p-3 text-center">0</td><td id="l9Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                    </tbody>
-                </table>
-            </div>
+        <!-- NEW: Level Wise Income Button (Replaces the big table) -->
+        <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5 text-center">
+            <h3 class="text-sm font-bold text-white mb-2"><i class="fa-solid fa-chart-line text-emerald-400 mr-2"></i> Level Wise Income</h3>
+            <p class="text-xs text-slate-400 mb-4">Track your 9-level team growth and commission.</p>
+            <button onclick="openModal('levelModal')" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-2.5 px-6 rounded-xl transition shadow-lg">View Income Details</button>
         </div>
 
+        <!-- Direct Team Button -->
         <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5 text-center">
             <h3 class="text-sm font-bold text-white mb-2"><i class="fa-solid fa-list-ul text-blue-400 mr-2"></i> Direct Team Data</h3>
             <button onclick="openModal('directModal')" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-2.5 px-6 rounded-xl transition shadow-lg">View Direct Details</button>
@@ -155,6 +137,32 @@
     </div>
 
     <!-- Modals Section -->
+
+    <!-- NEW: Level Wise Income Modal -->
+    <div id="levelModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-[#1e293b] border border-slate-600 p-5 rounded-2xl w-full max-w-sm shadow-2xl relative">
+            <h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2"><i class="fa-solid fa-chart-line text-emerald-400 mr-2"></i> Level Wise Income</h3>
+            <div class="overflow-x-auto max-h-72 overflow-y-auto mb-4 border border-slate-700 rounded-xl">
+                <table class="w-full text-left text-xs whitespace-nowrap">
+                    <thead class="bg-[#0f172a] text-slate-400 uppercase tracking-wider sticky top-0">
+                        <tr><th class="p-3 font-semibold">Level</th><th class="p-3 font-semibold text-center">Rate</th><th class="p-3 font-semibold text-center">Team</th><th class="p-3 font-semibold text-right">Payout</th></tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800 text-slate-300">
+                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 1</td><td class="p-3 text-center text-blue-400 font-mono">₹1000</td><td id="l1Count" class="p-3 text-center">0</td><td id="l1Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 2</td><td class="p-3 text-center text-blue-400 font-mono">₹500</td><td id="l2Count" class="p-3 text-center">0</td><td id="l2Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 3</td><td class="p-3 text-center text-blue-400 font-mono">₹250</td><td id="l3Count" class="p-3 text-center">0</td><td id="l3Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 4</td><td class="p-3 text-center text-blue-400 font-mono">₹250</td><td id="l4Count" class="p-3 text-center">0</td><td id="l4Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 5</td><td class="p-3 text-center text-blue-400 font-mono">₹250</td><td id="l5Count" class="p-3 text-center">0</td><td id="l5Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 6</td><td class="p-3 text-center text-blue-400 font-mono">₹125</td><td id="l6Count" class="p-3 text-center">0</td><td id="l6Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 7</td><td class="p-3 text-center text-blue-400 font-mono">₹125</td><td id="l7Count" class="p-3 text-center">0</td><td id="l7Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 8</td><td class="p-3 text-center text-blue-400 font-mono">₹125</td><td id="l8Count" class="p-3 text-center">0</td><td id="l8Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 9</td><td class="p-3 text-center text-blue-400 font-mono">₹125</td><td id="l9Count" class="p-3 text-center">0</td><td id="l9Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <button onclick="closeModal('levelModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-2.5 rounded-xl text-sm font-semibold">Close</button>
+        </div>
+    </div>
     
     <!-- Change Password Modal -->
     <div id="passwordModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
@@ -191,9 +199,9 @@
             
             <div id="withdrawFormArea" class="hidden">
                 <p class="text-xs text-slate-400 mb-4">Enter amount to withdraw directly to your bank account.</p>
-                <div class="bg-[#0f172a] border border-slate-700 p-3 rounded-xl mb-4">
-                    <p class="text-xs text-slate-400">Available Balance</p>
-                    <p id="modalAvailBal" class="text-xl font-bold text-emerald-400">₹0</p>
+                <div class="bg-[#0f172a] border border-emerald-500/30 shadow-inner p-3 rounded-xl mb-4">
+                    <p class="text-[10px] text-slate-400 uppercase tracking-widest">Available Balance</p>
+                    <p id="modalAvailBal" class="text-2xl font-black text-emerald-400">₹0</p>
                 </div>
                 <input type="number" id="withdrawAmount" placeholder="Enter Amount" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-emerald-500 font-mono text-center">
                 <p id="withdrawMsg" class="text-xs mb-3 hidden"></p>
@@ -235,7 +243,6 @@
     <!-- QR Modal -->
     <div id="qrModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
         <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-full max-w-sm shadow-2xl text-center">
-    
             <h3 class="text-lg font-bold text-white mb-2"><i class="fa-solid fa-qrcode text-emerald-400 mr-2"></i> Account Activation</h3>
             <p class="text-xs text-slate-400 mb-4">Scan QR code using PhonePe/GPay to pay activation fee and enter UTR number.</p>
             <div class="bg-white p-3 rounded-xl inline-block mb-4 shadow-lg">
@@ -268,7 +275,6 @@
         document.getElementById('dashId').innerText = currentUser.user_id;
         document.getElementById('dashMobile').innerText = currentUser.mobile;
         
-        // Load Bank Details if exist
         if(currentUser.bank_name) document.getElementById('accName').value = currentUser.bank_name;
         if(currentUser.bank_acc) document.getElementById('accNo').value = currentUser.bank_acc;
         if(currentUser.bank_ifsc) document.getElementById('ifscCode').value = currentUser.bank_ifsc;
@@ -362,103 +368,52 @@
 
             document.getElementById('totalTeam').innerText = totalTeamCount;
             document.getElementById('earningAmount').innerText = `₹${totalEarning}`;
+            document.getElementById('remainingLimit').innerText = `₹${50000 - totalEarning}`;
             
             const { data: wData } = await _supabase.from('withdrawals').select('amount').eq('user_id', currentUser.user_id);
             let totalWithdrawn = 0;
             if(wData) wData.forEach(w => totalWithdrawn += parseFloat(w.amount));
             
             windowAvailableBalance = totalEarning - totalWithdrawn;
-            document.getElementById('availableBalance').innerText = `₹${windowAvailableBalance}`;
             document.getElementById('modalAvailBal').innerText = `₹${windowAvailableBalance}`;
 
         } catch (err) { console.error(err); }
     }
 
-    // UPDATE PASSWORD
     async function updatePassword() {
         const newPass = document.getElementById('newPassword').value.trim();
         const msg = document.getElementById('passMsg');
         const btn = document.getElementById('passBtn');
-        
-        if(!newPass) {
-            msg.innerText = "Please enter a new password.";
-            msg.className = "text-xs text-red-400 block mb-3 font-bold";
-            return;
-        }
-
+        if(!newPass) { msg.innerText = "Please enter a new password."; msg.className = "text-xs text-red-400 block mb-3 font-bold"; return; }
         btn.disabled = true; btn.innerText = "Saving...";
-        
         try {
             const { error } = await _supabase.from('users').update({ password: newPass }).eq('user_id', currentUser.user_id);
             if(error) throw error;
-            
-            msg.innerText = "Password Updated Successfully!";
-            msg.className = "text-xs text-emerald-400 block mb-3 font-bold";
-            
-            currentUser.password = newPass;
-            localStorage.setItem('mahan_user', JSON.stringify(currentUser));
-            
-            setTimeout(() => { 
-                closeModal('passwordModal'); 
-                document.getElementById('newPassword').value = '';
-                msg.classList.add('hidden');
-                btn.disabled = false; btn.innerText = "Save";
-            }, 1500);
-        } catch(err) {
-            msg.innerText = "Error updating password.";
-            msg.className = "text-xs text-red-400 block mb-3 font-bold";
-            btn.disabled = false; btn.innerText = "Save";
-        }
+            msg.innerText = "Password Updated Successfully!"; msg.className = "text-xs text-emerald-400 block mb-3 font-bold";
+            currentUser.password = newPass; localStorage.setItem('mahan_user', JSON.stringify(currentUser));
+            setTimeout(() => { closeModal('passwordModal'); document.getElementById('newPassword').value = ''; msg.classList.add('hidden'); btn.disabled = false; btn.innerText = "Save"; }, 1500);
+        } catch(err) { msg.innerText = "Error updating password."; msg.className = "text-xs text-red-400 block mb-3 font-bold"; btn.disabled = false; btn.innerText = "Save"; }
     }
 
-    // SAVE BANK KYC
     async function saveBankDetails() {
         const bName = document.getElementById('accName').value.trim();
         const bAcc = document.getElementById('accNo').value.trim();
         const bIfsc = document.getElementById('ifscCode').value.trim();
         const msg = document.getElementById('bankMsg');
         const btn = document.getElementById('bankBtn');
-
-        if(!bName || !bAcc || !bIfsc) {
-            msg.innerText = "Please fill all bank details.";
-            msg.className = "text-xs text-red-400 block mb-3 font-bold";
-            return;
-        }
-
+        if(!bName || !bAcc || !bIfsc) { msg.innerText = "Please fill all bank details."; msg.className = "text-xs text-red-400 block mb-3 font-bold"; return; }
         btn.disabled = true; btn.innerText = "Saving...";
-
         try {
-            // નોંધ: Supabase 'users' ટેબલમાં bank_name, bank_acc, bank_ifsc કોલમ હોવા જરૂરી છે.
-            const { error } = await _supabase.from('users').update({
-                bank_name: bName, bank_acc: bAcc, bank_ifsc: bIfsc
-            }).eq('user_id', currentUser.user_id);
-            
+            const { error } = await _supabase.from('users').update({ bank_name: bName, bank_acc: bAcc, bank_ifsc: bIfsc }).eq('user_id', currentUser.user_id);
             if(error) throw error;
-
-            msg.innerText = "KYC Details Saved Successfully!";
-            msg.className = "text-xs text-emerald-400 block mb-3 font-bold";
-            
-            currentUser.bank_name = bName; currentUser.bank_acc = bAcc; currentUser.bank_ifsc = bIfsc;
-            localStorage.setItem('mahan_user', JSON.stringify(currentUser));
-
-            setTimeout(() => {
-                closeModal('bankModal');
-                msg.classList.add('hidden');
-                btn.disabled = false; btn.innerText = "Save KYC";
-            }, 1500);
-
-        } catch (err) {
-            msg.innerText = "Create bank_name, bank_acc, bank_ifsc columns in Supabase!";
-            msg.className = "text-xs text-amber-400 block mb-3 font-bold";
-            btn.disabled = false; btn.innerText = "Save KYC";
-        }
+            msg.innerText = "KYC Details Saved Successfully!"; msg.className = "text-xs text-emerald-400 block mb-3 font-bold";
+            currentUser.bank_name = bName; currentUser.bank_acc = bAcc; currentUser.bank_ifsc = bIfsc; localStorage.setItem('mahan_user', JSON.stringify(currentUser));
+            setTimeout(() => { closeModal('bankModal'); msg.classList.add('hidden'); btn.disabled = false; btn.innerText = "Save KYC"; }, 1500);
+        } catch (err) { msg.innerText = "Error saving bank details."; msg.className = "text-xs text-amber-400 block mb-3 font-bold"; btn.disabled = false; btn.innerText = "Save KYC"; }
     }
 
     function openWithdrawModal() {
-        if((currentUser.status || '').toLowerCase() !== 'active') {
-            alert("Your account must be ACTIVE to withdraw funds.");
-            return;
-        }
+        if((currentUser.status || '').toLowerCase() !== 'active') { alert("Your account must be ACTIVE to withdraw funds."); return; }
         openModal('withdrawModal');
         if(windowMyActiveDirects >= 5) {
             document.getElementById('withdrawFormArea').classList.remove('hidden');
@@ -475,12 +430,8 @@
         const msg = document.getElementById('withdrawMsg');
         const btn = document.getElementById('wSubmitBtn');
 
-        if(!amt || amt <= 0) {
-            msg.innerText = "Enter a valid amount."; msg.className = "text-xs text-red-400 block mb-3 font-bold"; return;
-        }
-        if(amt > windowAvailableBalance) {
-            msg.innerText = "Amount exceeds available balance."; msg.className = "text-xs text-red-400 block mb-3 font-bold"; return;
-        }
+        if(!amt || amt <= 0) { msg.innerText = "Enter a valid amount."; msg.className = "text-xs text-red-400 block mb-3 font-bold"; return; }
+        if(amt > windowAvailableBalance) { msg.innerText = "Amount exceeds available balance."; msg.className = "text-xs text-red-400 block mb-3 font-bold"; return; }
         
         btn.disabled = true; btn.innerText = "Processing...";
         try {
@@ -488,15 +439,10 @@
             if(error) throw error;
             msg.innerText = "Withdrawal Requested Successfully!"; msg.className = "text-xs text-emerald-400 block mb-3 font-bold";
             setTimeout(() => { 
-                closeModal('withdrawModal'); 
-                fetchNetworkData(); loadWithdrawalHistory();
-                btn.disabled = false; btn.innerText = "Withdraw"; msg.classList.add('hidden');
-                document.getElementById('withdrawAmount').value = '';
+                closeModal('withdrawModal'); fetchNetworkData(); loadWithdrawalHistory();
+                btn.disabled = false; btn.innerText = "Withdraw"; msg.classList.add('hidden'); document.getElementById('withdrawAmount').value = '';
             }, 1500);
-        } catch(err) {
-            msg.innerText = "Error requesting withdrawal."; msg.className = "text-xs text-red-400 block mb-3 font-bold";
-            btn.disabled = false; btn.innerText = "Withdraw";
-        }
+        } catch(err) { msg.innerText = "Error requesting withdrawal."; msg.className = "text-xs text-red-400 block mb-3 font-bold"; btn.disabled = false; btn.innerText = "Withdraw"; }
     }
 
     async function loadWithdrawalHistory() {
@@ -546,4 +492,6 @@
 </script>
 </body>
 </html>
-                                                              
+
+
+        
