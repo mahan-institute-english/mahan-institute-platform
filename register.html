@@ -3,54 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAHAN - Register & Welcome</title>
+    <title>MAHAN - Sign Up</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-4">
-    <div class="max-w-md w-full bg-slate-800 border border-slate-700 p-6 rounded-xl shadow-xl space-y-4">
-        <div class="text-center space-y-1">
-            <span class="bg-emerald-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">MAHAN INSTITUTE</span>
-            <h2 class="text-lg font-bold text-white pt-2">New User Registration</h2>
+    <div class="max-w-lg w-full bg-slate-800 border border-slate-700 p-6 rounded-xl shadow-xl space-y-4 my-4">
+        
+        <div class="text-center space-y-1 mb-4">
+            <span class="bg-emerald-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Join The Network</span>
+            <h2 class="text-2xl font-bold text-white pt-2 uppercase">Sign Up</h2>
         </div>
         
         <!-- Registration Form -->
-        <form id="regForm" class="space-y-3">
+        <form id="regForm" class="space-y-4">
+            
+            <!-- Sponsor ID -->
             <div>
-                <label class="text-xs text-slate-400">Full Name</label>
-                <input type="text" id="name" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white focus:border-emerald-500 outline-none">
+                <label class="text-xs text-slate-400 font-semibold uppercase">Sponsor ID</label>
+                <div class="relative mt-1">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-emerald-500">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <input type="text" id="sponsor" required class="w-full bg-slate-900 border border-slate-700 rounded-lg py-2.5 pl-10 pr-3 text-sm text-white focus:border-emerald-500 outline-none placeholder-slate-500" placeholder="Enter Sponsor ID">
+                </div>
             </div>
+
+            <!-- Full Name -->
             <div>
-                <label class="text-xs text-slate-400">Mobile Number</label>
-                <input type="text" id="mobile" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white focus:border-emerald-500 outline-none">
+                <label class="text-xs text-slate-400 font-semibold uppercase">Full Name</label>
+                <input type="text" id="name" required class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-lg py-2.5 px-3 text-sm text-white focus:border-emerald-500 outline-none" placeholder="Enter Full Name">
             </div>
+
+            <!-- Mobile & Re-enter Mobile (2 Columns) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="text-xs text-slate-400 font-semibold uppercase">Mobile Number</label>
+                    <input type="tel" id="mobile" required class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-lg py-2.5 px-3 text-sm text-white focus:border-emerald-500 outline-none" placeholder="10-digit number">
+                </div>
+                <div>
+                    <label class="text-xs text-slate-400 font-semibold uppercase">Re-Enter Mobile</label>
+                    <input type="tel" id="reMobile" required class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-lg py-2.5 px-3 text-sm text-white focus:border-emerald-500 outline-none" placeholder="Confirm number">
+                </div>
+            </div>
+
+            <!-- Password -->
             <div>
-                <label class="text-xs text-slate-400">Email Address</label>
-                <input type="email" id="email" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white focus:border-emerald-500 outline-none">
+                <label class="text-xs text-slate-400 font-semibold uppercase">Create Password</label>
+                <input type="password" id="password" required class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-lg py-2.5 px-3 text-sm text-white focus:border-emerald-500 outline-none" placeholder="••••••••">
             </div>
-            <div>
-                <label class="text-xs text-slate-400">Password</label>
-                <input type="password" id="password" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white focus:border-emerald-500 outline-none">
+
+            <!-- State & City (2 Columns) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="text-xs text-slate-400 font-semibold uppercase">State</label>
+                    <select id="state" required class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-lg py-2.5 px-3 text-sm text-white focus:border-emerald-500 outline-none appearance-none">
+                        <option value="">Select State</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-xs text-slate-400 font-semibold uppercase">City</label>
+                    <select id="city" required class="w-full mt-1 bg-slate-900 border border-slate-700 rounded-lg py-2.5 px-3 text-sm text-white focus:border-emerald-500 outline-none appearance-none">
+                        <option value="">Select City</option>
+                        <option value="Morbi">Morbi</option>
+                        <option value="Rajkot">Rajkot</option>
+                        <option value="Ahmedabad">Ahmedabad</option>
+                        <option value="Surat">Surat</option>
+                        <option value="Vadodara">Vadodara</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
             </div>
-            <div>
-                <label class="text-xs text-slate-400">Sponsor ID / Referral Code</label>
-                <!-- રેફરલ લિંકથી આવતા ID માટે -->
-                <input type="text" id="sponsor" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white focus:border-emerald-500 outline-none placeholder-slate-500" placeholder="Enter Sponsor ID (e.g. MAHAN101)">
+
+            <!-- Terms and Conditions -->
+            <div class="pt-2">
+                <label class="flex items-center space-x-3 cursor-pointer">
+                    <input type="checkbox" id="terms" required class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-emerald-600 focus:ring-emerald-500 focus:ring-2">
+                    <span class="text-xs text-slate-300">I accept terms & conditions</span>
+                </label>
             </div>
-            <button type="submit" id="submitBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-lg transition text-sm shadow">Register Now</button>
+
+            <button type="submit" id="submitBtn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-lg transition duration-200 shadow-lg mt-2">
+                Register
+            </button>
         </form>
 
-        <p id="msg" class="text-xs text-center"></p>
+        <p id="msg" class="text-xs text-center hidden"></p>
 
-        <!-- Welcome Letter & Referral Details Box (Hidden initially) -->
-        <div id="welcomeBox" class="hidden bg-slate-900 border border-emerald-500/50 p-4 rounded-xl space-y-3">
+        <!-- Welcome Letter Box -->
+        <div id="welcomeBox" class="hidden bg-slate-900 border border-emerald-500/50 p-4 rounded-xl space-y-3 mt-4">
             <div class="text-center">
                 <span class="bg-emerald-500/20 text-emerald-400 text-xs px-3 py-1 rounded-full font-bold">🎉 Registration Successful!</span>
             </div>
             <div class="space-y-1.5 text-xs text-slate-300 bg-slate-800 p-3 rounded-lg border border-slate-700 font-mono">
                 <p><strong>Name:</strong> <span id="wName" class="text-white"></span></p>
-                <p><strong>User ID:</strong> <span id="wId" class="text-emerald-400 font-bold"></span></p>
+                <p><strong>User ID:</strong> <span id="wId" class="text-emerald-400 font-bold text-sm"></span></p>
                 <p><strong>Password:</strong> <span id="wPass" class="text-amber-400"></span></p>
                 <p><strong>Sponsor:</strong> <span id="wSponsor" class="text-slate-400"></span></p>
                 <p class="pt-1"><strong>Your Referral Link:</strong> <br><span id="wLink" class="text-blue-400 break-all text-[10px]"></span></p>
@@ -60,11 +112,11 @@
                 <i class="fa-brands fa-whatsapp mr-1"></i> Share Details on WhatsApp
             </a>
 
-            <button onclick="location.reload()" class="w-full bg-slate-700 hover:bg-slate-600 text-slate-300 py-1.5 rounded-lg text-xs">Register Another</button>
+            <button onclick="location.href='login.html'" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-xs font-semibold">Go to Login</button>
         </div>
 
-        <div class="text-center text-xs pt-2 border-t border-slate-700">
-            <a href="login.html" class="text-emerald-400 hover:underline">Already registered? Login here</a>
+        <div class="text-center text-xs pt-4 border-t border-slate-700 mt-4">
+            <span class="text-slate-400">Already have an account?</span> <a href="login.html" class="text-emerald-400 hover:text-emerald-300 font-semibold transition ml-1">Login</a>
         </div>
     </div>
 
@@ -73,7 +125,6 @@
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6cmJzdndtcnlta3B6d21neXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDc1NzQsImV4cCI6MjEwMzMyMzU3NH0.5ulY5LW3AQEPFDP__iOSJssgNafTSe9Yu4gEqZF7sLc";
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // રેફરલ લિંક માંથી ID પકડવા અને બોક્સને લોક કરવા માટે
         window.onload = () => {
             const urlParams = new URLSearchParams(window.location.search);
             const ref = urlParams.get('ref');
@@ -85,23 +136,15 @@
             }
         };
 
-        // 100% Unique ID જનરેટ કરવાનું ફંક્શન (હવે STU થી બનશે)
         async function generateUniqueId() {
             let isUnique = false;
             let newId = "";
             while (!isUnique) {
-                const randomNum = Math.floor(100000 + Math.random() * 900000); // 6 આંકડાનો નંબર
-                newId = "STU" + randomNum; // યુઝરની સાવ નવી ઓળખ
+                const randomNum = Math.floor(100000 + Math.random() * 900000); 
+                newId = "STU" + randomNum; 
                 
-                const { data } = await _supabase
-                    .from('users')
-                    .select('user_id')
-                    .eq('user_id', newId)
-                    .maybeSingle();
-                    
-                if (!data) {
-                    isUnique = true; 
-                }
+                const { data } = await _supabase.from('users').select('user_id').eq('user_id', newId).maybeSingle();
+                if (!data) isUnique = true; 
             }
             return newId;
         }
@@ -111,44 +154,52 @@
             const msg = document.getElementById('msg');
             const submitBtn = document.getElementById('submitBtn');
             
-            submitBtn.disabled = true;
-            msg.innerText = "Checking Details & Generating STU ID...";
-            msg.className = "text-xs text-center text-amber-400";
-
             const name = document.getElementById('name').value.trim();
             const mobile = document.getElementById('mobile').value.trim();
-            const email = document.getElementById('email').value.trim();
+            const reMobile = document.getElementById('reMobile').value.trim();
             const password = document.getElementById('password').value.trim();
             const sponsor = document.getElementById('sponsor').value.trim();
+            const state = document.getElementById('state').value;
+            const city = document.getElementById('city').value;
+            const terms = document.getElementById('terms').checked;
+
+            // મોબાઈલ મેચ થાય છે કે નહિ તેનું ચેકિંગ
+            if (mobile !== reMobile) {
+                alert("❌ Mobile Number and Re-Enter Mobile Number do not match!");
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+            msg.className = "text-xs text-center text-amber-400 block mt-2";
+            msg.innerText = "Checking Details & Generating STU ID...";
 
             try {
-                // સ્ટેપ 1: ચેક કરો કે Sponsor ડેટાબેઝમાં છે કે નહિ
+                // સ્પોન્સર ચેકિંગ
                 const { data: sponsorData, error: sponsorError } = await _supabase
-                    .from('users')
-                    .select('user_id')
-                    .eq('user_id', sponsor)
-                    .maybeSingle();
+                    .from('users').select('user_id').eq('user_id', sponsor).maybeSingle();
 
                 if (sponsorError || !sponsorData) {
                     msg.innerText = "❌ સ્પોન્સર ID ખોટું છે અથવા મળતું નથી!";
-                    msg.className = "text-xs text-center text-red-400";
+                    msg.className = "text-xs text-center text-red-400 block mt-2";
                     submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Register';
                     return; 
                 }
 
-                // સ્ટેપ 2: STU સિરીઝનું નવું Unique ID બનાવો
                 const user_id = await generateUniqueId();
                 const referral_code = user_id;
 
-                // સ્ટેપ 3: ડેટા સેવ કરો
+                // ડેટા સેવ કરો (અહી state અને city ઉમેરેલા છે)
                 const { error } = await _supabase.from('users').insert([
-                    { user_id, name, mobile, email, password, sponsor, referral_code, status: 'Unactive' }
+                    { user_id, name, mobile, password, sponsor, referral_code, state, city, status: 'Unactive' }
                 ]);
 
                 if (error) {
                     msg.innerText = "Error: " + error.message;
-                    msg.className = "text-xs text-center text-red-400";
+                    msg.className = "text-xs text-center text-red-400 block mt-2";
                     submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Register';
                     return;
                 }
 
@@ -160,7 +211,6 @@
                 document.getElementById('wPass').innerText = password;
                 document.getElementById('wSponsor').innerText = sponsor;
                 
-                // કેશ પ્રોબ્લેમ સોલ્વ કરવા માટે લિંકમાં વર્ઝન (v) એડ કર્યું છે
                 const refLink = `https://mahan-institute-english.github.io/mahan-institute-platform/register.html?v=${Date.now()}&ref=${user_id}`;
                 document.getElementById('wLink').innerText = refLink;
 
@@ -171,10 +221,11 @@
 
             } catch (err) {
                 msg.innerText = "Error: " + err.message;
-                msg.className = "text-xs text-center text-red-400";
+                msg.className = "text-xs text-center text-red-400 block mt-2";
                 submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Register';
             }
         });
     </script>
 </body>
-                    </html>
+                        </html>
