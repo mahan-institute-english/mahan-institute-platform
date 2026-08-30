@@ -67,18 +67,30 @@
             </div>
         </div>
 
-        <!-- Pending Withdrawals Section -->
-        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-xl">
-            <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3">
-                <i class="fa-solid fa-money-bill-transfer text-emerald-400"></i> Pending Payout Requests
+        <!-- NEW: Pending Activations (UTR Requests) -->
+        <div class="bg-slate-800 border border-blue-500/30 rounded-2xl p-5 shadow-xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-bl-full"></div>
+            <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3 relative z-10">
+                <i class="fa-solid fa-user-plus text-blue-400"></i> Pending Activations (UTR)
             </h3>
-            <div id="pendingWithdrawalsContainer" class="space-y-3 max-h-80 overflow-y-auto pr-2">
-                <p class="text-xs text-slate-500 text-center py-4">Checking pending requests...</p>
+            <div id="pendingActivationsContainer" class="space-y-3 max-h-80 overflow-y-auto pr-2 relative z-10">
+                <p class="text-xs text-slate-500 text-center py-4">Checking pending UTR requests...</p>
             </div>
         </div>
 
-        <!-- NEW: Platform Live Settings (News, Video & Social Media) -->
-        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-xl">
+        <!-- Pending Withdrawals Section -->
+        <div class="bg-slate-800 border border-emerald-500/30 rounded-2xl p-5 shadow-xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-bl-full"></div>
+            <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3 relative z-10">
+                <i class="fa-solid fa-money-bill-transfer text-emerald-400"></i> Pending Payout Requests
+            </h3>
+            <div id="pendingWithdrawalsContainer" class="space-y-3 max-h-80 overflow-y-auto pr-2 relative z-10">
+                <p class="text-xs text-slate-500 text-center py-4">Checking pending payouts...</p>
+            </div>
+        </div>
+
+        <!-- Platform Live Settings -->
+        <div class="bg-slate-800 border border-amber-500/30 rounded-2xl p-5 shadow-xl">
             <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3">
                 <i class="fa-solid fa-tower-broadcast text-amber-400"></i> Platform Live Settings
             </h3>
@@ -92,7 +104,6 @@
                     <input type="text" id="videoUrlInput" placeholder="e.g. https://www.youtube.com/embed/jfKfPfyJRdk" class="w-full mt-1 bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-amber-500 font-mono">
                 </div>
                 
-                <!-- NEW: Social Media Links -->
                 <div class="border-t border-slate-700 pt-4 mt-2">
                     <label class="text-[10px] text-blue-400 font-bold uppercase tracking-widest mb-3 block">Social Media Links</label>
                     <div class="grid grid-cols-2 gap-3">
@@ -130,7 +141,7 @@
                 <button onclick="searchUser()" id="searchBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-5 rounded-xl text-sm font-bold transition shadow-lg">Search</button>
             </div>
             <p id="searchMsg" class="text-xs text-center hidden mb-3"></p>
-            <!-- Searched User Details -->
+            
             <div id="userDetailsBox" class="hidden bg-[#0f172a] border border-slate-600 rounded-xl p-4 space-y-3">
                 <div class="flex justify-between items-start">
                     <div><p class="text-[10px] text-slate-400 uppercase tracking-widest mb-1">Student Name</p><p id="sName" class="text-base font-bold text-white"></p><p id="sId" class="text-xs text-blue-400 font-mono mt-0.5"></p></div>
@@ -193,7 +204,8 @@
             
             fetchDashboardStats();
             loadPlatformSettings();
-            loadPendingWithdrawals();
+            loadPendingActivations(); // Load UTR requests
+            loadPendingWithdrawals(); // Load Payouts
         } catch (err) { msg.innerText = "Network Error!"; msg.className = "text-xs font-bold text-red-400 block"; }
     }
 
@@ -216,7 +228,7 @@
         } catch (err) { console.error(err); }
     }
 
-    // --- Live Settings Logic (News, Video, Social Media) ---
+    // --- Live Settings Logic ---
     async function loadPlatformSettings() {
         try {
             const { data, error } = await _supabase.from('settings').select('*').limit(1).maybeSingle();
@@ -261,6 +273,71 @@
         btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i> Update Live Platform';
     }
 
+    // --- NEW: UTR Activations Approval Logic ---
+    async function loadPendingActivations() {
+        const container = document.getElementById('pendingActivationsContainer');
+        try {
+            const { data: pData, error: pError } = await _supabase.from('payments').select('*').eq('status', 'Pending').order('created_at', { ascending: true });
+            if (pError) throw pError;
+            if (!pData || pData.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-500 text-center py-4">No pending UTR requests.</p>';
+                return;
+            }
+
+            container.innerHTML = '';
+            for (let p of pData) {
+                const { data: uData } = await _supabase.from('users').select('name, mobile').eq('user_id', p.user_id).maybeSingle();
+                const uName = uData ? uData.name : 'Unknown User';
+                const uMobile = uData ? uData.mobile : 'N/A';
+                const d = new Date(p.created_at).toLocaleDateString('en-IN');
+
+                container.innerHTML += `
+                    <div class="bg-[#0f172a] border border-blue-500/30 rounded-xl p-4 shadow-sm mb-3">
+                        <div class="flex justify-between items-start mb-2 border-b border-slate-700 pb-2">
+                            <div>
+                                <p class="text-sm font-bold text-white">${uName}</p>
+                                <p class="text-[10px] text-blue-400 font-mono">${p.user_id} | <i class="fa-solid fa-phone text-emerald-500"></i> ${uMobile}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[10px] text-slate-400 mb-1">${d}</p>
+                                <p class="text-[9px] text-amber-400 font-bold uppercase tracking-widest bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20">${p.status}</p>
+                            </div>
+                        </div>
+                        <div class="text-xs text-slate-300 font-mono mb-3 bg-slate-800 p-2 rounded border border-slate-700">
+                            <span class="text-slate-500">UTR:</span> <span class="text-emerald-400 font-bold text-base tracking-widest">${p.utr_number}</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="approveActivation('${p.id}', '${p.user_id}')" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-xs font-bold transition shadow-lg"><i class="fa-solid fa-check mr-1"></i> Approve & Active</button>
+                            <button onclick="rejectActivation('${p.id}')" class="bg-red-600/20 hover:bg-red-600/40 text-red-400 border border-red-500/50 px-3 py-2 rounded-lg text-xs font-bold transition"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                    </div>`;
+            }
+        } catch (err) { console.error(err); }
+    }
+
+    async function approveActivation(paymentId, userId) {
+        if(!confirm("Are you sure you want to approve this UTR and make the student ACTIVE?")) return;
+        try {
+            const { error: pErr } = await _supabase.from('payments').update({ status: 'Approved' }).eq('id', paymentId);
+            if (pErr) throw pErr;
+            const { error: uErr } = await _supabase.from('users').update({ status: 'Active' }).eq('user_id', userId);
+            if (uErr) throw uErr;
+            
+            alert("✅ Activation Approved Successfully!");
+            loadPendingActivations();
+            fetchDashboardStats();
+        } catch (err) { alert("Error: " + err.message); }
+    }
+
+    async function rejectActivation(paymentId) {
+        if(!confirm("Are you sure you want to REJECT this UTR request?")) return;
+        try {
+            const { error } = await _supabase.from('payments').update({ status: 'Rejected' }).eq('id', paymentId);
+            if (error) throw error;
+            loadPendingActivations();
+        } catch (err) { alert("Error: " + err.message); }
+    }
+
     // --- Withdrawal Approval Logic ---
     async function loadPendingWithdrawals() {
         const container = document.getElementById('pendingWithdrawalsContainer');
@@ -268,14 +345,13 @@
             const { data: wData, error: wError } = await _supabase.from('withdrawals').select('*').eq('status', 'Pending').order('created_at', { ascending: true });
             if (wError) throw wError;
             if (!wData || wData.length === 0) {
-                container.innerHTML = '<p class="text-xs text-slate-500 text-center py-4">No pending requests at the moment.</p>';
+                container.innerHTML = '<p class="text-xs text-slate-500 text-center py-4">No pending payouts at the moment.</p>';
                 return;
             }
 
             container.innerHTML = '';
             for (let w of wData) {
                 const { data: uData } = await _supabase.from('users').select('name, mobile, bank_name, bank_acc, bank_ifsc').eq('user_id', w.user_id).maybeSingle();
-
                 const uName = uData ? uData.name : 'Unknown';
                 const uBank = uData && uData.bank_name ? `<span class="text-slate-300">Bank:</span> ${uData.bank_name} <br> <span class="text-slate-300">A/C:</span> ${uData.bank_acc} <br> <span class="text-slate-300">IFSC:</span> ${uData.bank_ifsc}` : '<span class="text-red-400">No Bank Details Saved</span>';
 
@@ -390,4 +466,6 @@
 </script>
 </body>
 </html>
-                
+
+    
+    
