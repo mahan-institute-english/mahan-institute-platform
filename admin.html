@@ -12,164 +12,94 @@
 </head>
 <body class="bg-[#0f172a] text-slate-200 min-h-screen p-4 font-sans pb-12">
 
-    <!-- SECURITY LAYER 1: Admin Login Gate -->
+    <!-- SECURITY LAYER -->
     <div id="adminLoginGate" class="flex flex-col items-center justify-center min-h-[80vh]">
         <div class="bg-slate-800 border border-amber-500/50 p-8 rounded-2xl shadow-[0_0_30px_rgba(245,158,11,0.15)] w-full max-w-sm text-center relative overflow-hidden">
             <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber-500/20 rounded-full blur-2xl"></div>
             <i class="fa-solid fa-shield-halved text-5xl text-amber-500 mb-4 relative z-10"></i>
             <h2 class="text-xl font-bold text-white tracking-widest uppercase mb-1 relative z-10">Admin Access</h2>
-            <p class="text-[10px] text-slate-400 uppercase tracking-widest mb-6 relative z-10">Master Control Room</p>
             <div class="space-y-4 relative z-10">
-                <div class="relative">
-                    <i class="fa-solid fa-user-shield absolute left-3 top-3.5 text-slate-500"></i>
-                    <input type="text" id="adminId" placeholder="Admin ID" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl py-3 pl-10 pr-3 text-sm text-white focus:border-amber-500 outline-none uppercase font-mono">
-                </div>
-                <div class="relative">
-                    <i class="fa-solid fa-key absolute left-3 top-3.5 text-slate-500"></i>
-                    <input type="password" id="adminPass" placeholder="Admin Password" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl py-3 pl-10 pr-3 text-sm text-white focus:border-amber-500 outline-none font-mono">
-                </div>
+                <input type="text" id="adminId" placeholder="Admin ID" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl py-3 px-4 text-sm text-white focus:border-amber-500 outline-none uppercase font-mono">
+                <input type="password" id="adminPass" placeholder="Admin Password" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl py-3 px-4 text-sm text-white focus:border-amber-500 outline-none font-mono">
                 <p id="adminLoginMsg" class="text-xs font-bold hidden"></p>
-                <button onclick="unlockAdmin()" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-unlock"></i> UNLOCK PANEL
-                </button>
-                <button onclick="window.location.href='dashboard.html'" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-2.5 rounded-xl transition text-xs mt-2">Back to Dashboard</button>
+                <button onclick="unlockAdmin()" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold py-3 rounded-xl transition shadow-lg"><i class="fa-solid fa-unlock mr-2"></i> UNLOCK PANEL</button>
             </div>
         </div>
     </div>
 
     <!-- MAIN ADMIN PANEL -->
-    <div id="mainAdminPanel" class="max-w-2xl mx-auto space-y-6 hidden">
+    <div id="mainAdminPanel" class="max-w-4xl mx-auto space-y-6 hidden">
         
-        <!-- Admin Header -->
-        <div class="bg-gradient-to-r from-slate-800 to-slate-900 border border-amber-500/30 p-5 rounded-2xl shadow-2xl flex justify-between items-center relative overflow-hidden">
-            <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl"></div>
-            <div class="relative z-10 flex items-center gap-4">
-                <div class="w-12 h-12 bg-amber-500/20 text-amber-400 rounded-xl flex items-center justify-center border border-amber-500/30 shadow-lg"><i class="fa-solid fa-crown text-2xl"></i></div>
+        <div class="bg-gradient-to-r from-slate-800 to-slate-900 border border-amber-500/30 p-5 rounded-2xl shadow-2xl flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-amber-500/20 text-amber-400 rounded-xl flex items-center justify-center border border-amber-500/30"><i class="fa-solid fa-crown text-2xl"></i></div>
                 <div><h1 class="text-xl font-bold text-white tracking-wider uppercase">Admin Panel</h1><p class="text-xs text-amber-500 font-mono tracking-widest">System Unlocked</p></div>
             </div>
-            <button onclick="lockSystem()" class="relative z-10 bg-red-600/20 hover:bg-red-600 border border-red-500/50 text-red-400 hover:text-white px-4 py-2 rounded-lg text-xs font-bold transition"><i class="fa-solid fa-lock mr-1"></i> Lock</button>
+            <button onclick="lockSystem()" class="bg-red-600/20 hover:bg-red-600 border border-red-500/50 text-red-400 hover:text-white px-4 py-2 rounded-lg text-xs font-bold transition"><i class="fa-solid fa-lock mr-1"></i> Lock</button>
         </div>
         
-        <!-- Live Statistics -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl text-center shadow-lg">
-                <i class="fa-solid fa-users text-blue-400 text-xl mb-1"></i><h3 class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total Users</h3><p id="totalUsers" class="text-xl font-black text-white mt-1">0</p>
-            </div>
-            <div class="bg-slate-800 border border-emerald-500/30 p-4 rounded-xl text-center shadow-lg">
-                <i class="fa-solid fa-user-check text-emerald-400 text-xl mb-1"></i><h3 class="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Active</h3><p id="activeUsers" class="text-xl font-black text-white mt-1">0</p>
-            </div>
-            <div class="bg-slate-800 border border-red-500/30 p-4 rounded-xl text-center shadow-lg">
-                <i class="fa-solid fa-user-xmark text-red-400 text-xl mb-1"></i><h3 class="text-[10px] text-red-500 font-bold uppercase tracking-wider">Unactive</h3><p id="unactiveUsers" class="text-xl font-black text-white mt-1">0</p>
-            </div>
-            <div class="bg-slate-800 border border-amber-500/30 p-4 rounded-xl text-center shadow-lg flex flex-col justify-center">
-                <i class="fa-solid fa-file-excel text-amber-400 text-xl mb-1"></i>
-                <button onclick="downloadExcel()" class="mt-1 w-full bg-amber-600 hover:bg-amber-700 text-white text-[10px] font-bold py-1.5 rounded transition shadow-lg">Backup CSV</button>
+            <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl text-center"><i class="fa-solid fa-users text-blue-400 text-xl mb-1"></i><h3 class="text-[10px] text-slate-400 font-bold uppercase">Total Users</h3><p id="totalUsers" class="text-xl font-black text-white mt-1">0</p></div>
+            <div class="bg-slate-800 border border-emerald-500/30 p-4 rounded-xl text-center"><i class="fa-solid fa-user-check text-emerald-400 text-xl mb-1"></i><h3 class="text-[10px] text-emerald-500 font-bold uppercase">Active</h3><p id="activeUsers" class="text-xl font-black text-white mt-1">0</p></div>
+            <div class="bg-slate-800 border border-red-500/30 p-4 rounded-xl text-center"><i class="fa-solid fa-user-xmark text-red-400 text-xl mb-1"></i><h3 class="text-[10px] text-red-500 font-bold uppercase">Unactive</h3><p id="unactiveUsers" class="text-xl font-black text-white mt-1">0</p></div>
+            <div class="bg-slate-800 border border-amber-500/30 p-4 rounded-xl text-center flex flex-col justify-center gap-2">
+                <button onclick="downloadFullDB()" id="btnExcel" class="w-full bg-slate-600 hover:bg-slate-500 text-white text-[10px] font-bold py-2 rounded transition shadow-lg"><i class="fa-solid fa-download mr-1"></i> Live Master CSV</button>
+                <button onclick="downloadBankPayoutList()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold py-2 rounded transition shadow-lg"><i class="fa-solid fa-building-columns mr-1"></i> Bank Payout CSV</button>
             </div>
         </div>
 
-        <!-- NEW: Pending Activations (UTR Requests) -->
-        <div class="bg-slate-800 border border-blue-500/30 rounded-2xl p-5 shadow-xl relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-bl-full"></div>
-            <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3 relative z-10">
-                <i class="fa-solid fa-user-plus text-blue-400"></i> Pending Activations (UTR)
-            </h3>
-            <div id="pendingActivationsContainer" class="space-y-3 max-h-80 overflow-y-auto pr-2 relative z-10">
-                <p class="text-xs text-slate-500 text-center py-4">Checking pending UTR requests...</p>
+        <!-- Pending Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-slate-800 border border-blue-500/30 rounded-2xl p-5 shadow-xl">
+                <h3 class="text-sm font-bold text-white mb-4 border-b border-slate-700 pb-3"><i class="fa-solid fa-user-plus text-blue-400 mr-2"></i> Pending Activations (UTR)</h3>
+                <div id="pendingActivationsContainer" class="space-y-3 max-h-72 overflow-y-auto pr-2"><p class="text-xs text-slate-500 text-center py-4">Checking requests...</p></div>
+            </div>
+            <div class="bg-slate-800 border border-emerald-500/30 rounded-2xl p-5 shadow-xl">
+                <h3 class="text-sm font-bold text-white mb-4 border-b border-slate-700 pb-3"><i class="fa-solid fa-money-bill-transfer text-emerald-400 mr-2"></i> Pending Payouts</h3>
+                <div id="pendingWithdrawalsContainer" class="space-y-3 max-h-72 overflow-y-auto pr-2"><p class="text-xs text-slate-500 text-center py-4">Checking payouts...</p></div>
             </div>
         </div>
 
-        <!-- Pending Withdrawals Section -->
-        <div class="bg-slate-800 border border-emerald-500/30 rounded-2xl p-5 shadow-xl relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-bl-full"></div>
-            <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3 relative z-10">
-                <i class="fa-solid fa-money-bill-transfer text-emerald-400"></i> Pending Payout Requests
-            </h3>
-            <div id="pendingWithdrawalsContainer" class="space-y-3 max-h-80 overflow-y-auto pr-2 relative z-10">
-                <p class="text-xs text-slate-500 text-center py-4">Checking pending payouts...</p>
-            </div>
-        </div>
-
-        <!-- Platform Live Settings -->
+        <!-- Platform Settings -->
         <div class="bg-slate-800 border border-amber-500/30 rounded-2xl p-5 shadow-xl">
-            <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3">
-                <i class="fa-solid fa-tower-broadcast text-amber-400"></i> Platform Live Settings
-            </h3>
+            <h3 class="text-sm font-bold text-white mb-4 border-b border-slate-700 pb-3"><i class="fa-solid fa-tower-broadcast text-amber-400 mr-2"></i> Platform Live Settings</h3>
             <div class="space-y-4">
-                <div>
-                    <label class="text-[10px] text-slate-400 uppercase tracking-widest">Live News Ticker</label>
-                    <input type="text" id="liveNewsInput" placeholder="Enter scrolling news text..." class="w-full mt-1 bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-amber-500">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div><label class="text-[10px] text-slate-400 uppercase tracking-widest">Payment QR Image URL</label><input type="text" id="qrInput" class="w-full mt-1 bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-xs text-white outline-none focus:border-amber-500"></div>
+                    <div><label class="text-[10px] text-slate-400 uppercase tracking-widest">Activation Fee Amount</label><input type="text" id="feeInput" placeholder="5000" class="w-full mt-1 bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-xs text-white outline-none focus:border-amber-500 font-mono"></div>
                 </div>
-                <div>
-                    <label class="text-[10px] text-slate-400 uppercase tracking-widest">Dashboard Video (YouTube Embed URL)</label>
-                    <input type="text" id="videoUrlInput" placeholder="e.g. https://www.youtube.com/embed/jfKfPfyJRdk" class="w-full mt-1 bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-amber-500 font-mono">
-                </div>
+                <div><label class="text-[10px] text-slate-400 uppercase tracking-widest">Live News Ticker</label><input type="text" id="liveNewsInput" class="w-full mt-1 bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-amber-500"></div>
+                <div><label class="text-[10px] text-slate-400 uppercase tracking-widest">Dashboard Video Embed URL</label><input type="text" id="videoUrlInput" class="w-full mt-1 bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-amber-500 font-mono"></div>
                 
                 <div class="border-t border-slate-700 pt-4 mt-2">
                     <label class="text-[10px] text-blue-400 font-bold uppercase tracking-widest mb-3 block">Social Media Links</label>
                     <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="text-[9px] text-slate-400 uppercase tracking-widest"><i class="fa-brands fa-youtube text-red-500 mr-1"></i> YouTube</label>
-                            <input type="text" id="ytInput" placeholder="YouTube Link" class="w-full mt-1 bg-[#0f172a] border border-slate-600 rounded-lg p-2 text-xs text-white outline-none focus:border-amber-500">
-                        </div>
-                        <div>
-                            <label class="text-[9px] text-slate-400 uppercase tracking-widest"><i class="fa-brands fa-instagram text-pink-500 mr-1"></i> Instagram</label>
-                            <input type="text" id="igInput" placeholder="Instagram Link" class="w-full mt-1 bg-[#0f172a] border border-slate-600 rounded-lg p-2 text-xs text-white outline-none focus:border-amber-500">
-                        </div>
-                        <div>
-                            <label class="text-[9px] text-slate-400 uppercase tracking-widest"><i class="fa-brands fa-facebook text-blue-500 mr-1"></i> Facebook</label>
-                            <input type="text" id="fbInput" placeholder="Facebook Link" class="w-full mt-1 bg-[#0f172a] border border-slate-600 rounded-lg p-2 text-xs text-white outline-none focus:border-amber-500">
-                        </div>
-                        <div>
-                            <label class="text-[9px] text-slate-400 uppercase tracking-widest"><i class="fa-brands fa-whatsapp text-green-500 mr-1"></i> WhatsApp</label>
-                            <input type="text" id="waInput" placeholder="WhatsApp Group Link" class="w-full mt-1 bg-[#0f172a] border border-slate-600 rounded-lg p-2 text-xs text-white outline-none focus:border-amber-500">
-                        </div>
+                        <input type="text" id="ytInput" placeholder="YouTube Link" class="bg-[#0f172a] border border-slate-600 rounded-lg p-2 text-xs text-white">
+                        <input type="text" id="igInput" placeholder="Instagram Link" class="bg-[#0f172a] border border-slate-600 rounded-lg p-2 text-xs text-white">
+                        <input type="text" id="fbInput" placeholder="Facebook Link" class="bg-[#0f172a] border border-slate-600 rounded-lg p-2 text-xs text-white">
+                        <input type="text" id="waInput" placeholder="WhatsApp Group Link" class="bg-[#0f172a] border border-slate-600 rounded-lg p-2 text-xs text-white">
                     </div>
                 </div>
-
-                <p id="settingsMsg" class="text-xs hidden"></p>
-                <button onclick="savePlatformSettings()" id="settingsBtn" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2 mt-2">
-                    <i class="fa-solid fa-cloud-arrow-up"></i> Update Live Platform
-                </button>
+                <button onclick="savePlatformSettings()" id="settingsBtn" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-xl transition"><i class="fa-solid fa-cloud-arrow-up mr-2"></i> Update Live Platform</button>
             </div>
         </div>
 
-        <!-- Manual Activation & Search Section -->
+        <!-- Live DB Table -->
         <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-xl">
-            <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3"><i class="fa-solid fa-magnifying-glass text-blue-400"></i> Search & Manage Student</h3>
-            <div class="flex gap-3 mb-4">
-                <input type="text" id="searchInput" placeholder="Enter User ID or Mobile" class="flex-1 bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-emerald-500 uppercase font-mono">
-                <button onclick="searchUser()" id="searchBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-5 rounded-xl text-sm font-bold transition shadow-lg">Search</button>
-            </div>
-            <p id="searchMsg" class="text-xs text-center hidden mb-3"></p>
-            
-            <div id="userDetailsBox" class="hidden bg-[#0f172a] border border-slate-600 rounded-xl p-4 space-y-3">
-                <div class="flex justify-between items-start">
-                    <div><p class="text-[10px] text-slate-400 uppercase tracking-widest mb-1">Student Name</p><p id="sName" class="text-base font-bold text-white"></p><p id="sId" class="text-xs text-blue-400 font-mono mt-0.5"></p></div>
-                    <span id="sStatus" class="text-[10px] font-bold px-3 py-1 rounded-md border tracking-widest"></span>
-                </div>
-                <div class="grid grid-cols-2 gap-2 border-t border-slate-700 pt-3">
-                    <div><p class="text-[10px] text-slate-500">Mobile</p><p id="sMobile" class="text-xs text-slate-300 font-mono"></p></div>
-                    <div><p class="text-[10px] text-slate-500">Sponsor</p><p id="sSponsor" class="text-xs text-slate-300 font-mono"></p></div>
-                    <div><p class="text-[10px] text-slate-500">State / City</p><p id="sLoc" class="text-xs text-slate-300"></p></div>
-                    <div><p class="text-[10px] text-slate-500">Join Date</p><p id="sDate" class="text-xs text-slate-300"></p></div>
-                </div>
-                <!-- Action Buttons -->
-                <div class="flex gap-3 pt-3 border-t border-slate-700 mt-3">
-                    <button id="btnActivate" onclick="promptStatusChange('Active')" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-lg text-xs font-bold transition shadow-lg hidden"><i class="fa-solid fa-check-circle mr-1"></i> Make Active</button>
-                    <button id="btnUnactivate" onclick="promptStatusChange('Unactive')" class="flex-1 bg-red-600/20 hover:bg-red-600/40 text-red-400 border border-red-500/50 py-2.5 rounded-lg text-xs font-bold transition hidden"><i class="fa-solid fa-times-circle mr-1"></i> Make Unactive</button>
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4 border-b border-slate-700 pb-4">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2"><i class="fa-solid fa-table-list text-blue-400"></i> Live Member Database</h3>
+                <div class="flex gap-2 w-full md:w-auto">
+                    <select id="statusFilter" onchange="renderLiveTable()" class="bg-[#0f172a] border border-slate-600 text-xs text-white p-2 rounded-lg outline-none">
+                        <option value="All">All Status</option><option value="Active">Active</option><option value="Unactive">Unactive</option>
+                    </select>
+                    <input type="text" id="tableSearch" onkeyup="renderLiveTable()" placeholder="Search Name/ID..." class="flex-1 md:w-48 bg-[#0f172a] border border-slate-600 rounded-lg p-2 text-xs text-white outline-none focus:border-blue-500">
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Confirmation Modal -->
-    <div id="confirmModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-slate-800 border border-slate-600 p-6 rounded-2xl w-full max-w-sm shadow-2xl text-center">
-            <h3 id="confirmTitle" class="text-lg font-bold text-white mb-2"></h3>
-            <p id="confirmDesc" class="text-xs text-slate-300 mb-6 bg-[#0f172a] p-3 rounded-lg border border-slate-700"></p>
-            <div class="flex gap-3">
-                <button id="confirmBtn" onclick="executeStatusChange()" class="flex-1 py-3 rounded-xl text-sm font-bold transition shadow-lg"></button>
-                <button onclick="closeConfirmModal()" class="flex-1 bg-slate-600 hover:bg-slate-500 text-white py-3 rounded-xl text-sm font-bold transition">Cancel</button>
+            <div class="overflow-x-auto border border-slate-700 rounded-xl">
+                <table class="w-full text-left text-xs whitespace-nowrap">
+                    <thead class="bg-[#0f172a] text-slate-400 uppercase tracking-wider"><tr><th class="p-3">User ID</th><th class="p-3">Name</th><th class="p-3">Mobile</th><th class="p-3">Sponsor</th><th class="p-3">Status</th><th class="p-3 text-center">Action</th></tr></thead>
+                    <tbody id="liveTableBody" class="divide-y divide-slate-800 text-slate-300"><tr><td colspan="6" class="p-4 text-center">Loading...</td></tr></tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -180,292 +110,129 @@
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     let allUsersData = [];
-    let currentSearchedId = null;
-    let pendingStatusAction = '';
-    let currentNewsText = null;
+
+    function formatURL(url) { if (!url) return ''; url = url.trim(); if (url && !url.startsWith('http')) return 'https://' + url; return url; }
 
     async function unlockAdmin() {
-        const id = document.getElementById('adminId').value.trim().toUpperCase();
-        const pass = document.getElementById('adminPass').value.trim();
-        const msg = document.getElementById('adminLoginMsg');
-
-        if(id !== 'MAHAN101' && id !== '7016623939') {
-            msg.innerText = "❌ Access Denied!"; msg.className = "text-xs font-bold text-red-400 block"; return;
-        }
-        if(!pass) { msg.innerText = "Please enter password."; msg.className = "text-xs font-bold text-red-400 block"; return; }
-
-        msg.innerText = "Verifying..."; msg.className = "text-xs font-bold text-amber-400 block";
-
+        const id = document.getElementById('adminId').value.trim().toUpperCase(); const pass = document.getElementById('adminPass').value.trim(); const msg = document.getElementById('adminLoginMsg');
+        if(id !== 'MAHAN101' && id !== '7016623939') { msg.innerText = "❌ Access Denied!"; msg.className = "text-xs font-bold text-red-400 block"; return; }
+        if(!pass) { msg.innerText = "Enter password."; msg.className = "text-xs font-bold text-red-400 block"; return; }
         try {
             const { data, error } = await _supabase.from('users').select('*').or(`user_id.eq.${id},mobile.eq.${id}`).eq('password', pass).maybeSingle();
             if (error || !data) { msg.innerText = "❌ Incorrect Password!"; msg.className = "text-xs font-bold text-red-400 block"; return; }
-            document.getElementById('adminLoginGate').classList.add('hidden');
-            document.getElementById('mainAdminPanel').classList.remove('hidden');
-            
-            fetchDashboardStats();
-            loadPlatformSettings();
-            loadPendingActivations(); // Load UTR requests
-            loadPendingWithdrawals(); // Load Payouts
+            document.getElementById('adminLoginGate').classList.add('hidden'); document.getElementById('mainAdminPanel').classList.remove('hidden');
+            fetchDashboardStats(); loadPlatformSettings(); loadPendingActivations(); loadPendingWithdrawals();
         } catch (err) { msg.innerText = "Network Error!"; msg.className = "text-xs font-bold text-red-400 block"; }
     }
-
-    function lockSystem() {
-        document.getElementById('mainAdminPanel').classList.add('hidden');
-        document.getElementById('adminLoginGate').classList.remove('hidden');
-        document.getElementById('adminPass').value = '';
-    }
+    function lockSystem() { location.reload(); }
 
     async function fetchDashboardStats() {
         try {
-            const { data, error } = await _supabase.from('users').select('*');
-            if (error) throw error;
+            const { data } = await _supabase.from('users').select('*').order('created_at', { ascending: false });
             allUsersData = data; 
-            const total = data.length;
             const active = data.filter(u => (u.status || '').toLowerCase() === 'active').length;
-            document.getElementById('totalUsers').innerText = total;
-            document.getElementById('activeUsers').innerText = active;
-            document.getElementById('unactiveUsers').innerText = total - active;
-        } catch (err) { console.error(err); }
+            document.getElementById('totalUsers').innerText = data.length; document.getElementById('activeUsers').innerText = active; document.getElementById('unactiveUsers').innerText = data.length - active;
+            renderLiveTable();
+        } catch (err) {}
     }
 
-    // --- Live Settings Logic ---
+    function renderLiveTable() {
+        const tbody = document.getElementById('liveTableBody'); const filter = document.getElementById('statusFilter').value.toLowerCase(); const search = document.getElementById('tableSearch').value.toLowerCase();
+        tbody.innerHTML = ''; let count = 0;
+        allUsersData.forEach(u => {
+            const stat = (u.status || '').toLowerCase(); const uName = (u.name || '').toLowerCase(); const uId = (u.user_id || '').toLowerCase(); const uMob = (u.mobile || '').toLowerCase();
+            if (filter !== 'all' && stat !== filter) return;
+            if (search && !uName.includes(search) && !uId.includes(search) && !uMob.includes(search)) return;
+            count++;
+            const statHtml = stat === 'active' ? `<span class="text-[10px] text-emerald-400 bg-emerald-400/10 px-2 rounded border border-emerald-400/20 font-bold uppercase">ACTIVE</span>` : `<span class="text-[10px] text-red-400 bg-red-400/10 px-2 rounded border border-red-400/20 font-bold uppercase">UNACTIVE</span>`;
+            const toggleBtn = stat === 'active' ? `<button onclick="toggleUserStatus('${u.user_id}', 'Unactive')" class="text-red-400 hover:text-white bg-red-500/20 px-3 py-1 rounded text-[10px] font-bold transition">Deactivate</button>` : `<button onclick="toggleUserStatus('${u.user_id}', 'Active')" class="bg-emerald-600 text-white px-3 py-1 rounded text-[10px] font-bold transition">Activate</button>`;
+            tbody.innerHTML += `<tr class="hover:bg-slate-800/50 border-b border-slate-800/50"><td class="p-3 font-mono text-blue-400">${u.user_id}</td><td class="p-3 font-bold text-white">${u.name}</td><td class="p-3 font-mono">${u.mobile}</td><td class="p-3 text-slate-500">${u.sponsor || '-'}</td><td class="p-3">${statHtml}</td><td class="p-3 text-center">${toggleBtn}</td></tr>`;
+        });
+        if(count === 0) tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center">No records found.</td></tr>`;
+    }
+
+    async function toggleUserStatus(uid, newStatus) { if(confirm(`Make ${uid} ${newStatus}?`)) { await _supabase.from('users').update({ status: newStatus }).eq('user_id', uid); fetchDashboardStats(); } }
+
     async function loadPlatformSettings() {
-        try {
-            const { data, error } = await _supabase.from('settings').select('*').limit(1).maybeSingle();
-            if(data) {
-                currentNewsText = data.news_text;
-                document.getElementById('liveNewsInput').value = data.news_text || '';
-                document.getElementById('videoUrlInput').value = data.video_url || '';
-                document.getElementById('ytInput').value = data.yt_link || '';
-                document.getElementById('igInput').value = data.ig_link || '';
-                document.getElementById('fbInput').value = data.fb_link || '';
-                document.getElementById('waInput').value = data.wa_link || '';
-            }
-        } catch(err) { console.error(err); }
+        const { data } = await _supabase.from('settings').select('*').limit(1).maybeSingle();
+        if(data) {
+            document.getElementById('liveNewsInput').value = data.news_text||''; document.getElementById('videoUrlInput').value = data.video_url||'';
+            document.getElementById('qrInput').value = data.qr_url||''; document.getElementById('feeInput').value = data.activation_fee||'';
+            document.getElementById('ytInput').value = data.yt_link||''; document.getElementById('igInput').value = data.ig_link||''; document.getElementById('fbInput').value = data.fb_link||''; document.getElementById('waInput').value = data.wa_link||'';
+        }
     }
 
     async function savePlatformSettings() {
-        const nText = document.getElementById('liveNewsInput').value.trim();
-        const vUrl = document.getElementById('videoUrlInput').value.trim();
-        const yt = document.getElementById('ytInput').value.trim();
-        const ig = document.getElementById('igInput').value.trim();
-        const fb = document.getElementById('fbInput').value.trim();
-        const wa = document.getElementById('waInput').value.trim();
-        
-        const msg = document.getElementById('settingsMsg');
-        const btn = document.getElementById('settingsBtn');
-
-        btn.disabled = true; btn.innerText = "Updating...";
-
-        try {
-            if(currentNewsText) { await _supabase.from('settings').delete().eq('news_text', currentNewsText); }
-            const { error } = await _supabase.from('settings').insert([{ 
-                news_text: nText, video_url: vUrl, yt_link: yt, ig_link: ig, fb_link: fb, wa_link: wa 
-            }]);
-            if(error) throw error;
-            
-            currentNewsText = nText;
-            msg.innerText = "✅ Platform Updated Successfully!";
-            msg.className = "text-xs text-emerald-400 block font-bold";
-            setTimeout(() => { msg.classList.add('hidden'); }, 3000);
-        } catch (err) { msg.innerText = "Error saving settings."; msg.className = "text-xs text-red-400 block font-bold"; }
-        
-        btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i> Update Live Platform';
+        const btn = document.getElementById('settingsBtn'); btn.disabled = true; btn.innerText = "Updating...";
+        await _supabase.from('settings').delete().neq('news_text', 'dummy'); 
+        await _supabase.from('settings').insert([{ 
+            news_text: document.getElementById('liveNewsInput').value.trim(), video_url: formatURL(document.getElementById('videoUrlInput').value), 
+            qr_url: formatURL(document.getElementById('qrInput').value), activation_fee: document.getElementById('feeInput').value.trim(),
+            yt_link: formatURL(document.getElementById('ytInput').value), ig_link: formatURL(document.getElementById('igInput').value), fb_link: formatURL(document.getElementById('fbInput').value), wa_link: formatURL(document.getElementById('waInput').value) 
+        }]);
+        alert("Platform Updated!"); btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-2"></i> Update Live Platform';
     }
 
-    // --- NEW: UTR Activations Approval Logic ---
     async function loadPendingActivations() {
         const container = document.getElementById('pendingActivationsContainer');
-        try {
-            const { data: pData, error: pError } = await _supabase.from('payments').select('*').eq('status', 'Pending').order('created_at', { ascending: true });
-            if (pError) throw pError;
-            if (!pData || pData.length === 0) {
-                container.innerHTML = '<p class="text-xs text-slate-500 text-center py-4">No pending UTR requests.</p>';
-                return;
-            }
-
-            container.innerHTML = '';
-            for (let p of pData) {
-                const { data: uData } = await _supabase.from('users').select('name, mobile').eq('user_id', p.user_id).maybeSingle();
-                const uName = uData ? uData.name : 'Unknown User';
-                const uMobile = uData ? uData.mobile : 'N/A';
-                const d = new Date(p.created_at).toLocaleDateString('en-IN');
-
-                container.innerHTML += `
-                    <div class="bg-[#0f172a] border border-blue-500/30 rounded-xl p-4 shadow-sm mb-3">
-                        <div class="flex justify-between items-start mb-2 border-b border-slate-700 pb-2">
-                            <div>
-                                <p class="text-sm font-bold text-white">${uName}</p>
-                                <p class="text-[10px] text-blue-400 font-mono">${p.user_id} | <i class="fa-solid fa-phone text-emerald-500"></i> ${uMobile}</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-[10px] text-slate-400 mb-1">${d}</p>
-                                <p class="text-[9px] text-amber-400 font-bold uppercase tracking-widest bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20">${p.status}</p>
-                            </div>
-                        </div>
-                        <div class="text-xs text-slate-300 font-mono mb-3 bg-slate-800 p-2 rounded border border-slate-700">
-                            <span class="text-slate-500">UTR:</span> <span class="text-emerald-400 font-bold text-base tracking-widest">${p.utr_number}</span>
-                        </div>
-                        <div class="flex gap-2">
-                            <button onclick="approveActivation('${p.id}', '${p.user_id}')" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-xs font-bold transition shadow-lg"><i class="fa-solid fa-check mr-1"></i> Approve & Active</button>
-                            <button onclick="rejectActivation('${p.id}')" class="bg-red-600/20 hover:bg-red-600/40 text-red-400 border border-red-500/50 px-3 py-2 rounded-lg text-xs font-bold transition"><i class="fa-solid fa-xmark"></i></button>
-                        </div>
-                    </div>`;
-            }
-        } catch (err) { console.error(err); }
+        const { data: pData } = await _supabase.from('payments').select('*').eq('status', 'Pending');
+        if (!pData || pData.length === 0) { container.innerHTML = '<p class="text-xs text-center py-4">No requests.</p>'; return; }
+        container.innerHTML = '';
+        for (let p of pData) {
+            let uName = 'Unknown'; let uMob = '';
+            try { const { data: u } = await _supabase.from('users').select('name, mobile').eq('user_id', p.user_id).maybeSingle(); if(u){ uName=u.name; uMob=u.mobile; } } catch(e){}
+            container.innerHTML += `<div class="bg-[#0f172a] border border-blue-500/30 rounded-xl p-3 mb-2"><div class="flex justify-between items-center mb-2 pb-2 border-b border-slate-700"><div><p class="text-sm font-bold text-white">${uName}</p><p class="text-[10px] text-blue-400 font-mono">${p.user_id}</p></div><span class="text-[9px] text-amber-400 font-bold uppercase bg-amber-400/10 px-2 rounded">${p.status}</span></div><div class="text-xs text-slate-300 font-mono mb-2 bg-slate-800 p-1.5 rounded"><span class="text-slate-500">UTR:</span> <strong class="text-emerald-400">${p.utr_number}</strong></div><div class="flex gap-2"><button onclick="approveActivation('${p.id}', '${p.user_id}')" class="flex-1 bg-blue-600 text-white py-1.5 rounded text-xs font-bold">Approve</button><button onclick="rejectActivation('${p.id}')" class="bg-red-600/20 text-red-400 px-3 py-1.5 rounded text-xs"><i class="fa-solid fa-xmark"></i></button></div></div>`;
+        }
     }
+    async function approveActivation(pid, uid) { if(confirm("Approve UTR and ACTIVE student?")) { await _supabase.from('payments').update({ status: 'Approved' }).eq('id', pid); await _supabase.from('users').update({ status: 'Active' }).eq('user_id', uid); loadPendingActivations(); fetchDashboardStats(); } }
+    async function rejectActivation(pid) { if(confirm("Reject?")) { await _supabase.from('payments').update({ status: 'Rejected' }).eq('id', pid); loadPendingActivations(); } }
 
-    async function approveActivation(paymentId, userId) {
-        if(!confirm("Are you sure you want to approve this UTR and make the student ACTIVE?")) return;
-        try {
-            const { error: pErr } = await _supabase.from('payments').update({ status: 'Approved' }).eq('id', paymentId);
-            if (pErr) throw pErr;
-            const { error: uErr } = await _supabase.from('users').update({ status: 'Active' }).eq('user_id', userId);
-            if (uErr) throw uErr;
-            
-            alert("✅ Activation Approved Successfully!");
-            loadPendingActivations();
-            fetchDashboardStats();
-        } catch (err) { alert("Error: " + err.message); }
-    }
-
-    async function rejectActivation(paymentId) {
-        if(!confirm("Are you sure you want to REJECT this UTR request?")) return;
-        try {
-            const { error } = await _supabase.from('payments').update({ status: 'Rejected' }).eq('id', paymentId);
-            if (error) throw error;
-            loadPendingActivations();
-        } catch (err) { alert("Error: " + err.message); }
-    }
-
-    // --- Withdrawal Approval Logic ---
     async function loadPendingWithdrawals() {
         const container = document.getElementById('pendingWithdrawalsContainer');
-        try {
-            const { data: wData, error: wError } = await _supabase.from('withdrawals').select('*').eq('status', 'Pending').order('created_at', { ascending: true });
-            if (wError) throw wError;
-            if (!wData || wData.length === 0) {
-                container.innerHTML = '<p class="text-xs text-slate-500 text-center py-4">No pending payouts at the moment.</p>';
-                return;
-            }
-
-            container.innerHTML = '';
-            for (let w of wData) {
-                const { data: uData } = await _supabase.from('users').select('name, mobile, bank_name, bank_acc, bank_ifsc').eq('user_id', w.user_id).maybeSingle();
-                const uName = uData ? uData.name : 'Unknown';
-                const uBank = uData && uData.bank_name ? `<span class="text-slate-300">Bank:</span> ${uData.bank_name} <br> <span class="text-slate-300">A/C:</span> ${uData.bank_acc} <br> <span class="text-slate-300">IFSC:</span> ${uData.bank_ifsc}` : '<span class="text-red-400">No Bank Details Saved</span>';
-
-                container.innerHTML += `
-                    <div class="bg-[#0f172a] border border-slate-600 rounded-xl p-4 shadow-sm mb-3">
-                        <div class="flex justify-between items-start mb-2 border-b border-slate-700 pb-2">
-                            <div><p class="text-sm font-bold text-white">${uName}</p><p class="text-[10px] text-blue-400 font-mono">${w.user_id}</p></div>
-                            <div class="text-right"><p class="text-lg font-black text-emerald-400">₹${w.amount}</p><p class="text-[9px] text-amber-400 font-bold uppercase tracking-widest">${w.status}</p></div>
-                        </div>
-                        <div class="text-xs text-slate-400 font-mono mb-3 leading-relaxed">${uBank}</div>
-                        <button onclick="approveWithdrawal('${w.id}')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg text-xs font-bold transition shadow-lg"><i class="fa-solid fa-check-double mr-1"></i> Mark as Paid</button>
-                    </div>`;
-            }
-        } catch (err) { console.error(err); }
-    }
-
-    async function approveWithdrawal(wId) {
-        if(!confirm("Are you sure you have paid this amount? This will reflect as PAID in user's dashboard.")) return;
-        try {
-            const { error } = await _supabase.from('withdrawals').update({ status: 'Paid' }).eq('id', wId);
-            if (error) throw error;
-            alert("✅ Marked as Paid Successfully!");
-            loadPendingWithdrawals(); 
-        } catch (err) { alert("Error: " + err.message); }
-    }
-
-    // --- Student Search & Status ---
-    async function searchUser() {
-        const searchVal = document.getElementById('searchInput').value.trim().toUpperCase();
-        const msg = document.getElementById('searchMsg');
-        const box = document.getElementById('userDetailsBox');
-        const btn = document.getElementById('searchBtn');
-
-        if(!searchVal) return;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-        msg.classList.add('hidden'); box.classList.add('hidden');
-
-        try {
-            const { data, error } = await _supabase.from('users').select('*').or(`user_id.eq.${searchVal},mobile.eq.${searchVal}`).maybeSingle();
-            if (error || !data) {
-                msg.innerText = "❌ No student found."; msg.className = "text-xs text-center text-red-400 block mb-3 font-semibold";
-            } else {
-                currentSearchedId = data.user_id;
-                document.getElementById('sName').innerText = data.name; document.getElementById('sId').innerText = data.user_id;
-                document.getElementById('sMobile').innerText = data.mobile; document.getElementById('sSponsor').innerText = data.sponsor || 'None';
-                document.getElementById('sLoc').innerText = `${data.city || '-'}, ${data.state || '-'}`;
-                const d = new Date(data.created_at); document.getElementById('sDate').innerText = d.toLocaleDateString('en-IN') || '-';
-
-                const sBadge = document.getElementById('sStatus');
-                const btnAct = document.getElementById('btnActivate');
-                const btnUnact = document.getElementById('btnUnactivate');
-
-                if ((data.status || '').toLowerCase() === 'active') {
-                    sBadge.innerText = 'ACTIVE'; sBadge.className = "text-[10px] font-bold px-3 py-1 rounded-md border tracking-widest text-emerald-400 bg-emerald-400/10 border-emerald-400/20";
-                    btnAct.classList.add('hidden'); btnUnact.classList.remove('hidden');
-                } else {
-                    sBadge.innerText = 'UNACTIVE'; sBadge.className = "text-[10px] font-bold px-3 py-1 rounded-md border tracking-widest text-red-400 bg-red-400/10 border-red-400/20";
-                    btnAct.classList.remove('hidden'); btnUnact.classList.add('hidden');
-                }
-                box.classList.remove('hidden');
-            }
-        } catch (err) { console.error(err); }
-        btn.innerHTML = 'Search';
-    }
-
-    function promptStatusChange(status) {
-        if (!currentSearchedId) return;
-        pendingStatusAction = status;
-        const modal = document.getElementById('confirmModal');
-        const title = document.getElementById('confirmTitle');
-        const desc = document.getElementById('confirmDesc');
-        const btn = document.getElementById('confirmBtn');
-
-        if(status === 'Active') {
-            title.innerHTML = '<i class="fa-solid fa-check-circle text-emerald-400 mr-2"></i> Confirm Activation';
-            desc.innerHTML = `Are you sure you want to <strong>ACTIVATE</strong> student <span class="text-amber-400">${currentSearchedId}</span>?`;
-            btn.innerText = "Yes, Make Active"; btn.className = "flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-sm font-bold transition shadow-lg shadow-emerald-600/30";
-        } else {
-            title.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-red-500 mr-2"></i> Warning: Deactivation';
-            desc.innerHTML = `Are you sure you want to <strong>UNACTIVE</strong> student <span class="text-amber-400">${currentSearchedId}</span>?`;
-            btn.innerText = "Yes, Make Unactive"; btn.className = "flex-1 bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl text-sm font-bold transition shadow-lg shadow-red-600/30";
+        const { data: wData } = await _supabase.from('withdrawals').select('*').eq('status', 'Pending');
+        if (!wData || wData.length === 0) { container.innerHTML = '<p class="text-xs text-center py-4">No payouts.</p>'; return; }
+        container.innerHTML = '';
+        for (let w of wData) {
+            let uName = 'Unknown'; let uBank = 'No Bank Data';
+            try { const { data: u } = await _supabase.from('users').select('name, bank_acc, bank_ifsc').eq('user_id', w.user_id).maybeSingle(); if(u){ uName=u.name; if(u.bank_acc) uBank=`A/C: ${u.bank_acc} | IFSC: ${u.bank_ifsc}`; } } catch(e){}
+            container.innerHTML += `<div class="bg-[#0f172a] border border-emerald-500/30 rounded-xl p-3 mb-2"><div class="flex justify-between items-center mb-2 pb-2 border-b border-slate-700"><div><p class="text-sm font-bold text-white">${uName}</p><p class="text-[10px] text-blue-400">${w.user_id}</p></div><p class="text-lg font-black text-emerald-400">₹${w.amount}</p></div><div class="text-[10px] text-slate-400 font-mono mb-2">${uBank}</div><button onclick="approveWithdrawal('${w.id}')" class="w-full bg-emerald-600 text-white py-1.5 rounded text-xs font-bold">Mark Paid</button></div>`;
         }
-        modal.classList.remove('hidden');
     }
+    async function approveWithdrawal(wId) { if(confirm("Mark as Paid?")) { await _supabase.from('withdrawals').update({ status: 'Paid' }).eq('id', wId); loadPendingWithdrawals(); } }
 
-    function closeConfirmModal() { document.getElementById('confirmModal').classList.add('hidden'); pendingStatusAction = ''; }
-
-    async function executeStatusChange() {
-        const btn = document.getElementById('confirmBtn');
-        btn.innerText = "Processing..."; btn.disabled = true;
-        try {
-            const { error } = await _supabase.from('users').update({ status: pendingStatusAction }).eq('user_id', currentSearchedId);
-            if (error) throw error;
-            closeConfirmModal(); searchUser(); fetchDashboardStats(); 
-        } catch (err) { alert("Error: " + err.message); closeConfirmModal(); }
-        btn.disabled = false;
-    }
-
-    function downloadExcel() {
-        if (!allUsersData || allUsersData.length === 0) { alert("No data available."); return; }
-        const headers = ["User ID", "Name", "Mobile", "Password", "Status", "Sponsor ID", "Bank Name", "A/C Number", "IFSC", "State", "City", "Join Date"];
-        const csvRows = []; csvRows.push(headers.join(','));
-        allUsersData.forEach(user => {
-            const dateStr = user.created_at ? new Date(user.created_at).toLocaleDateString('en-IN') : '-';
-            const row = [ `"${user.user_id}"`, `"${user.name}"`, `"${user.mobile}"`, `"${user.password}"`, `"${user.status}"`, `"${user.sponsor}"`, `"${user.bank_name || ''}"`, `"${user.bank_acc || ''}"`, `"${user.bank_ifsc || ''}"`, `"${user.state || ''}"`, `"${user.city || ''}"`, `"${dateStr}"` ];
-            csvRows.push(row.join(','));
+    async function downloadFullDB() {
+        const btn = document.getElementById('btnExcel'); btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i>...';
+        if (!allUsersData || allUsersData.length === 0) return;
+        const networkMap = {}; allUsersData.forEach(u => { const sp = String(u.sponsor||'').trim().toUpperCase(); if(sp) { if(!networkMap[sp]) networkMap[sp]=[]; networkMap[sp].push(u); } });
+        const payoutRates = [1000, 500, 250, 250, 250, 125, 125, 125, 125];
+        const headers = ["User ID", "Name", "Mobile", "Password", "Status", "Sponsor ID", "Total Earning (Live)", "Bank Name", "A/C Number", "IFSC", "Join Date"];
+        const csvRows = [headers.join(',')];
+        allUsersData.forEach(u => {
+            let earn = 0; 
+            if((u.status||'').toLowerCase() === 'active') {
+                let cLevel = networkMap[String(u.user_id).trim().toUpperCase()] || [];
+                for (let i = 0; i < 9; i++) {
+                    let actCount = cLevel.filter(x => (x.status||'').toLowerCase() === 'active').length; earn += actCount * payoutRates[i];
+                    let nxLevel = []; cLevel.forEach(x => { nxLevel = nxLevel.concat(networkMap[String(x.user_id).trim().toUpperCase()] || []); }); cLevel = nxLevel;
+                }
+            }
+            csvRows.push([ `"${u.user_id}"`, `"${u.name}"`, `"${u.mobile}"`, `"${u.password}"`, `"${u.status}"`, `"${u.sponsor}"`, `"${earn}"`, `"${u.bank_name||''}"`, `"${u.bank_acc||''}"`, `"${u.bank_ifsc||''}"`, `"${u.created_at ? new Date(u.created_at).toLocaleDateString('en-IN') : '-'}"` ].join(','));
         });
-        const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
-        const a = document.createElement('a'); a.setAttribute('href', window.URL.createObjectURL(blob)); a.setAttribute('download', `MAHAN_Database_${new Date().toISOString().slice(0,10)}.csv`);
-        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        triggerDownload(csvRows.join('\n'), `MAHAN_MasterDB.csv`); btn.innerHTML = '<i class="fa-solid fa-download mr-1"></i> Live Master CSV';
     }
+
+    async function downloadBankPayoutList() {
+        const { data: wData } = await _supabase.from('withdrawals').select('*').eq('status', 'Pending');
+        if(!wData || wData.length === 0) { alert("No pending payouts!"); return; }
+        const csvRows = [["Beneficiary Name", "Account Number", "IFSC Code", "Amount", "User ID"].join(',')];
+        for (let w of wData) {
+            const { data: uData } = await _supabase.from('users').select('name, bank_acc, bank_ifsc').eq('user_id', w.user_id).maybeSingle();
+            csvRows.push([ `"${uData?.name||'Unknown'}"`, `"${uData?.bank_acc||''}"`, `"${uData?.bank_ifsc||''}"`, `"${w.amount}"`, `"${w.user_id}"` ].join(','));
+        }
+        triggerDownload(csvRows.join('\n'), `Bank_Payouts.csv`);
+    }
+
+    function triggerDownload(csvContent, filename) { const a = document.createElement('a'); a.href = window.URL.createObjectURL(new Blob([csvContent], { type: 'text/csv' })); a.download = filename; document.body.appendChild(a); a.click(); document.body.removeChild(a); }
 </script>
 </body>
 </html>
-
-    
-    
