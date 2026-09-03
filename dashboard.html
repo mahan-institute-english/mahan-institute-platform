@@ -198,7 +198,7 @@
         <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-[95%] max-w-sm shadow-2xl text-center">
             <h3 class="text-lg font-bold text-white mb-2"><i class="fa-solid fa-qrcode text-emerald-400 mr-2"></i> Account Activation</h3>
             <p class="text-xs text-slate-400 mb-4">Scan QR code using PhonePe/GPay to pay activation fee (<strong class="text-amber-400" id="displayFee">₹...</strong>) and enter UTR number.</p>
-            <div class="bg-white p-3 rounded-xl inline-block mb-4 shadow-lg"><img id="dynamicQR" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=MAHAN" alt="Payment QR" class="w-36 h-36"></div>
+            <div class="bg-white p-3 rounded-xl inline-block mb-4 shadow-lg"><img src="qr.jpg" alt="Payment QR" class="w-36 h-36"></div>
             <input type="text" id="utrNumber" placeholder="Enter 12-digit UTR / Ref No." class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-emerald-500 font-mono text-center uppercase">
             <p id="qrMsg" class="text-xs mb-3 hidden"></p>
             <div class="flex gap-3"><button onclick="submitUTR()" id="utrBtn" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-sm font-bold transition">Submit</button><button onclick="closeModal('qrModal')" class="flex-1 bg-slate-700 text-white py-3 rounded-xl text-sm font-bold">Cancel</button></div>
