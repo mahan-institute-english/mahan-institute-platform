@@ -1,185 +1,556 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="gu">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAHAN - Admin Panel</title>
+    <title>MAHAN - Admin Control Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Poppins', sans-serif; }</style>
 </head>
-<body class="bg-slate-900 text-slate-200 font-sans p-4 md:p-8">
+<body class="bg-[#0f172a] text-slate-200 min-h-screen p-4 font-sans pb-12">
 
-    <!-- Header -->
-    <div class="flex justify-between items-center mb-8 border-b border-slate-700 pb-4">
-        <h1 class="text-2xl md:text-3xl font-bold text-blue-400"><i class="fa-solid fa-shield-halved mr-2"></i> MAHAN Admin Panel</h1>
-        <p class="text-sm text-slate-400">Head Office: Morbi</p>
-    </div>
-
-    <!-- 3. Payment QR Image URL Settings -->
-    <div class="bg-slate-800 p-5 rounded-xl mb-6 shadow-lg border border-slate-700">
-        <h2 class="text-lg font-bold text-white mb-3"><i class="fa-solid fa-qrcode mr-2 text-blue-400"></i> Payment QR Code Update</h2>
-        <div class="flex flex-col md:flex-row gap-3">
-            <input type="text" id="qrUrl" placeholder="અહીં નવા QR ઈમેજનું નામ અથવા URL નાખો (દા.ત. qr.jpg)" class="flex-1 bg-slate-700 text-white p-2 rounded border border-slate-600 focus:outline-none focus:border-blue-500">
-            <button onclick="updateQR()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded font-bold transition">Update QR</button>
-        </div>
-        <p class="text-xs text-slate-400 mt-2">અહીંથી URL બદલતા જ ડેશબોર્ડ પર નવો QR દેખાવા લાગશે.</p>
-    </div>
-
-    <!-- 1, 4, 6. Pending Approvals (Fixed 5000 Rs) -->
-    <div class="bg-slate-800 p-5 rounded-xl mb-6 shadow-lg border border-slate-700">
-        <h2 class="text-lg font-bold text-emerald-400 mb-3"><i class="fa-solid fa-user-check mr-2"></i> Pending Account Approvals</h2>
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="bg-slate-700 text-slate-300">
-                        <th class="p-3">Member Name</th>
-                        <th class="p-3">Amount</th>
-                        <th class="p-3">UTR Number</th>
-                        <th class="p-3">Action</th>
-                    </tr>
-                </thead>
-                <tbody id="approvalTable">
-                    <!-- Sample Data: Rupala Vaishali -->
-                    <tr id="req-1" class="border-b border-slate-700">
-                        <td class="p-3">Rupala Vaishali Abhaybhai</td>
-                        <td class="p-3 font-bold text-emerald-400">₹5000 <span class="text-xs font-normal text-slate-400">(Fixed)</span></td>
-                        <td class="p-3">123456789012</td>
-                        <td class="p-3">
-                            <button onclick="approvePayment('req-1')" class="bg-emerald-600 hover:bg-emerald-700 px-4 py-1 rounded text-white text-sm font-bold">Approve</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    <!-- SECURITY LAYER 1: Admin Login Gate -->
+    <div id="adminLoginGate" class="flex flex-col items-center justify-center min-h-[80vh]">
+        <div class="bg-slate-800 border border-amber-500/50 p-8 rounded-2xl shadow-[0_0_30px_rgba(245,158,11,0.15)] w-full max-w-sm text-center relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber-500/20 rounded-full blur-2xl"></div>
+            <i class="fa-solid fa-shield-halved text-5xl text-amber-500 mb-4 relative z-10"></i>
+            <h2 class="text-xl font-bold text-white tracking-widest uppercase mb-1 relative z-10">Admin Access</h2>
+            <p class="text-[10px] text-slate-400 uppercase tracking-widest mb-6 relative z-10">Master Control Room</p>
+            <div class="space-y-4 relative z-10">
+                <div class="relative">
+                    <i class="fa-solid fa-user-shield absolute left-3 top-3.5 text-slate-500"></i>
+                    <input type="text" id="adminId" placeholder="Admin ID" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl py-3 pl-10 pr-3 text-sm text-white focus:border-amber-500 outline-none uppercase font-mono">
+                </div>
+                <div class="relative">
+                    <i class="fa-solid fa-key absolute left-3 top-3.5 text-slate-500"></i>
+                    <input type="password" id="adminPass" placeholder="Admin Password" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl py-3 pl-10 pr-3 text-sm text-white focus:border-amber-500 outline-none font-mono">
+                </div>
+                <p id="adminLoginMsg" class="text-xs font-bold hidden"></p>
+                <button onclick="unlockAdmin()" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-unlock"></i> UNLOCK PANEL
+                </button>
+                <button onclick="window.location.href='dashboard.html'" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-2.5 rounded-xl transition text-xs mt-2">Back to Dashboard</button>
+            </div>
         </div>
     </div>
 
-    <!-- 2, 7. Pending Payouts (Withdrawals) -->
-    <div class="bg-slate-800 p-5 rounded-xl mb-6 shadow-lg border border-slate-700">
-        <h2 class="text-lg font-bold text-orange-400 mb-3"><i class="fa-solid fa-money-bill-transfer mr-2"></i> Pending Payouts (Bank Transfer)</h2>
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="bg-slate-700 text-slate-300">
-                        <th class="p-3">Member Name</th>
-                        <th class="p-3">Withdrawal Amount</th>
-                        <th class="p-3">Bank Details</th>
-                        <th class="p-3">Action</th>
-                    </tr>
-                </thead>
-                <tbody id="payoutTable">
-                    <!-- Sample Data: Namra Haresh Makasana -->
-                    <tr id="payout-1" class="border-b border-slate-700">
-                        <td class="p-3">Namra Haresh Makasana</td>
-                        <td class="p-3 font-bold text-orange-400">₹2500</td>
-                        <td class="p-3">SBI Ac: XXXXXX4321</td>
-                        <td class="p-3">
-                            <button onclick="markPaid('payout-1')" class="bg-blue-600 hover:bg-blue-700 px-4 py-1 rounded text-white text-sm font-bold">Mark Paid</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- 5. Live Member Dashboard (Toggle / Accordion) -->
-    <div class="bg-slate-800 p-5 rounded-xl mb-6 shadow-lg border border-slate-700">
-        <button onclick="toggleMembers()" class="w-full text-left font-bold text-lg text-white flex justify-between items-center focus:outline-none">
-            <span><i class="fa-solid fa-users mr-2 text-purple-400"></i> Live Member Dashboard</span>
-            <i id="memberIcon" class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
-        </button>
+    <!-- MAIN ADMIN PANEL -->
+    <div id="mainAdminPanel" class="max-w-2xl mx-auto space-y-6 hidden">
         
-        <div id="memberList" class="hidden mt-4 overflow-x-auto">
-            <table class="w-full text-left text-sm border-collapse">
-                <thead>
-                    <tr class="bg-slate-700 text-slate-300">
-                        <th class="p-2">ID</th>
-                        <th class="p-2">Name</th>
-                        <th class="p-2">Status</th>
-                        <th class="p-2">Joined Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-b border-slate-700"><td class="p-2">MAHAN01</td><td class="p-2">Rupala Vaishali Abhaybhai</td><td class="p-2 text-emerald-400">Active</td><td class="p-2">04-Sep-2026</td></tr>
-                    <tr class="border-b border-slate-700"><td class="p-2">MAHAN02</td><td class="p-2">Namra Haresh Makasana</td><td class="p-2 text-emerald-400">Active</td><td class="p-2">03-Sep-2026</td></tr>
-                    <!-- લાંબુ લિસ્ટ અહીં આવશે -->
-                </tbody>
-            </table>
+        <!-- Admin Header -->
+        <div class="bg-gradient-to-r from-slate-800 to-slate-900 border border-amber-500/30 p-5 rounded-2xl shadow-2xl flex justify-between items-center relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl"></div>
+            <div class="relative z-10 flex items-center gap-4">
+                <div class="w-12 h-12 bg-amber-500/20 text-amber-400 rounded-xl flex items-center justify-center border border-amber-500/30 shadow-lg"><i class="fa-solid fa-crown text-2xl"></i></div>
+                <div><h1 class="text-xl font-bold text-white tracking-wider uppercase">Admin Panel</h1><p class="text-xs text-amber-500 font-mono tracking-widest">System Unlocked</p></div>
+            </div>
+            <button onclick="lockSystem()" class="relative z-10 bg-red-600/20 hover:bg-red-600 border border-red-500/50 text-red-400 hover:text-white px-4 py-2 rounded-lg text-xs font-bold transition"><i class="fa-solid fa-lock mr-1"></i> Lock</button>
+        </div>
+        
+        <!-- Live Statistics -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl text-center shadow-lg">
+                <i class="fa-solid fa-users text-blue-400 text-xl mb-1"></i><h3 class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total Users</h3><p id="totalUsers" class="text-xl font-black text-white mt-1">0</p>
+            </div>
+            <div class="bg-slate-800 border border-emerald-500/30 p-4 rounded-xl text-center shadow-lg">
+                <i class="fa-solid fa-user-check text-emerald-400 text-xl mb-1"></i><h3 class="text-[10px] text-emerald-500 font-bold uppercase tracking-wider">Active</h3><p id="activeUsers" class="text-xl font-black text-white mt-1">0</p>
+            </div>
+            <div class="bg-slate-800 border border-red-500/30 p-4 rounded-xl text-center shadow-lg">
+                <i class="fa-solid fa-user-xmark text-red-400 text-xl mb-1"></i><h3 class="text-[10px] text-red-500 font-bold uppercase tracking-wider">Unactive</h3><p id="unactiveUsers" class="text-xl font-black text-white mt-1">0</p>
+            </div>
+            <div class="bg-slate-800 border border-amber-500/30 p-4 rounded-xl text-center shadow-lg flex flex-col justify-center">
+                <i class="fa-solid fa-file-excel text-amber-400 text-xl mb-1"></i>
+                <!-- Updated Button to open preview modal -->
+                <button onclick="openDataPreview()" class="mt-1 w-full bg-amber-600 hover:bg-amber-700 text-white text-[10px] font-bold py-1.5 rounded transition shadow-lg">Backup CSV</button>
+            </div>
+        </div>
+
+        <!-- NEW: Pending Account Approvals (Fixed Rs. 5000) -->
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-xl">
+            <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3">
+                <i class="fa-solid fa-user-shield text-blue-400"></i> Pending Account Approvals (₹5000 Fixed)
+            </h3>
+            <div id="pendingApprovalsContainer" class="space-y-3 max-h-60 overflow-y-auto pr-2">
+                <p class="text-xs text-slate-500 text-center py-4">Checking pending approvals...</p>
+            </div>
+        </div>
+
+        <!-- Pending Withdrawals Section -->
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-xl">
+            <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3">
+                <i class="fa-solid fa-money-bill-transfer text-emerald-400"></i> Pending Payout Requests
+            </h3>
+            <div id="pendingWithdrawalsContainer" class="space-y-3 max-h-80 overflow-y-auto pr-2">
+                <p class="text-xs text-slate-500 text-center py-4">Checking pending requests...</p>
+            </div>
+        </div>
+
+        <!-- Live Member Dashboard (Toggle Accordion) -->
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-xl">
+            <button onclick="toggleMemberDashboard()" class="w-full flex justify-between items-center focus:outline-none">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-users-viewfinder text-purple-400"></i> Live Member Dashboard
+                </h3>
+                <i id="memberAccordionIcon" class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+            </button>
+            <div id="memberDashboardContent" class="hidden mt-4 pt-4 border-t border-slate-700 overflow-x-auto">
+                <table class="w-full text-left text-xs whitespace-nowrap">
+                    <thead>
+                        <tr class="text-slate-400 border-b border-slate-700">
+                            <th class="pb-2 pr-4">User ID</th>
+                            <th class="pb-2 pr-4">Name</th>
+                            <th class="pb-2 pr-4">Mobile</th>
+                            <th class="pb-2">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="memberDashboardTableBody">
+                        <!-- Data injected via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Platform Live Settings -->
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-xl">
+            <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3">
+                <i class="fa-solid fa-tower-broadcast text-amber-400"></i> Platform Live Settings
+            </h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="text-[10px] text-slate-400 uppercase tracking-widest">Payment QR Code Image Name/URL</label>
+                    <input type="text" id="qrCodeUrlInput" placeholder="e.g. qr.jpg or URL" class="w-full mt-1 bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="text-[10px] text-slate-400 uppercase tracking-widest">Live News Ticker</label>
+                    <input type="text" id="liveNewsInput" placeholder="Enter scrolling news text..." class="w-full mt-1 bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-amber-500">
+                </div>
+                <div>
+                    <label class="text-[10px] text-slate-400 uppercase tracking-widest">Dashboard Video (YouTube Embed URL)</label>
+                    <input type="text" id="videoUrlInput" placeholder="e.g. https://www.youtube.com/embed/jfKfPfyJRdk" class="w-full mt-1 bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-amber-500 font-mono">
+                </div>
+                
+                <div class="border-t border-slate-700 pt-4 mt-2">
+                    <label class="text-[10px] text-blue-400 font-bold uppercase tracking-widest mb-3 block">Social Media Links</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-[9px] text-slate-400 uppercase tracking-widest"><i class="fa-brands fa-youtube text-red-500 mr-1"></i> YouTube</label>
+                            <input type="text" id="ytInput" placeholder="YouTube Link" class="w-full mt-1 bg-[#0f172a] border border-slate-600 rounded-lg p-2 text-xs text-white outline-none focus:border-amber-500">
+                        </div>
+                        <div>
+                            <label class="text-[9px] text-slate-400 uppercase tracking-widest"><i class="fa-brands fa-instagram text-pink-500 mr-1"></i> Instagram</label>
+                            <input type="text" id="igInput" placeholder="Instagram Link" class="w-full mt-1 bg-[#0f172a] border border-slate-600 rounded-lg p-2 text-xs text-white outline-none focus:border-amber-500">
+                        </div>
+                        <div>
+                            <label class="text-[9px] text-slate-400 uppercase tracking-widest"><i class="fa-brands fa-facebook text-blue-500 mr-1"></i> Facebook</label>
+                            <input type="text" id="fbInput" placeholder="Facebook Link" class="w-full mt-1 bg-[#0f172a] border border-slate-600 rounded-lg p-2 text-xs text-white outline-none focus:border-amber-500">
+                        </div>
+                        <div>
+                            <label class="text-[9px] text-slate-400 uppercase tracking-widest"><i class="fa-brands fa-whatsapp text-green-500 mr-1"></i> WhatsApp</label>
+                            <input type="text" id="waInput" placeholder="WhatsApp Group Link" class="w-full mt-1 bg-[#0f172a] border border-slate-600 rounded-lg p-2 text-xs text-white outline-none focus:border-amber-500">
+                        </div>
+                    </div>
+                </div>
+
+                <p id="settingsMsg" class="text-xs hidden"></p>
+                <button onclick="savePlatformSettings()" id="settingsBtn" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2 mt-2">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Update Live Platform
+                </button>
+            </div>
+        </div>
+
+        <!-- Manual Activation & Search Section -->
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-xl">
+            <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3"><i class="fa-solid fa-magnifying-glass text-blue-400"></i> Search & Manage Student</h3>
+            <div class="flex gap-3 mb-4">
+                <input type="text" id="searchInput" placeholder="Enter User ID or Mobile" class="flex-1 bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-emerald-500 uppercase font-mono">
+                <button onclick="searchUser()" id="searchBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-5 rounded-xl text-sm font-bold transition shadow-lg">Search</button>
+            </div>
+            <p id="searchMsg" class="text-xs text-center hidden mb-3"></p>
+            <div id="userDetailsBox" class="hidden bg-[#0f172a] border border-slate-600 rounded-xl p-4 space-y-3">
+                <div class="flex justify-between items-start">
+                    <div><p class="text-[10px] text-slate-400 uppercase tracking-widest mb-1">Student Name</p><p id="sName" class="text-base font-bold text-white"></p><p id="sId" class="text-xs text-blue-400 font-mono mt-0.5"></p></div>
+                    <span id="sStatus" class="text-[10px] font-bold px-3 py-1 rounded-md border tracking-widest"></span>
+                </div>
+                <div class="grid grid-cols-2 gap-2 border-t border-slate-700 pt-3">
+                    <div><p class="text-[10px] text-slate-500">Mobile</p><p id="sMobile" class="text-xs text-slate-300 font-mono"></p></div>
+                    <div><p class="text-[10px] text-slate-500">Sponsor</p><p id="sSponsor" class="text-xs text-slate-300 font-mono"></p></div>
+                    <div><p class="text-[10px] text-slate-500">State / City</p><p id="sLoc" class="text-xs text-slate-300"></p></div>
+                    <div><p class="text-[10px] text-slate-500">Join Date</p><p id="sDate" class="text-xs text-slate-300"></p></div>
+                </div>
+                <div class="flex gap-3 pt-3 border-t border-slate-700 mt-3">
+                    <button id="btnActivate" onclick="promptStatusChange('Active')" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-lg text-xs font-bold transition shadow-lg hidden"><i class="fa-solid fa-check-circle mr-1"></i> Make Active</button>
+                    <button id="btnUnactivate" onclick="promptStatusChange('Unactive')" class="flex-1 bg-red-600/20 hover:bg-red-600/40 text-red-400 border border-red-500/50 py-2.5 rounded-lg text-xs font-bold transition hidden"><i class="fa-solid fa-times-circle mr-1"></i> Make Unactive</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- 8. Reports & Downloads (Preview Modals) -->
-    <div class="bg-slate-800 p-5 rounded-xl mb-6 shadow-lg border border-slate-700">
-        <h2 class="text-lg font-bold text-white mb-3"><i class="fa-solid fa-file-csv mr-2 text-pink-400"></i> Data & Reports</h2>
-        <div class="flex gap-4">
-            <button onclick="openModal('Live Master CSV')" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded text-white border border-slate-600 transition"><i class="fa-solid fa-eye mr-2"></i> Live Master Data</button>
-            <button onclick="openModal('Bank Payout CSV')" class="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded text-white border border-slate-600 transition"><i class="fa-solid fa-eye mr-2"></i> Bank Payouts Data</button>
+    <!-- Data Preview Modal -->
+    <div id="dataPreviewModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-800 border border-slate-600 p-5 rounded-2xl w-full max-w-4xl shadow-2xl flex flex-col max-h-[90vh]">
+            <div class="flex justify-between items-center border-b border-slate-700 pb-3 mb-3">
+                <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-eye text-amber-400 mr-2"></i> Live Master Data Preview</h3>
+                <button onclick="closeDataPreview()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div class="overflow-auto flex-1 mb-4 border border-slate-700 rounded-lg">
+                <table class="w-full text-left text-xs whitespace-nowrap">
+                    <thead class="bg-slate-700 text-slate-300">
+                        <tr>
+                            <th class="p-2 border-b border-slate-600">ID</th>
+                            <th class="p-2 border-b border-slate-600">Name</th>
+                            <th class="p-2 border-b border-slate-600">Mobile</th>
+                            <th class="p-2 border-b border-slate-600">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="previewTableBody">
+                        <!-- Data injected via JS -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="flex gap-3 mt-auto">
+                <button onclick="downloadExcel()" class="flex-1 bg-amber-600 hover:bg-amber-700 text-white py-2 rounded-xl text-sm font-bold transition shadow-lg"><i class="fa-solid fa-file-csv mr-1"></i> Download CSV/Excel</button>
+                <button onclick="window.print()" class="flex-1 bg-slate-600 hover:bg-slate-500 text-white py-2 rounded-xl text-sm font-bold transition"><i class="fa-solid fa-print mr-1"></i> Print / PDF</button>
+            </div>
         </div>
     </div>
 
-    <!-- Preview Modal (Hidden by default) -->
-    <div id="previewModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-slate-800 border border-slate-600 p-6 rounded-2xl w-full max-w-3xl shadow-2xl">
-            <div class="flex justify-between items-center mb-4">
-                <h3 id="modalTitle" class="text-xl font-bold text-white">Data Preview</h3>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-2xl"></i></button>
-            </div>
-            <div class="bg-slate-700 h-64 rounded flex items-center justify-center text-slate-400 mb-4 border border-slate-600">
-                [પ્રિવ્યુ ટેબલ ડેટા અહીં દેખાશે]
-            </div>
-            <div class="flex justify-end gap-3">
-                <button class="bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded text-white font-bold"><i class="fa-solid fa-file-excel mr-2"></i> Download Excel</button>
-                <button class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-white font-bold"><i class="fa-solid fa-file-pdf mr-2"></i> Download PDF</button>
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-800 border border-slate-600 p-6 rounded-2xl w-full max-w-sm shadow-2xl text-center">
+            <h3 id="confirmTitle" class="text-lg font-bold text-white mb-2"></h3>
+            <p id="confirmDesc" class="text-xs text-slate-300 mb-6 bg-[#0f172a] p-3 rounded-lg border border-slate-700"></p>
+            <div class="flex gap-3">
+                <button id="confirmBtn" onclick="executeStatusChange()" class="flex-1 py-3 rounded-xl text-sm font-bold transition shadow-lg"></button>
+                <button onclick="closeConfirmModal()" class="flex-1 bg-slate-600 hover:bg-slate-500 text-white py-3 rounded-xl text-sm font-bold transition">Cancel</button>
             </div>
         </div>
     </div>
 
-    <!-- Javascript for Logic -->
-    <script>
-        // 1 & 6. Approve Payment Logic (Removes from list, prevents duplicate)
-        function approvePayment(id) {
-            let row = document.getElementById(id);
-            row.innerHTML = `<td colspan="4" class="p-3 text-center text-emerald-400 font-bold bg-slate-700/50 rounded">Payment Approved successfully for ₹5000!</td>`;
-            setTimeout(() => { row.remove(); }, 2000);
+<script>
+    const SUPABASE_URL = "https://wzrbsvwmrymkpzwmgypb.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6cmJzdndtcnlta3B6d21neXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDc1NzQsImV4cCI6MjEwMzMyMzU3NH0.5ulY5LW3AQEPFDP__iOSJssgNafTSe9Yu4gEqZF7sLc";
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    let allUsersData = [];
+    let currentSearchedId = null;
+    let pendingStatusAction = '';
+    let currentNewsText = null;
+
+    async function unlockAdmin() {
+        const id = document.getElementById('adminId').value.trim().toUpperCase();
+        const pass = document.getElementById('adminPass').value.trim();
+        const msg = document.getElementById('adminLoginMsg');
+
+        if(id !== 'MAHAN101' && id !== '7016623939') {
+            msg.innerText = "❌ Access Denied!"; msg.className = "text-xs font-bold text-red-400 block"; return;
         }
+        if(!pass) { msg.innerText = "Please enter password."; msg.className = "text-xs font-bold text-red-400 block"; return; }
 
-        // 2. Mark Paid Logic (Removes from pending list)
-        function markPaid(id) {
-            let row = document.getElementById(id);
-            row.innerHTML = `<td colspan="4" class="p-3 text-center text-blue-400 font-bold bg-slate-700/50 rounded">Amount Transferred to Bank. Moved to History.</td>`;
-            setTimeout(() => { row.remove(); }, 2000);
+        msg.innerText = "Verifying..."; msg.className = "text-xs font-bold text-amber-400 block";
+
+        try {
+            const { data, error } = await _supabase.from('users').select('*').or(`user_id.eq.${id},mobile.eq.${id}`).eq('password', pass).maybeSingle();
+            if (error || !data) { msg.innerText = "❌ Incorrect Password!"; msg.className = "text-xs font-bold text-red-400 block"; return; }
+            document.getElementById('adminLoginGate').classList.add('hidden');
+            document.getElementById('mainAdminPanel').classList.remove('hidden');
+            
+            fetchDashboardStats();
+            loadPlatformSettings();
+            loadPendingWithdrawals();
+            loadPendingApprovals(); // New function added
+        } catch (err) { msg.innerText = "Network Error!"; msg.className = "text-xs font-bold text-red-400 block"; }
+    }
+
+    function lockSystem() {
+        document.getElementById('mainAdminPanel').classList.add('hidden');
+        document.getElementById('adminLoginGate').classList.remove('hidden');
+        document.getElementById('adminPass').value = '';
+    }
+
+    async function fetchDashboardStats() {
+        try {
+            const { data, error } = await _supabase.from('users').select('*').order('created_at', { ascending: false });
+            if (error) throw error;
+            allUsersData = data; 
+            const total = data.length;
+            const active = data.filter(u => (u.status || '').toLowerCase() === 'active').length;
+            document.getElementById('totalUsers').innerText = total;
+            document.getElementById('activeUsers').innerText = active;
+            document.getElementById('unactiveUsers').innerText = total - active;
+            
+            populateMemberDashboard();
+        } catch (err) { console.error(err); }
+    }
+    
+    // Toggle Live Member Dashboard
+    function toggleMemberDashboard() {
+        const content = document.getElementById('memberDashboardContent');
+        const icon = document.getElementById('memberAccordionIcon');
+        if(content.classList.contains('hidden')) {
+            content.classList.remove('hidden');
+            icon.style.transform = 'rotate(180deg)';
+        } else {
+            content.classList.add('hidden');
+            icon.style.transform = 'rotate(0deg)';
         }
+    }
 
-        // 3. Update QR Code logic
-        function updateQR() {
-            let url = document.getElementById('qrUrl').value;
-            if(url) {
-                alert("QR Code Successfully Updated to: " + url + "\nડેશબોર્ડ પર નવો QR લાગુ થઈ ગયો છે.");
-            } else {
-                alert("Please enter a valid QR name/URL");
+    function populateMemberDashboard() {
+        const tbody = document.getElementById('memberDashboardTableBody');
+        tbody.innerHTML = '';
+        allUsersData.forEach(user => {
+            const statusClass = (user.status || '').toLowerCase() === 'active' ? 'text-emerald-400' : 'text-red-400';
+            tbody.innerHTML += `
+                <tr class="border-b border-slate-700/50">
+                    <td class="py-2 pr-4 text-blue-400 font-mono">${user.user_id}</td>
+                    <td class="py-2 pr-4">${user.name}</td>
+                    <td class="py-2 pr-4">${user.mobile}</td>
+                    <td class="py-2 font-bold ${statusClass}">${user.status || 'Unactive'}</td>
+                </tr>
+            `;
+        });
+    }
+
+    // NEW: Pending Approvals Logic
+    async function loadPendingApprovals() {
+        const container = document.getElementById('pendingApprovalsContainer');
+        try {
+            // Fetch users whose status is not active (pending/unactive)
+            const { data, error } = await _supabase.from('users').select('*').neq('status', 'Active').order('created_at', { ascending: false });
+            if (error) throw error;
+            if (!data || data.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-500 text-center py-4">No pending account approvals.</p>';
+                return;
             }
-        }
 
-        // 5. Toggle Member Dashboard List
-        function toggleMembers() {
-            let list = document.getElementById("memberList");
-            let icon = document.getElementById("memberIcon");
-            if (list.classList.contains("hidden")) {
-                list.classList.remove("hidden");
-                icon.style.transform = "rotate(180deg)";
-            } else {
-                list.classList.add("hidden");
-                icon.style.transform = "rotate(0deg)";
+            container.innerHTML = '';
+            for (let u of data) {
+                container.innerHTML += `
+                    <div class="bg-[#0f172a] border border-slate-600 rounded-xl p-4 shadow-sm mb-3">
+                        <div class="flex justify-between items-start mb-2 border-b border-slate-700 pb-2">
+                            <div><p class="text-sm font-bold text-white">${u.name}</p><p class="text-[10px] text-blue-400 font-mono">${u.user_id}</p></div>
+                            <div class="text-right"><p class="text-lg font-black text-emerald-400">₹5000</p><p class="text-[9px] text-amber-400 font-bold uppercase tracking-widest">Pending</p></div>
+                        </div>
+                        <button onclick="approveAccountDirectly('${u.user_id}')" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-xs font-bold transition shadow-lg"><i class="fa-solid fa-user-check mr-1"></i> Approve & Activate Account</button>
+                    </div>`;
             }
-        }
+        } catch (err) { console.error(err); }
+    }
 
-        // 8. Open & Close Preview Modal
-        function openModal(title) {
-            document.getElementById('modalTitle').innerText = title + " Preview";
-            document.getElementById('previewModal').classList.remove('hidden');
+    async function approveAccountDirectly(userId) {
+        if(!confirm(`Are you sure you received ₹5000 for ${userId} and want to Activate?`)) return;
+        try {
+            const { error } = await _supabase.from('users').update({ status: 'Active' }).eq('user_id', userId);
+            if(error) throw error;
+            alert(`✅ Account ${userId} has been successfully Activated!`);
+            fetchDashboardStats();
+            loadPendingApprovals(); // Refresh list
+        } catch(err) { alert("Error: " + err.message); }
+    }
+
+    // Live Settings Logic
+    async function loadPlatformSettings() {
+        try {
+            const { data, error } = await _supabase.from('settings').select('*').limit(1).maybeSingle();
+            if(data) {
+                currentNewsText = data.news_text;
+                document.getElementById('liveNewsInput').value = data.news_text || '';
+                document.getElementById('videoUrlInput').value = data.video_url || '';
+                document.getElementById('qrCodeUrlInput').value = data.qr_url || ''; // QR input
+                document.getElementById('ytInput').value = data.yt_link || '';
+                document.getElementById('igInput').value = data.ig_link || '';
+                document.getElementById('fbInput').value = data.fb_link || '';
+                document.getElementById('waInput').value = data.wa_link || '';
+            }
+        } catch(err) { console.error(err); }
+    }
+
+    async function savePlatformSettings() {
+        const nText = document.getElementById('liveNewsInput').value.trim();
+        const vUrl = document.getElementById('videoUrlInput').value.trim();
+        const qrUrl = document.getElementById('qrCodeUrlInput').value.trim(); // QR value
+        const yt = document.getElementById('ytInput').value.trim();
+        const ig = document.getElementById('igInput').value.trim();
+        const fb = document.getElementById('fbInput').value.trim();
+        const wa = document.getElementById('waInput').value.trim();
+        
+        const msg = document.getElementById('settingsMsg');
+        const btn = document.getElementById('settingsBtn');
+
+        btn.disabled = true; btn.innerText = "Updating...";
+
+        try {
+            if(currentNewsText) { await _supabase.from('settings').delete().eq('news_text', currentNewsText); }
+            const { error } = await _supabase.from('settings').insert([{ 
+                news_text: nText, video_url: vUrl, qr_url: qrUrl, yt_link: yt, ig_link: ig, fb_link: fb, wa_link: wa 
+            }]);
+            if(error) throw error;
+            
+            currentNewsText = nText;
+            msg.innerText = "✅ Platform Updated Successfully!";
+            msg.className = "text-xs text-emerald-400 block font-bold";
+            setTimeout(() => { msg.classList.add('hidden'); }, 3000);
+        } catch (err) { msg.innerText = "Error saving settings."; msg.className = "text-xs text-red-400 block font-bold"; }
+        
+        btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i> Update Live Platform';
+    }
+
+    // Withdrawal Approval Logic
+    async function loadPendingWithdrawals() {
+        const container = document.getElementById('pendingWithdrawalsContainer');
+        try {
+            const { data: wData, error: wError } = await _supabase.from('withdrawals').select('*').eq('status', 'Pending').order('created_at', { ascending: true });
+            if (wError) throw wError;
+            if (!wData || wData.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-500 text-center py-4">No pending requests at the moment.</p>';
+                return;
+            }
+
+            container.innerHTML = '';
+            for (let w of wData) {
+                const { data: uData } = await _supabase.from('users').select('name, mobile, bank_name, bank_acc, bank_ifsc').eq('user_id', w.user_id).maybeSingle();
+
+                const uName = uData ? uData.name : 'Unknown';
+                const uBank = uData && uData.bank_name ? `<span class="text-slate-300">Bank:</span> ${uData.bank_name} <br> <span class="text-slate-300">A/C:</span> ${uData.bank_acc} <br> <span class="text-slate-300">IFSC:</span> ${uData.bank_ifsc}` : '<span class="text-red-400">No Bank Details Saved</span>';
+
+                container.innerHTML += `
+                    <div id="row-${w.id}" class="bg-[#0f172a] border border-slate-600 rounded-xl p-4 shadow-sm mb-3 transition-all duration-300">
+                        <div class="flex justify-between items-start mb-2 border-b border-slate-700 pb-2">
+                            <div><p class="text-sm font-bold text-white">${uName}</p><p class="text-[10px] text-blue-400 font-mono">${w.user_id}</p></div>
+                            <div class="text-right"><p class="text-lg font-black text-emerald-400">₹${w.amount}</p><p class="text-[9px] text-amber-400 font-bold uppercase tracking-widest">${w.status}</p></div>
+                        </div>
+                        <div class="text-xs text-slate-400 font-mono mb-3 leading-relaxed">${uBank}</div>
+                        <button onclick="approveWithdrawal('${w.id}')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg text-xs font-bold transition shadow-lg"><i class="fa-solid fa-check-double mr-1"></i> Mark as Paid</button>
+                    </div>`;
+            }
+        } catch (err) { console.error(err); }
+    }
+
+    async function approveWithdrawal(wId) {
+        if(!confirm("Are you sure you have paid this amount? This will reflect as PAID in user's dashboard.")) return;
+        try {
+            const rowDiv = document.getElementById(`row-${wId}`);
+            if(rowDiv) rowDiv.innerHTML = '<div class="text-center text-emerald-400 font-bold p-4">✅ Amount Transferred. Moving to History...</div>';
+            
+            const { error } = await _supabase.from('withdrawals').update({ status: 'Paid' }).eq('id', wId);
+            if (error) throw error;
+            
+            setTimeout(() => { loadPendingWithdrawals(); }, 1500); // Reloads list automatically
+        } catch (err) { alert("Error: " + err.message); }
+    }
+
+    // Student Search & Status
+    async function searchUser() {
+        const searchVal = document.getElementById('searchInput').value.trim().toUpperCase();
+        const msg = document.getElementById('searchMsg');
+        const box = document.getElementById('userDetailsBox');
+        const btn = document.getElementById('searchBtn');
+
+        if(!searchVal) return;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+        msg.classList.add('hidden'); box.classList.add('hidden');
+
+        try {
+            const { data, error } = await _supabase.from('users').select('*').or(`user_id.eq.${searchVal},mobile.eq.${searchVal}`).maybeSingle();
+            if (error || !data) {
+                msg.innerText = "❌ No student found."; msg.className = "text-xs text-center text-red-400 block mb-3 font-semibold";
+            } else {
+                currentSearchedId = data.user_id;
+                document.getElementById('sName').innerText = data.name; document.getElementById('sId').innerText = data.user_id;
+                document.getElementById('sMobile').innerText = data.mobile; document.getElementById('sSponsor').innerText = data.sponsor || 'None';
+                document.getElementById('sLoc').innerText = `${data.city || '-'}, ${data.state || '-'}`;
+                const d = new Date(data.created_at); document.getElementById('sDate').innerText = d.toLocaleDateString('en-IN') || '-';
+
+                const sBadge = document.getElementById('sStatus');
+                const btnAct = document.getElementById('btnActivate');
+                const btnUnact = document.getElementById('btnUnactivate');
+
+                if ((data.status || '').toLowerCase() === 'active') {
+                    sBadge.innerText = 'ACTIVE'; sBadge.className = "text-[10px] font-bold px-3 py-1 rounded-md border tracking-widest text-emerald-400 bg-emerald-400/10 border-emerald-400/20";
+                    btnAct.classList.add('hidden'); btnUnact.classList.remove('hidden');
+                } else {
+                    sBadge.innerText = 'UNACTIVE'; sBadge.className = "text-[10px] font-bold px-3 py-1 rounded-md border tracking-widest text-red-400 bg-red-400/10 border-red-400/20";
+                    btnAct.classList.remove('hidden'); btnUnact.classList.add('hidden');
+                }
+                box.classList.remove('hidden');
+            }
+        } catch (err) { console.error(err); }
+        btn.innerHTML = 'Search';
+    }
+
+    function promptStatusChange(status) {
+        if (!currentSearchedId) return;
+        pendingStatusAction = status;
+        const modal = document.getElementById('confirmModal');
+        const title = document.getElementById('confirmTitle');
+        const desc = document.getElementById('confirmDesc');
+        const btn = document.getElementById('confirmBtn');
+
+        if(status === 'Active') {
+            title.innerHTML = '<i class="fa-solid fa-check-circle text-emerald-400 mr-2"></i> Confirm Activation';
+            desc.innerHTML = `Are you sure you want to <strong>ACTIVATE</strong> student <span class="text-amber-400">${currentSearchedId}</span>?`;
+            btn.innerText = "Yes, Make Active"; btn.className = "flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-sm font-bold transition shadow-lg shadow-emerald-600/30";
+        } else {
+            title.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-red-500 mr-2"></i> Warning: Deactivation';
+            desc.innerHTML = `Are you sure you want to <strong>UNACTIVE</strong> student <span class="text-amber-400">${currentSearchedId}</span>?`;
+            btn.innerText = "Yes, Make Unactive"; btn.className = "flex-1 bg-red-600 hover:bg-red-700 text-white py-3 rounded-xl text-sm font-bold transition shadow-lg shadow-red-600/30";
         }
-        function closeModal() {
-            document.getElementById('previewModal').classList.add('hidden');
-        }
-    </script>
+        modal.classList.remove('hidden');
+    }
+
+    function closeConfirmModal() { document.getElementById('confirmModal').classList.add('hidden'); pendingStatusAction = ''; }
+
+    async function executeStatusChange() {
+        const btn = document.getElementById('confirmBtn');
+        btn.innerText = "Processing..."; btn.disabled = true;
+        try {
+            const { error } = await _supabase.from('users').update({ status: pendingStatusAction }).eq('user_id', currentSearchedId);
+            if (error) throw error;
+            closeConfirmModal(); searchUser(); fetchDashboardStats(); loadPendingApprovals();
+        } catch (err) { alert("Error: " + err.message); closeConfirmModal(); }
+        btn.disabled = false;
+    }
+
+    // New Data Preview and Download Functions
+    function openDataPreview() {
+        if (!allUsersData || allUsersData.length === 0) { alert("No data available."); return; }
+        const tbody = document.getElementById('previewTableBody');
+        tbody.innerHTML = '';
+        allUsersData.forEach(user => {
+            const statusClass = (user.status || '').toLowerCase() === 'active' ? 'text-emerald-400' : 'text-red-400';
+            tbody.innerHTML += `
+                <tr class="border-b border-slate-600/50">
+                    <td class="p-2">${user.user_id}</td>
+                    <td class="p-2">${user.name}</td>
+                    <td class="p-2">${user.mobile}</td>
+                    <td class="p-2 font-bold ${statusClass}">${user.status || 'Unactive'}</td>
+                </tr>
+            `;
+        });
+        document.getElementById('dataPreviewModal').classList.remove('hidden');
+    }
+
+    function closeDataPreview() {
+        document.getElementById('dataPreviewModal').classList.add('hidden');
+    }
+
+    function downloadExcel() {
+        if (!allUsersData || allUsersData.length === 0) { alert("No data available."); return; }
+        const headers = ["User ID", "Name", "Mobile", "Password", "Status", "Sponsor ID", "Bank Name", "A/C Number", "IFSC", "State", "City", "Join Date"];
+        const csvRows = []; csvRows.push(headers.join(','));
+        allUsersData.forEach(user => {
+            const dateStr = user.created_at ? new Date(user.created_at).toLocaleDateString('en-IN') : '-';
+            const row = [ `"${user.user_id}"`, `"${user.name}"`, `"${user.mobile}"`, `"${user.password}"`, `"${user.status}"`, `"${user.sponsor}"`, `"${user.bank_name || ''}"`, `"${user.bank_acc || ''}"`, `"${user.bank_ifsc || ''}"`, `"${user.state || ''}"`, `"${user.city || ''}"`, `"${dateStr}"` ];
+            csvRows.push(row.join(','));
+        });
+        const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+        const a = document.createElement('a'); a.setAttribute('href', window.URL.createObjectURL(blob)); a.setAttribute('download', `MAHAN_Database_${new Date().toISOString().slice(0,10)}.csv`);
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    }
+</script>
 </body>
 </html>
+                                                                       
