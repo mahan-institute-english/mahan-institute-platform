@@ -12,7 +12,6 @@
 </head>
 <body class="bg-[#0f172a] text-slate-200 min-h-screen p-4 font-sans pb-12">
 
-    <!-- SECURITY LAYER 1: Admin Login Gate -->
     <div id="adminLoginGate" class="flex flex-col items-center justify-center min-h-[80vh]">
         <div class="bg-slate-800 border border-amber-500/50 p-8 rounded-2xl shadow-[0_0_30px_rgba(245,158,11,0.15)] w-full max-w-sm text-center relative overflow-hidden">
             <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber-500/20 rounded-full blur-2xl"></div>
@@ -37,10 +36,8 @@
         </div>
     </div>
 
-    <!-- MAIN ADMIN PANEL -->
     <div id="mainAdminPanel" class="max-w-2xl mx-auto space-y-6 hidden">
         
-        <!-- Admin Header -->
         <div class="bg-gradient-to-r from-slate-800 to-slate-900 border border-amber-500/30 p-5 rounded-2xl shadow-2xl flex justify-between items-center relative overflow-hidden">
             <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl"></div>
             <div class="relative z-10 flex items-center gap-4">
@@ -50,7 +47,6 @@
             <button onclick="lockSystem()" class="relative z-10 bg-red-600/20 hover:bg-red-600 border border-red-500/50 text-red-400 hover:text-white px-4 py-2 rounded-lg text-xs font-bold transition"><i class="fa-solid fa-lock mr-1"></i> Lock</button>
         </div>
         
-        <!-- Live Statistics & CSV Buttons -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl text-center shadow-lg">
                 <i class="fa-solid fa-users text-blue-400 text-xl mb-1"></i><h3 class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total Users</h3><p id="totalUsers" class="text-xl font-black text-white mt-1">0</p>
@@ -61,24 +57,21 @@
             <div class="bg-slate-800 border border-red-500/30 p-4 rounded-xl text-center shadow-lg">
                 <i class="fa-solid fa-user-xmark text-red-400 text-xl mb-1"></i><h3 class="text-[10px] text-red-500 font-bold uppercase tracking-wider">Unactive</h3><p id="unactiveUsers" class="text-xl font-black text-white mt-1">0</p>
             </div>
-            <!-- Restored: Master CSV & Bank Payout CSV -->
             <div class="bg-slate-800 border border-amber-500/30 p-3 rounded-xl flex flex-col justify-center gap-2 shadow-lg">
                 <button onclick="openDataPreview('master')" class="w-full bg-slate-700 hover:bg-slate-600 text-white text-[10px] font-bold py-2 rounded transition shadow border border-slate-600"><i class="fa-solid fa-download mr-1"></i> Live Master CSV</button>
                 <button onclick="openDataPreview('payout')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold py-2 rounded transition shadow"><i class="fa-solid fa-building-columns mr-1"></i> Bank Payout CSV</button>
             </div>
         </div>
 
-        <!-- Pending Account Approvals (Fixed Rs. 5000) -->
         <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-xl">
             <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3">
-                <i class="fa-solid fa-user-shield text-blue-400"></i> Pending Account Approvals (₹5000 Fixed)
+                <i class="fa-solid fa-user-shield text-blue-400"></i> Pending Activations (UTR Verification - ₹5000 Fixed)
             </h3>
-            <div id="pendingApprovalsContainer" class="space-y-3 max-h-60 overflow-y-auto pr-2">
-                <p class="text-xs text-slate-500 text-center py-4">Checking pending approvals...</p>
+            <div id="pendingApprovalsContainer" class="space-y-4 max-h-80 overflow-y-auto pr-2">
+                <p class="text-xs text-slate-500 text-center py-4">Checking pending activations...</p>
             </div>
         </div>
 
-        <!-- Pending Withdrawals Section -->
         <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-xl">
             <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3">
                 <i class="fa-solid fa-money-bill-transfer text-emerald-400"></i> Pending Payout Requests
@@ -88,7 +81,6 @@
             </div>
         </div>
 
-        <!-- Live Member Dashboard (Toggle Accordion) -->
         <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-xl">
             <button onclick="toggleMemberDashboard()" class="w-full flex justify-between items-center focus:outline-none">
                 <h3 class="text-sm font-bold text-white flex items-center gap-2">
@@ -112,7 +104,6 @@
             </div>
         </div>
 
-        <!-- Platform Live Settings -->
         <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-xl">
             <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3">
                 <i class="fa-solid fa-tower-broadcast text-amber-400"></i> Platform Live Settings
@@ -160,7 +151,6 @@
             </div>
         </div>
 
-        <!-- Manual Activation & Search Section -->
         <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-xl">
             <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3"><i class="fa-solid fa-magnifying-glass text-blue-400"></i> Search & Manage Student</h3>
             <div class="flex gap-3 mb-4">
@@ -187,7 +177,6 @@
         </div>
     </div>
 
-    <!-- Data Preview Modal (Updates dynamically based on Master or Payout) -->
     <div id="dataPreviewModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
         <div class="bg-slate-800 border border-slate-600 p-5 rounded-2xl w-full max-w-4xl shadow-2xl flex flex-col max-h-[90vh]">
             <div class="flex justify-between items-center border-b border-slate-700 pb-3 mb-3">
@@ -197,10 +186,8 @@
             <div class="overflow-auto flex-1 mb-4 border border-slate-700 rounded-lg">
                 <table class="w-full text-left text-xs whitespace-nowrap">
                     <thead class="bg-slate-700 text-slate-300" id="previewTableHead">
-                        <!-- Headings injected via JS -->
                     </thead>
                     <tbody id="previewTableBody">
-                        <!-- Data injected via JS -->
                     </tbody>
                 </table>
             </div>
@@ -211,7 +198,6 @@
         </div>
     </div>
 
-    <!-- Confirmation Modal -->
     <div id="confirmModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
         <div class="bg-slate-800 border border-slate-600 p-6 rounded-2xl w-full max-w-sm shadow-2xl text-center">
             <h3 id="confirmTitle" class="text-lg font-bold text-white mb-2"></h3>
@@ -232,7 +218,7 @@
     let currentSearchedId = null;
     let pendingStatusAction = '';
     let currentNewsText = null;
-    let currentPreviewType = 'master'; // variables to track which CSV to download
+    let currentPreviewType = 'master'; 
 
     async function unlockAdmin() {
         const id = document.getElementById('adminId').value.trim().toUpperCase();
@@ -308,36 +294,52 @@
         });
     }
 
+    // UTR VERIFICATION & Pending Approvals
     async function loadPendingApprovals() {
         const container = document.getElementById('pendingApprovalsContainer');
         try {
             const { data, error } = await _supabase.from('users').select('*').neq('status', 'Active').order('created_at', { ascending: false });
             if (error) throw error;
-            if (!data || data.length === 0) {
-                container.innerHTML = '<p class="text-xs text-slate-500 text-center py-4">No pending account approvals.</p>';
+            
+            const pendingUsers = data.filter(u => u.utr || u.utr_number || (u.created_at && (u.status || '').toLowerCase() !== 'active'));
+
+            if (!pendingUsers || pendingUsers.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-500 text-center py-4">No pending account approvals with UTR.</p>';
                 return;
             }
 
             container.innerHTML = '';
-            for (let u of data) {
+            for (let u of pendingUsers) {
+                const utrDisplay = u.utr || u.utr_number || 'WAITING FOR UTR...';
+                const utrColor = (utrDisplay === 'WAITING FOR UTR...') ? 'text-red-400' : 'text-amber-400';
+                
                 container.innerHTML += `
                     <div class="bg-[#0f172a] border border-slate-600 rounded-xl p-4 shadow-sm mb-3">
                         <div class="flex justify-between items-start mb-2 border-b border-slate-700 pb-2">
                             <div><p class="text-sm font-bold text-white">${u.name}</p><p class="text-[10px] text-blue-400 font-mono">${u.user_id}</p></div>
                             <div class="text-right"><p class="text-lg font-black text-emerald-400">₹5000</p><p class="text-[9px] text-amber-400 font-bold uppercase tracking-widest">Pending</p></div>
                         </div>
-                        <button onclick="approveAccountDirectly('${u.user_id}')" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-xs font-bold transition shadow-lg"><i class="fa-solid fa-user-check mr-1"></i> Approve & Activate Account</button>
+                        <div class="bg-slate-800 p-3 rounded mb-3 border border-slate-700 text-center">
+                            <p class="text-[10px] text-slate-400 uppercase tracking-widest mb-1">Verify this UTR in your Bank</p>
+                            <p class="text-lg ${utrColor} font-mono font-bold tracking-widest">UTR: ${utrDisplay}</p>
+                        </div>
+                        <button onclick="approveAccountDirectly('${u.user_id}', '${utrDisplay}')" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg text-xs font-bold transition shadow-lg"><i class="fa-solid fa-check-double mr-1"></i> Bank Checked! Activate Account</button>
                     </div>`;
             }
         } catch (err) { console.error(err); }
     }
 
-    async function approveAccountDirectly(userId) {
-        if(!confirm(`Are you sure you received ₹5000 for ${userId} and want to Activate?`)) return;
+    async function approveAccountDirectly(userId, utr) {
+        if(utr === 'WAITING FOR UTR...') {
+            alert("This student has not submitted a UTR yet. Please wait for them to pay.");
+            return;
+        }
+        if(!confirm(`Did you check your Bank App?\nHave you received ₹5000 from UTR: ${utr} ?\n\nClick OK to permanently ACTIVATE ${userId}.`)) return;
+        
         try {
             const { error } = await _supabase.from('users').update({ status: 'Active' }).eq('user_id', userId);
             if(error) throw error;
-            alert(`✅ Account ${userId} has been successfully Activated!`);
+            alert(`✅ Success! Payment Verified and Account ${userId} Activated!`);
             fetchDashboardStats();
             loadPendingApprovals();
         } catch(err) { alert("Error: " + err.message); }
@@ -503,27 +505,32 @@
         btn.disabled = false;
     }
 
-    // Dynamic Data Preview System (Handles both Master and Bank Payouts)
+    // Dynamic Data Preview System
     async function openDataPreview(type) {
         currentPreviewType = type;
         const title = document.getElementById('previewTitle');
         const thead = document.getElementById('previewTableHead');
         const tbody = document.getElementById('previewTableBody');
         
-        tbody.innerHTML = '<tr><td colspan="4" class="text-center p-4"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading data...</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center p-4"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading data...</td></tr>';
         document.getElementById('dataPreviewModal').classList.remove('hidden');
 
         if(type === 'master') {
             title.innerHTML = '<i class="fa-solid fa-users text-amber-400 mr-2"></i> Live Master Data Preview';
-            thead.innerHTML = `<tr><th class="p-2 border-b border-slate-600">ID</th><th class="p-2 border-b border-slate-600">Name</th><th class="p-2 border-b border-slate-600">Mobile</th><th class="p-2 border-b border-slate-600">Status</th></tr>`;
+            thead.innerHTML = `<tr><th class="p-2 border-b border-slate-600">ID</th><th class="p-2 border-b border-slate-600">Name</th><th class="p-2 border-b border-slate-600">Mobile</th><th class="p-2 border-b border-slate-600">Sponsor</th><th class="p-2 border-b border-slate-600">City</th><th class="p-2 border-b border-slate-600">Status</th></tr>`;
             
-            if (!allUsersData || allUsersData.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="text-center p-4">No data available.</td></tr>'; return; }
+            if (!allUsersData || allUsersData.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="text-center p-4">No data available.</td></tr>'; return; }
             tbody.innerHTML = '';
             allUsersData.forEach(user => {
                 const statusClass = (user.status || '').toLowerCase() === 'active' ? 'text-emerald-400' : 'text-red-400';
                 tbody.innerHTML += `
-                    <tr class="border-b border-slate-600/50">
-                        <td class="p-2">${user.user_id}</td><td class="p-2">${user.name}</td><td class="p-2">${user.mobile}</td><td class="p-2 font-bold ${statusClass}">${user.status || 'Unactive'}</td>
+                    <tr class="border-b border-slate-600/50 hover:bg-slate-700/30">
+                        <td class="p-2 font-mono text-blue-400">${user.user_id}</td>
+                        <td class="p-2 font-bold">${user.name}</td>
+                        <td class="p-2">${user.mobile}</td>
+                        <td class="p-2 text-slate-400">${user.sponsor || '-'}</td>
+                        <td class="p-2 text-slate-400">${user.city || '-'}</td>
+                        <td class="p-2 font-bold ${statusClass}">${user.status || 'Unactive'}</td>
                     </tr>`;
             });
         } 
@@ -543,7 +550,7 @@
                     const bankInfo = uData ? `<span class="text-amber-400">${uData.bank_name || '-'}</span><br>A/C: ${uData.bank_acc || '-'}<br>IFSC: ${uData.bank_ifsc || '-'}` : 'No Details';
                     const statusClass = w.status === 'Paid' ? 'text-emerald-400' : 'text-amber-400';
                     tbody.innerHTML += `
-                        <tr class="border-b border-slate-600/50">
+                        <tr class="border-b border-slate-600/50 hover:bg-slate-700/30">
                             <td class="p-2 font-mono text-blue-400">${w.user_id}</td><td class="p-2 font-bold text-emerald-400">₹${w.amount}</td><td class="p-2 text-[10px] leading-tight">${bankInfo}</td><td class="p-2 font-bold ${statusClass}">${w.status}</td>
                         </tr>`;
                 }
@@ -601,5 +608,6 @@
 </script>
 </body>
 </html>
-                                                          
-        
+
+                
+                                                                                                   
