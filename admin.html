@@ -50,7 +50,7 @@
             <button onclick="lockSystem()" class="relative z-10 bg-red-600/20 hover:bg-red-600 border border-red-500/50 text-red-400 hover:text-white px-4 py-2 rounded-lg text-xs font-bold transition"><i class="fa-solid fa-lock mr-1"></i> Lock</button>
         </div>
         
-        <!-- Live Statistics -->
+        <!-- Live Statistics & CSV Buttons -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl text-center shadow-lg">
                 <i class="fa-solid fa-users text-blue-400 text-xl mb-1"></i><h3 class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total Users</h3><p id="totalUsers" class="text-xl font-black text-white mt-1">0</p>
@@ -61,14 +61,14 @@
             <div class="bg-slate-800 border border-red-500/30 p-4 rounded-xl text-center shadow-lg">
                 <i class="fa-solid fa-user-xmark text-red-400 text-xl mb-1"></i><h3 class="text-[10px] text-red-500 font-bold uppercase tracking-wider">Unactive</h3><p id="unactiveUsers" class="text-xl font-black text-white mt-1">0</p>
             </div>
-            <div class="bg-slate-800 border border-amber-500/30 p-4 rounded-xl text-center shadow-lg flex flex-col justify-center">
-                <i class="fa-solid fa-file-excel text-amber-400 text-xl mb-1"></i>
-                <!-- Updated Button to open preview modal -->
-                <button onclick="openDataPreview()" class="mt-1 w-full bg-amber-600 hover:bg-amber-700 text-white text-[10px] font-bold py-1.5 rounded transition shadow-lg">Backup CSV</button>
+            <!-- Restored: Master CSV & Bank Payout CSV -->
+            <div class="bg-slate-800 border border-amber-500/30 p-3 rounded-xl flex flex-col justify-center gap-2 shadow-lg">
+                <button onclick="openDataPreview('master')" class="w-full bg-slate-700 hover:bg-slate-600 text-white text-[10px] font-bold py-2 rounded transition shadow border border-slate-600"><i class="fa-solid fa-download mr-1"></i> Live Master CSV</button>
+                <button onclick="openDataPreview('payout')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold py-2 rounded transition shadow"><i class="fa-solid fa-building-columns mr-1"></i> Bank Payout CSV</button>
             </div>
         </div>
 
-        <!-- NEW: Pending Account Approvals (Fixed Rs. 5000) -->
+        <!-- Pending Account Approvals (Fixed Rs. 5000) -->
         <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-xl">
             <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3">
                 <i class="fa-solid fa-user-shield text-blue-400"></i> Pending Account Approvals (₹5000 Fixed)
@@ -107,7 +107,6 @@
                         </tr>
                     </thead>
                     <tbody id="memberDashboardTableBody">
-                        <!-- Data injected via JS -->
                     </tbody>
                 </table>
             </div>
@@ -188,22 +187,17 @@
         </div>
     </div>
 
-    <!-- Data Preview Modal -->
+    <!-- Data Preview Modal (Updates dynamically based on Master or Payout) -->
     <div id="dataPreviewModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
         <div class="bg-slate-800 border border-slate-600 p-5 rounded-2xl w-full max-w-4xl shadow-2xl flex flex-col max-h-[90vh]">
             <div class="flex justify-between items-center border-b border-slate-700 pb-3 mb-3">
-                <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-eye text-amber-400 mr-2"></i> Live Master Data Preview</h3>
+                <h3 id="previewTitle" class="text-lg font-bold text-white"><i class="fa-solid fa-eye text-amber-400 mr-2"></i> Data Preview</h3>
                 <button onclick="closeDataPreview()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
             <div class="overflow-auto flex-1 mb-4 border border-slate-700 rounded-lg">
                 <table class="w-full text-left text-xs whitespace-nowrap">
-                    <thead class="bg-slate-700 text-slate-300">
-                        <tr>
-                            <th class="p-2 border-b border-slate-600">ID</th>
-                            <th class="p-2 border-b border-slate-600">Name</th>
-                            <th class="p-2 border-b border-slate-600">Mobile</th>
-                            <th class="p-2 border-b border-slate-600">Status</th>
-                        </tr>
+                    <thead class="bg-slate-700 text-slate-300" id="previewTableHead">
+                        <!-- Headings injected via JS -->
                     </thead>
                     <tbody id="previewTableBody">
                         <!-- Data injected via JS -->
@@ -211,7 +205,7 @@
                 </table>
             </div>
             <div class="flex gap-3 mt-auto">
-                <button onclick="downloadExcel()" class="flex-1 bg-amber-600 hover:bg-amber-700 text-white py-2 rounded-xl text-sm font-bold transition shadow-lg"><i class="fa-solid fa-file-csv mr-1"></i> Download CSV/Excel</button>
+                <button onclick="downloadCSV()" class="flex-1 bg-amber-600 hover:bg-amber-700 text-white py-2 rounded-xl text-sm font-bold transition shadow-lg"><i class="fa-solid fa-file-csv mr-1"></i> Download CSV/Excel</button>
                 <button onclick="window.print()" class="flex-1 bg-slate-600 hover:bg-slate-500 text-white py-2 rounded-xl text-sm font-bold transition"><i class="fa-solid fa-print mr-1"></i> Print / PDF</button>
             </div>
         </div>
@@ -238,6 +232,7 @@
     let currentSearchedId = null;
     let pendingStatusAction = '';
     let currentNewsText = null;
+    let currentPreviewType = 'master'; // variables to track which CSV to download
 
     async function unlockAdmin() {
         const id = document.getElementById('adminId').value.trim().toUpperCase();
@@ -260,7 +255,7 @@
             fetchDashboardStats();
             loadPlatformSettings();
             loadPendingWithdrawals();
-            loadPendingApprovals(); // New function added
+            loadPendingApprovals();
         } catch (err) { msg.innerText = "Network Error!"; msg.className = "text-xs font-bold text-red-400 block"; }
     }
 
@@ -285,7 +280,6 @@
         } catch (err) { console.error(err); }
     }
     
-    // Toggle Live Member Dashboard
     function toggleMemberDashboard() {
         const content = document.getElementById('memberDashboardContent');
         const icon = document.getElementById('memberAccordionIcon');
@@ -314,11 +308,9 @@
         });
     }
 
-    // NEW: Pending Approvals Logic
     async function loadPendingApprovals() {
         const container = document.getElementById('pendingApprovalsContainer');
         try {
-            // Fetch users whose status is not active (pending/unactive)
             const { data, error } = await _supabase.from('users').select('*').neq('status', 'Active').order('created_at', { ascending: false });
             if (error) throw error;
             if (!data || data.length === 0) {
@@ -347,11 +339,10 @@
             if(error) throw error;
             alert(`✅ Account ${userId} has been successfully Activated!`);
             fetchDashboardStats();
-            loadPendingApprovals(); // Refresh list
+            loadPendingApprovals();
         } catch(err) { alert("Error: " + err.message); }
     }
 
-    // Live Settings Logic
     async function loadPlatformSettings() {
         try {
             const { data, error } = await _supabase.from('settings').select('*').limit(1).maybeSingle();
@@ -359,7 +350,7 @@
                 currentNewsText = data.news_text;
                 document.getElementById('liveNewsInput').value = data.news_text || '';
                 document.getElementById('videoUrlInput').value = data.video_url || '';
-                document.getElementById('qrCodeUrlInput').value = data.qr_url || ''; // QR input
+                document.getElementById('qrCodeUrlInput').value = data.qr_url || '';
                 document.getElementById('ytInput').value = data.yt_link || '';
                 document.getElementById('igInput').value = data.ig_link || '';
                 document.getElementById('fbInput').value = data.fb_link || '';
@@ -371,7 +362,7 @@
     async function savePlatformSettings() {
         const nText = document.getElementById('liveNewsInput').value.trim();
         const vUrl = document.getElementById('videoUrlInput').value.trim();
-        const qrUrl = document.getElementById('qrCodeUrlInput').value.trim(); // QR value
+        const qrUrl = document.getElementById('qrCodeUrlInput').value.trim();
         const yt = document.getElementById('ytInput').value.trim();
         const ig = document.getElementById('igInput').value.trim();
         const fb = document.getElementById('fbInput').value.trim();
@@ -398,7 +389,6 @@
         btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i> Update Live Platform';
     }
 
-    // Withdrawal Approval Logic
     async function loadPendingWithdrawals() {
         const container = document.getElementById('pendingWithdrawalsContainer');
         try {
@@ -438,11 +428,10 @@
             const { error } = await _supabase.from('withdrawals').update({ status: 'Paid' }).eq('id', wId);
             if (error) throw error;
             
-            setTimeout(() => { loadPendingWithdrawals(); }, 1500); // Reloads list automatically
+            setTimeout(() => { loadPendingWithdrawals(); }, 1500); 
         } catch (err) { alert("Error: " + err.message); }
     }
 
-    // Student Search & Status
     async function searchUser() {
         const searchVal = document.getElementById('searchInput').value.trim().toUpperCase();
         const msg = document.getElementById('searchMsg');
@@ -514,43 +503,103 @@
         btn.disabled = false;
     }
 
-    // New Data Preview and Download Functions
-    function openDataPreview() {
-        if (!allUsersData || allUsersData.length === 0) { alert("No data available."); return; }
+    // Dynamic Data Preview System (Handles both Master and Bank Payouts)
+    async function openDataPreview(type) {
+        currentPreviewType = type;
+        const title = document.getElementById('previewTitle');
+        const thead = document.getElementById('previewTableHead');
         const tbody = document.getElementById('previewTableBody');
-        tbody.innerHTML = '';
-        allUsersData.forEach(user => {
-            const statusClass = (user.status || '').toLowerCase() === 'active' ? 'text-emerald-400' : 'text-red-400';
-            tbody.innerHTML += `
-                <tr class="border-b border-slate-600/50">
-                    <td class="p-2">${user.user_id}</td>
-                    <td class="p-2">${user.name}</td>
-                    <td class="p-2">${user.mobile}</td>
-                    <td class="p-2 font-bold ${statusClass}">${user.status || 'Unactive'}</td>
-                </tr>
-            `;
-        });
+        
+        tbody.innerHTML = '<tr><td colspan="4" class="text-center p-4"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Loading data...</td></tr>';
         document.getElementById('dataPreviewModal').classList.remove('hidden');
+
+        if(type === 'master') {
+            title.innerHTML = '<i class="fa-solid fa-users text-amber-400 mr-2"></i> Live Master Data Preview';
+            thead.innerHTML = `<tr><th class="p-2 border-b border-slate-600">ID</th><th class="p-2 border-b border-slate-600">Name</th><th class="p-2 border-b border-slate-600">Mobile</th><th class="p-2 border-b border-slate-600">Status</th></tr>`;
+            
+            if (!allUsersData || allUsersData.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="text-center p-4">No data available.</td></tr>'; return; }
+            tbody.innerHTML = '';
+            allUsersData.forEach(user => {
+                const statusClass = (user.status || '').toLowerCase() === 'active' ? 'text-emerald-400' : 'text-red-400';
+                tbody.innerHTML += `
+                    <tr class="border-b border-slate-600/50">
+                        <td class="p-2">${user.user_id}</td><td class="p-2">${user.name}</td><td class="p-2">${user.mobile}</td><td class="p-2 font-bold ${statusClass}">${user.status || 'Unactive'}</td>
+                    </tr>`;
+            });
+        } 
+        else if (type === 'payout') {
+            title.innerHTML = '<i class="fa-solid fa-building-columns text-emerald-400 mr-2"></i> Bank Payouts Data Preview';
+            thead.innerHTML = `<tr><th class="p-2 border-b border-slate-600">User ID</th><th class="p-2 border-b border-slate-600">Amount</th><th class="p-2 border-b border-slate-600">Bank Details</th><th class="p-2 border-b border-slate-600">Status</th></tr>`;
+            
+            try {
+                const { data: wData, error: wError } = await _supabase.from('withdrawals').select('*').order('created_at', { ascending: false });
+                if (wError) throw wError;
+                
+                tbody.innerHTML = '';
+                if (!wData || wData.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="text-center p-4">No payout records found.</td></tr>'; return; }
+                
+                for (let w of wData) {
+                    const { data: uData } = await _supabase.from('users').select('bank_name, bank_acc, bank_ifsc').eq('user_id', w.user_id).maybeSingle();
+                    const bankInfo = uData ? `<span class="text-amber-400">${uData.bank_name || '-'}</span><br>A/C: ${uData.bank_acc || '-'}<br>IFSC: ${uData.bank_ifsc || '-'}` : 'No Details';
+                    const statusClass = w.status === 'Paid' ? 'text-emerald-400' : 'text-amber-400';
+                    tbody.innerHTML += `
+                        <tr class="border-b border-slate-600/50">
+                            <td class="p-2 font-mono text-blue-400">${w.user_id}</td><td class="p-2 font-bold text-emerald-400">₹${w.amount}</td><td class="p-2 text-[10px] leading-tight">${bankInfo}</td><td class="p-2 font-bold ${statusClass}">${w.status}</td>
+                        </tr>`;
+                }
+            } catch(e) { tbody.innerHTML = `<tr><td colspan="4" class="text-center p-4 text-red-400">Error loading payouts: ${e.message}</td></tr>`; }
+        }
     }
 
-    function closeDataPreview() {
-        document.getElementById('dataPreviewModal').classList.add('hidden');
+    function closeDataPreview() { document.getElementById('dataPreviewModal').classList.add('hidden'); }
+
+    // Dynamic CSV Download System
+    async function downloadCSV() {
+        if (currentPreviewType === 'master') {
+            if (!allUsersData || allUsersData.length === 0) { alert("No data available."); return; }
+            const headers = ["User ID", "Name", "Mobile", "Password", "Status", "Sponsor ID", "Bank Name", "A/C Number", "IFSC", "State", "City", "Join Date"];
+            const csvRows = []; csvRows.push(headers.join(','));
+            
+            allUsersData.forEach(user => {
+                const dateStr = user.created_at ? new Date(user.created_at).toLocaleDateString('en-IN') : '-';
+                const row = [ `"${user.user_id}"`, `"${user.name}"`, `"${user.mobile}"`, `"${user.password}"`, `"${user.status}"`, `"${user.sponsor}"`, `"${user.bank_name || ''}"`, `"${user.bank_acc || ''}"`, `"${user.bank_ifsc || ''}"`, `"${user.state || ''}"`, `"${user.city || ''}"`, `"${dateStr}"` ];
+                csvRows.push(row.join(','));
+            });
+            triggerDownload(csvRows.join('\n'), `MAHAN_Master_Data_${new Date().toISOString().slice(0,10)}.csv`);
+        } 
+        else if (currentPreviewType === 'payout') {
+            const btn = document.querySelector(`button[onclick="downloadCSV()"]`);
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Preparing...';
+            try {
+                const { data: wData } = await _supabase.from('withdrawals').select('*').order('created_at', { ascending: false });
+                if (!wData || wData.length === 0) { alert("No payout data available."); btn.innerHTML = '<i class="fa-solid fa-file-csv mr-1"></i> Download CSV/Excel'; return; }
+                
+                const headers = ["Request ID", "User ID", "Amount", "Status", "Bank Name", "A/C Number", "IFSC", "Date"];
+                const csvRows = []; csvRows.push(headers.join(','));
+                
+                for(let w of wData) {
+                    const { data: uData } = await _supabase.from('users').select('bank_name, bank_acc, bank_ifsc').eq('user_id', w.user_id).maybeSingle();
+                    const dateStr = w.created_at ? new Date(w.created_at).toLocaleDateString('en-IN') : '-';
+                    const row = [`"${w.id}"`, `"${w.user_id}"`, `"${w.amount}"`, `"${w.status}"`, `"${uData?.bank_name || ''}"`, `"${uData?.bank_acc || ''}"`, `"${uData?.bank_ifsc || ''}"`, `"${dateStr}"`];
+                    csvRows.push(row.join(','));
+                }
+                triggerDownload(csvRows.join('\n'), `MAHAN_Bank_Payouts_${new Date().toISOString().slice(0,10)}.csv`);
+            } catch(e) { alert("Error generating CSV"); }
+            btn.innerHTML = '<i class="fa-solid fa-file-csv mr-1"></i> Download CSV/Excel';
+        }
     }
 
-    function downloadExcel() {
-        if (!allUsersData || allUsersData.length === 0) { alert("No data available."); return; }
-        const headers = ["User ID", "Name", "Mobile", "Password", "Status", "Sponsor ID", "Bank Name", "A/C Number", "IFSC", "State", "City", "Join Date"];
-        const csvRows = []; csvRows.push(headers.join(','));
-        allUsersData.forEach(user => {
-            const dateStr = user.created_at ? new Date(user.created_at).toLocaleDateString('en-IN') : '-';
-            const row = [ `"${user.user_id}"`, `"${user.name}"`, `"${user.mobile}"`, `"${user.password}"`, `"${user.status}"`, `"${user.sponsor}"`, `"${user.bank_name || ''}"`, `"${user.bank_acc || ''}"`, `"${user.bank_ifsc || ''}"`, `"${user.state || ''}"`, `"${user.city || ''}"`, `"${dateStr}"` ];
-            csvRows.push(row.join(','));
-        });
-        const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
-        const a = document.createElement('a'); a.setAttribute('href', window.URL.createObjectURL(blob)); a.setAttribute('download', `MAHAN_Database_${new Date().toISOString().slice(0,10)}.csv`);
-        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    function triggerDownload(csvContent, filename) {
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const a = document.createElement('a'); 
+        a.setAttribute('href', window.URL.createObjectURL(blob)); 
+        a.setAttribute('download', filename);
+        document.body.appendChild(a); 
+        a.click(); 
+        document.body.removeChild(a);
     }
 </script>
 </body>
 </html>
-                                                                       
+                                                          
+        
