@@ -380,11 +380,44 @@
     }
 
     async function submitUTR() {
-        const utrVal = document.getElementById('utrNumber').value.trim();
+         const utrVal = document.getElementById('utrNumber').value.trim();
         const msg = document.getElementById('qrMsg');
         const btn = document.getElementById('utrBtn');
         
         if(utrVal.length < 5) {
+            msg.innerText = "Please enter a valid UTR / Ref No.";
+            msg.className = "text-xs text-red-400 block mt-2 font-bold";
+            msg.classList.remove('hidden');
+            return;
+        }
+        
+        msg.innerText = "Submitting UTR...";
+        msg.className = "text-xs text-amber-400 block mt-2 font-bold";
+        msg.classList.remove('hidden');
+        btn.disabled = true;
+        
+        try {
+            // UTR સીધો users ટેબલમાં સેવ થશે જેથી એડમિન પેનલમાં તરત દેખાય
+            const { error } = await _supabase.from('users').update({ utr: utrVal }).eq('user_id', currentUser.user_id);
+            if(error) throw error;
+            
+            msg.innerText = "✅ UTR Submitted! Please wait for Admin Verification.";
+            msg.className = "text-xs text-emerald-400 block mt-2 font-bold";
+            
+            setTimeout(() => { 
+                closeModal('qrModal'); 
+                btn.disabled = false; 
+                btn.innerText = "Submit"; 
+                msg.classList.add('hidden'); 
+                document.getElementById('utrNumber').value = ''; 
+            }, 2000);
+            
+        } catch (err) {
+            msg.innerText = "Error: UTR not saved. Please try again.";
+            msg.className = "text-xs text-red-400 block mt-2 font-bold";
+            btn.disabled = false;
+        }
+    }
             msg.innerText = "Please enter valid UTR / Ref No.";
             msg.className = "text-xs text-red-400 block mt-2 font-bold";
             msg.classList.remove('hidden');
