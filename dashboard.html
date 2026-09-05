@@ -3,426 +3,569 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAHAN - Premium Dashboard</title>
+    <title>MAHAN - Student Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Poppins', sans-serif; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 10px; }
-        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-        .animate-ticker { display: inline-block; white-space: nowrap; animation: ticker 20s linear infinite; }
+        .marquee-container { overflow: hidden; white-space: nowrap; }
+        .marquee-content { display: inline-block; animation: marquee 22s linear infinite; }
+        @keyframes marquee { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
     </style>
 </head>
-<body class="bg-[#0f172a] text-slate-200 min-h-screen p-4 pb-12">
+<body class="bg-[#0f172a] text-slate-200 min-h-screen font-sans pb-16">
 
-    <div class="max-w-md mx-auto space-y-5">
-        
-        <!-- Logo -->
-        <div class="flex flex-col items-center justify-center space-y-3 pt-3 pb-4">
-            <div class="relative flex items-center justify-center px-5 py-2.5 bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl shadow-lg border border-slate-700/50">
-                <span class="text-3xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-emerald-500 to-teal-600" style="font-family: 'Arial Black', sans-serif;">MAHAN</span>
-                <div class="absolute -top-1.5 -right-1.5 w-3 h-3 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-full animate-pulse border-2 border-slate-900"></div>
-            </div>
-            <div class="flex flex-col items-center justify-center text-center space-y-1">
-                <div class="flex items-baseline space-x-1.5"><span class="text-lg font-black tracking-widest text-white uppercase leading-none">MAHAN</span><span class="text-lg font-black tracking-widest text-blue-500 uppercase leading-none">Institute</span></div>
-                <h2 class="text-[9px] font-bold text-emerald-500 pt-1.5 uppercase tracking-[0.3em]">Premium English & Development</h2>
-            </div>
-        </div>
-
-        <!-- News Ticker -->
-        <div class="bg-blue-900/30 border border-blue-500/30 rounded-xl p-2.5 flex items-center overflow-hidden">
-            <div class="flex-shrink-0 z-10 bg-[#0f172a] pr-3 flex items-center border-r border-blue-500/30"><i class="fa-solid fa-bullhorn text-amber-400 animate-pulse"></i><span class="text-[10px] font-bold text-amber-400 ml-2 uppercase">LIVE</span></div>
-            <div class="flex-1 overflow-hidden relative pl-2"><div class="animate-ticker text-xs font-semibold text-emerald-300" id="liveNewsText">Loading news updates...</div></div>
-        </div>
-        
-        <!-- Profile Card -->
-        <div class="bg-[#1e293b] border border-slate-700 p-6 rounded-2xl shadow-2xl relative overflow-hidden">
-            <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl"></div>
-            <div class="relative z-10 text-center space-y-2">
-                <h2 id="dashName" class="text-2xl font-bold text-white tracking-wide">Connecting...</h2>
-                <p id="dashStatusText" class="text-xs font-semibold text-amber-400 bg-amber-400/10 inline-block px-3 py-1 rounded-full border border-amber-400/20 uppercase tracking-widest">Checking...</p>
-                <div class="pt-3 flex justify-center items-center gap-3 text-xs text-slate-400 font-mono">
-                    <span class="bg-[#0f172a] px-3 py-1.5 rounded-lg border border-slate-700 shadow-inner"><i class="fa-solid fa-id-badge text-blue-400 mr-1"></i> <span id="dashId">-----</span></span>
-                    <span class="bg-[#0f172a] px-3 py-1.5 rounded-lg border border-slate-700 shadow-inner"><i class="fa-solid fa-phone text-emerald-400 mr-1"></i> <span id="dashMobile">-----</span></span>
+    <header class="bg-slate-900/90 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40 px-4 py-3">
+        <div class="max-w-2xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-indigo-500 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-blue-500/20">
+                    M
                 </div>
-                <div id="activationDiv" class="pt-3 hidden">
-                    <button onclick="openModal('qrModal')" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm animate-pulse">
-                        <i class="fa-solid fa-qrcode text-lg"></i> <span id="btnActText">Activate Account Now</span>
-                    </button>
+                <div>
+                    <h1 class="text-base font-bold text-white tracking-wide">MAHAN</h1>
+                    <p class="text-[10px] text-blue-400 font-medium tracking-wider uppercase">The Institute Of English</p>
                 </div>
-                <div class="pt-3"><button onclick="shareReferralWhatsApp()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm"><i class="fa-brands fa-whatsapp text-lg"></i> Share Referral Link</button></div>
             </div>
-        </div>
-
-        <!-- NEW: Premium Course Section (Only visible if ACTIVE) -->
-        <div id="courseSection" class="bg-gradient-to-br from-indigo-900 to-slate-800 border border-indigo-500/50 rounded-2xl shadow-xl p-6 text-center hidden">
-            <h3 class="text-lg font-black text-white mb-2 tracking-wide"><i class="fa-solid fa-graduation-cap text-indigo-400 mr-2"></i> Premium Training</h3>
-            <p class="text-[10px] text-slate-300 mb-4">Exclusive video courses to grow your network and skills.</p>
-            <button onclick="openCourseModal()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
-                <i class="fa-solid fa-play-circle text-lg"></i> Start Learning Now
+            <button onclick="logout()" class="text-xs bg-slate-800 hover:bg-red-600/20 text-slate-300 hover:text-red-400 border border-slate-700 hover:border-red-500/30 px-3.5 py-1.5 rounded-lg transition font-semibold flex items-center gap-1.5">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
             </button>
         </div>
-        
-        <!-- Stats -->
+    </header>
+
+    <div class="bg-blue-600/10 border-y border-blue-500/20 py-2 px-4 marquee-container">
+        <div class="max-w-2xl mx-auto flex items-center gap-3">
+            <span class="bg-blue-600 text-white text-[9px] font-extrabold uppercase px-2 py-0.5 rounded tracking-wider shrink-0">LATEST</span>
+            <div class="overflow-hidden w-full">
+                <p id="liveNewsTicker" class="marquee-content text-xs text-blue-200 font-medium">Welcome to MAHAN - The Institute Of English. Complete activation to access classes and earning opportunities.</p>
+            </div>
+        </div>
+    </div>
+
+    <main class="max-w-2xl mx-auto px-4 py-6 space-y-6">
+
+        <div class="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/80 rounded-2xl p-5 shadow-2xl relative overflow-hidden">
+            <div class="absolute -top-12 -right-12 w-36 h-36 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="flex justify-between items-start mb-4 relative z-10">
+                <div>
+                    <span id="userStatusBadge" class="inline-block text-[10px] font-bold px-3 py-0.5 rounded-full tracking-widest uppercase border bg-amber-400/10 text-amber-400 border-amber-400/30 mb-2">
+                        CHECKING...
+                    </span>
+                    <h2 id="userName" class="text-xl font-extrabold text-white">Student Name</h2>
+                    <p id="userId" class="text-xs text-blue-400 font-mono font-semibold mt-0.5">STU000000</p>
+                </div>
+                <button onclick="openModal('bankModal')" class="bg-slate-700/80 hover:bg-slate-700 text-slate-300 text-xs px-3 py-2 rounded-xl border border-slate-600 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-building-columns text-amber-400"></i> Bank Account
+                </button>
+            </div>
+
+            <div id="activationAlertBox" class="hidden bg-amber-500/10 border border-amber-500/30 rounded-xl p-3.5 mb-4 text-xs">
+                <div class="flex items-center justify-between gap-3">
+                    <div>
+                        <p class="font-bold text-amber-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-exclamation"></i> Account Unactive
+                        </p>
+                        <p class="text-[11px] text-slate-300 mt-0.5">Pay ₹5000 one-time activation fee to unlock courses & wallet.</p>
+                    </div>
+                    <button onclick="openModal('qrModal')" class="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold text-xs px-4 py-2.5 rounded-lg shadow-lg transition whitespace-nowrap">
+                        Activate Now
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-[#0f172a]/70 border border-slate-700 rounded-xl p-3 flex items-center justify-between gap-2">
+                <div class="truncate">
+                    <p class="text-[9px] text-slate-400 uppercase tracking-widest font-semibold">Your Referral Link</p>
+                    <p id="refLinkText" class="text-xs text-slate-300 font-mono truncate mt-0.5">Generating link...</p>
+                </div>
+                <button onclick="copyReferralLink()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3.5 py-2 rounded-lg transition shrink-0 flex items-center gap-1">
+                    <i class="fa-regular fa-copy"></i> Copy
+                </button>
+            </div>
+        </div>
+
         <div class="grid grid-cols-2 gap-4">
-            <div class="bg-[#1e293b] border border-slate-700 p-4 rounded-2xl text-center shadow-lg"><div class="text-blue-400 mb-2"><i class="fa-solid fa-users text-2xl"></i></div><h3 class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Direct Students</h3><p id="directTeamCount" class="text-2xl font-bold text-white mt-1">0</p><p id="activeDirectCount" class="text-[10px] text-emerald-400 mt-1 font-bold">0 Active</p></div>
-            <div class="bg-[#1e293b] border border-slate-700 p-4 rounded-2xl text-center shadow-lg"><div class="text-emerald-400 mb-2"><i class="fa-solid fa-globe text-2xl"></i></div><h3 class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Total Network</h3><p id="totalTeam" class="text-2xl font-bold text-white mt-1">0</p></div>
-        </div>
-        
-        <!-- Bonus Balance Sheet -->
-        <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5">
-            <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-3"><h3 class="text-sm font-bold text-white flex items-center gap-2"><i class="fa-solid fa-wallet text-blue-500"></i> Bonus Balance Sheet</h3><button onclick="openModal('historyModal')" class="text-[10px] bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 border border-blue-500/50 px-3 py-1.5 rounded-lg transition font-bold uppercase tracking-wider">View Details</button></div>
-            <div class="space-y-3 text-sm mb-4">
-                <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-800"><span class="text-slate-400 font-medium">Total Limit</span><span id="limitAmount" class="font-bold text-white tracking-wider">₹ 0</span></div>
-                <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-800"><span class="text-slate-400 font-medium">Total Earning</span><span id="earningAmount" class="font-bold text-emerald-400 tracking-wider">₹ 0</span></div>
-                <div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-800"><span class="text-slate-400 font-medium">Remaining Limit</span><span id="remainingLimit" class="font-bold text-blue-400 tracking-wider">₹ 0</span></div>
+            <div class="bg-slate-800/90 border border-slate-700 p-4 rounded-2xl shadow-xl">
+                <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1">Available Wallet</p>
+                <p id="walletBalance" class="text-2xl font-black text-emerald-400">₹0</p>
+                <button onclick="openWithdrawModal()" class="mt-3 w-full bg-emerald-600/20 hover:bg-emerald-600 border border-emerald-500/40 text-emerald-300 hover:text-white text-xs font-bold py-2 rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Withdraw
+                </button>
             </div>
-            <button onclick="openWithdrawModal()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm"><i class="fa-solid fa-money-bill-transfer"></i> Request Withdrawal</button>
-        </div>
-        
-        <!-- Video Box -->
-        <div id="videoContainer" class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5 text-center hidden">
-            <h3 class="text-sm font-bold text-white mb-1"><i class="fa-brands fa-youtube text-red-500 mr-2"></i>Live Classes & Updates</h3>
-            <div class="relative w-full aspect-video rounded-xl overflow-hidden mt-3 border border-slate-600 shadow-[0_0_15px_rgba(0,0,0,0.5)]">
-                <iframe id="dashVideo" class="w-full h-full" src="" title="MAHAN Video" frameborder="0" allowfullscreen></iframe>
+
+            <div class="bg-slate-800/90 border border-slate-700 p-4 rounded-2xl shadow-xl flex flex-col justify-between">
+                <div>
+                    <p class="text-[10px] text-slate-400 uppercase font-bold tracking-wider mb-1">Direct Referrals</p>
+                    <p id="directReferralsCount" class="text-2xl font-black text-white">0</p>
+                </div>
+                <div class="pt-2 border-t border-slate-700 text-[11px] text-slate-400 flex items-center justify-between">
+                    <span>Sponsor ID:</span>
+                    <span id="sponsorId" class="font-mono text-blue-400 font-bold">-</span>
+                </div>
             </div>
         </div>
 
-        <!-- Social Media Hub -->
-        <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5">
-            <h3 class="text-sm font-bold text-white mb-4 text-center border-b border-slate-700 pb-3">Join Our Community</h3>
-            <div class="grid grid-cols-4 gap-3">
-                <a href="#" id="ytLink" target="_blank" class="bg-gradient-to-br from-red-500 to-red-700 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg hover:scale-105 transition"><i class="fa-brands fa-youtube text-2xl text-white mb-1"></i><span class="text-[8px] font-bold text-white uppercase tracking-wider">YouTube</span></a>
-                <a href="#" id="igLink" target="_blank" class="bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg hover:scale-105 transition"><i class="fa-brands fa-instagram text-2xl text-white mb-1"></i><span class="text-[8px] font-bold text-white uppercase tracking-wider">Insta</span></a>
-                <a href="#" id="fbLink" target="_blank" class="bg-gradient-to-br from-blue-600 to-blue-800 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg hover:scale-105 transition"><i class="fa-brands fa-facebook-f text-2xl text-white mb-1"></i><span class="text-[8px] font-bold text-white uppercase tracking-wider">Facebook</span></a>
-                <a href="#" id="waLink" target="_blank" class="bg-gradient-to-br from-green-500 to-emerald-700 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg hover:scale-105 transition"><i class="fa-brands fa-whatsapp text-2xl text-white mb-1"></i><span class="text-[8px] font-bold text-white uppercase tracking-wider">Group</span></a>
+        <div id="videoSection" class="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-xl space-y-3">
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                <i class="fa-solid fa-circle-play text-red-500"></i> Institute Video & Learning
+            </h3>
+            <div class="aspect-video w-full rounded-xl overflow-hidden bg-black/50 border border-slate-700">
+                <iframe id="dashboardVideoPlayer" class="w-full h-full" src="" title="Video Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         </div>
 
-        <!-- Buttons -->
-        <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5 text-center"><h3 class="text-sm font-bold text-white mb-2"><i class="fa-solid fa-chart-line text-emerald-400 mr-2"></i> Level Wise Income</h3><button onclick="openModal('levelModal')" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-2.5 px-6 rounded-xl transition shadow-lg">View Income Details</button></div>
-        <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5 text-center"><h3 class="text-sm font-bold text-white mb-2"><i class="fa-solid fa-list-ul text-blue-400 mr-2"></i> Direct Team Data</h3><button onclick="openModal('directModal')" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-2.5 px-6 rounded-xl transition shadow-lg">View Direct Details</button></div>
-        
-        <!-- Settings -->
-        <div class="space-y-3 pt-4">
-            <button onclick="openModal('passwordModal')" class="w-full bg-[#1e293b] border border-slate-600 text-slate-200 hover:bg-slate-700 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm transition"><i class="fa-solid fa-lock text-blue-400"></i> Change Password</button>
-            <button onclick="openModal('bankModal')" class="w-full bg-[#1e293b] border border-slate-600 text-slate-200 hover:bg-slate-700 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm transition"><i class="fa-solid fa-building-columns text-emerald-400"></i> Bank & KYC Details</button>
-            <button onclick="logout()" class="w-full bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-400 font-semibold py-3.5 rounded-xl flex items-center justify-center gap-2 text-sm mt-4 transition"><i class="fa-solid fa-power-off"></i> Secure Logout</button>
+        <div class="bg-slate-800 border border-slate-700 rounded-2xl p-5 shadow-xl space-y-3">
+            <h3 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2 border-b border-slate-700 pb-3">
+                <i class="fa-solid fa-clock-rotate-left text-amber-400"></i> Withdrawal History
+            </h3>
+            <div id="withdrawalHistoryList" class="space-y-2.5 max-h-48 overflow-y-auto pr-1 text-xs">
+                <p class="text-slate-500 text-center py-3">No withdrawal history available.</p>
+            </div>
+        </div>
+
+        <div class="bg-slate-800/70 border border-slate-700/80 rounded-2xl p-4 shadow-lg">
+            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest text-center mb-3">Connect With MAHAN Institute</p>
+            <div class="grid grid-cols-4 gap-2 text-center text-xs">
+                <a id="linkYt" href="#" target="_blank" class="bg-slate-900/70 border border-slate-700 hover:border-red-500 p-2.5 rounded-xl text-red-500 transition"><i class="fa-brands fa-youtube text-lg block mb-1"></i> YouTube</a>
+                <a id="linkIg" href="#" target="_blank" class="bg-slate-900/70 border border-slate-700 hover:border-pink-500 p-2.5 rounded-xl text-pink-500 transition"><i class="fa-brands fa-instagram text-lg block mb-1"></i> Instagram</a>
+                <a id="linkFb" href="#" target="_blank" class="bg-slate-900/70 border border-slate-700 hover:border-blue-500 p-2.5 rounded-xl text-blue-500 transition"><i class="fa-brands fa-facebook text-lg block mb-1"></i> Facebook</a>
+                <a id="linkWa" href="#" target="_blank" class="bg-slate-900/70 border border-slate-700 hover:border-green-500 p-2.5 rounded-xl text-green-500 transition"><i class="fa-brands fa-whatsapp text-lg block mb-1"></i> WhatsApp</a>
+            </div>
+        </div>
+
+        <footer class="text-center text-slate-500 text-[11px] space-y-1 pt-2">
+            <p class="font-semibold text-slate-400">MAHAN - The Institute Of English</p>
+            <p>Customer Support: <a href="tel:7016623939" class="text-blue-400 font-semibold">7016623939</a></p>
+            <p>Head Office: Morbi, Gujarat</p>
+        </footer>
+
+    </main>
+
+    <div id="qrModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-800 border border-slate-700 p-5 rounded-3xl w-full max-w-sm shadow-2xl text-center space-y-4">
+            <div class="space-y-1">
+                <h3 class="text-lg font-extrabold text-white flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-qrcode text-emerald-400"></i> Account Activation
+                </h3>
+                <p class="text-xs text-slate-300">Scan QR code using PhonePe / GPay / UPI</p>
+                <p class="text-sm font-black text-emerald-400">Fixed Fee: ₹5000</p>
+            </div>
+
+            <div class="bg-white p-3 rounded-2xl inline-block shadow-inner">
+                <img id="paymentQrImage" src="qr.jpg" alt="Payment QR" class="w-56 h-56 object-contain rounded-lg mx-auto">
+            </div>
+
+            <div>
+                <input type="text" id="utrNumber" placeholder="ENTER 12-DIGIT UTR / REF NO." class="w-full bg-[#0f172a] border border-slate-600 rounded-xl py-3 px-3 text-center text-sm text-white font-mono uppercase tracking-widest focus:border-emerald-500 outline-none">
+                <p id="qrMsg" class="text-xs font-semibold hidden mt-2"></p>
+            </div>
+
+            <div class="flex gap-3 pt-1">
+                <button onclick="submitUTR()" id="utrBtn" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition text-xs shadow-lg shadow-emerald-600/30">
+                    Submit
+                </button>
+                <button onclick="closeModal('qrModal')" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-xl transition text-xs">
+                    Cancel
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- MODALS -->
-    <!-- Course Modal -->
-    <div id="courseModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-[#1e293b] border border-indigo-500/50 p-5 rounded-2xl w-[95%] max-w-lg max-h-[90vh] shadow-2xl relative flex flex-col">
-            <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-2">
-                <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-book-open text-indigo-400 mr-2"></i> Masterclass</h3>
-                <button onclick="closeCourseModal()" class="text-slate-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="relative w-full aspect-video rounded-xl overflow-hidden border border-slate-600 mb-4 bg-black">
-                <iframe id="coursePlayer" class="w-full h-full" src="" title="Course Video" frameborder="0" allowfullscreen></iframe>
-            </div>
-            <h4 id="currentChapterTitle" class="text-sm font-bold text-emerald-400 mb-3 border-b border-slate-700 pb-2">Select a chapter below</h4>
-            <div class="flex-1 overflow-y-auto pr-2 space-y-2" id="chapterList"></div>
-        </div>
-    </div>
-
-    <!-- Level Modal -->
-    <div id="levelModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-[#1e293b] border border-slate-600 p-5 rounded-2xl w-[95%] max-w-md max-h-[90vh] shadow-2xl relative flex flex-col">
-            <h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2"><i class="fa-solid fa-chart-line text-emerald-400 mr-2"></i> Level Wise Income</h3>
-            <div class="flex-1 overflow-y-auto border border-slate-700 rounded-xl mb-4">
-                <table class="w-full text-left text-xs whitespace-nowrap">
-                    <thead class="bg-[#0f172a] text-slate-400 uppercase tracking-wider sticky top-0 z-10">
-                        <tr><th class="p-3 font-semibold">Level</th><th class="p-3 font-semibold text-center">Rate</th><th class="p-3 font-semibold text-center">Team</th><th class="p-3 font-semibold text-right">Payout</th></tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-800 text-slate-300">
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 1</td><td class="p-3 text-center text-blue-400 font-mono">₹1000</td><td id="l1Count" class="p-3 text-center">0</td><td id="l1Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 2</td><td class="p-3 text-center text-blue-400 font-mono">₹500</td><td id="l2Count" class="p-3 text-center">0</td><td id="l2Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 3</td><td class="p-3 text-center text-blue-400 font-mono">₹250</td><td id="l3Count" class="p-3 text-center">0</td><td id="l3Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 4</td><td class="p-3 text-center text-blue-400 font-mono">₹250</td><td id="l4Count" class="p-3 text-center">0</td><td id="l4Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 5</td><td class="p-3 text-center text-blue-400 font-mono">₹250</td><td id="l5Count" class="p-3 text-center">0</td><td id="l5Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 6</td><td class="p-3 text-center text-blue-400 font-mono">₹125</td><td id="l6Count" class="p-3 text-center">0</td><td id="l6Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 7</td><td class="p-3 text-center text-blue-400 font-mono">₹125</td><td id="l7Count" class="p-3 text-center">0</td><td id="l7Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 8</td><td class="p-3 text-center text-blue-400 font-mono">₹125</td><td id="l8Count" class="p-3 text-center">0</td><td id="l8Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 9</td><td class="p-3 text-center text-blue-400 font-mono">₹125</td><td id="l9Count" class="p-3 text-center">0</td><td id="l9Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                    </tbody>
-                </table>
-            </div>
-            <button onclick="closeModal('levelModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold">Close</button>
-        </div>
-    </div>
-    
-    <!-- Direct Modal -->
-    <div id="directModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-[#1e293b] border border-slate-600 p-5 rounded-2xl w-[95%] max-w-md max-h-[90vh] shadow-2xl relative flex flex-col">
-            <h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2"><i class="fa-solid fa-users text-blue-400 mr-2"></i> Direct Members List</h3>
-            <div id="directStudentContainer" class="flex-1 overflow-y-auto pr-2 mb-4 space-y-3"></div>
-            <button onclick="closeModal('directModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold">Close</button>
-        </div>
-    </div>
-
-    <!-- History Modal -->
-    <div id="historyModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-[#1e293b] border border-slate-600 p-5 rounded-2xl w-[95%] max-w-md max-h-[90vh] shadow-2xl relative flex flex-col">
-            <h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2"><i class="fa-solid fa-clock-rotate-left text-blue-400 mr-2"></i> Payout History</h3>
-            <div id="historyContainer" class="flex-1 overflow-y-auto pr-2 mb-4 space-y-3"><p class="text-center text-xs text-slate-500 py-4">Loading history...</p></div>
-            <button onclick="closeModal('historyModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold">Close</button>
-        </div>
-    </div>
-
-    <!-- Withdraw Modal -->
     <div id="withdrawModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-[95%] max-w-sm shadow-2xl text-center">
-            <h3 class="text-lg font-bold text-white mb-2"><i class="fa-solid fa-money-bill-transfer text-emerald-400 mr-2"></i> Withdraw Funds</h3>
-            <div id="withdrawFormArea" class="hidden">
-                <p class="text-xs text-slate-400 mb-4">Enter amount to withdraw directly to your bank account.</p>
-                <div class="bg-[#0f172a] border border-emerald-500/30 shadow-inner p-3 rounded-xl mb-4"><p class="text-[10px] text-slate-400 uppercase tracking-widest">Available Balance</p><p id="modalAvailBal" class="text-2xl font-black text-emerald-400">₹0</p></div>
-                <input type="number" id="withdrawAmount" placeholder="Enter Amount" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-emerald-500 font-mono text-center">
-                <p id="withdrawMsg" class="text-xs mb-3 hidden"></p>
-                <div class="flex gap-3"><button onclick="submitWithdraw()" id="wSubmitBtn" class="flex-1 bg-emerald-600 text-white py-3 rounded-xl text-sm font-bold">Withdraw</button><button onclick="closeModal('withdrawModal')" class="flex-1 bg-slate-700 text-white py-3 rounded-xl text-sm font-bold">Cancel</button></div>
+        <div class="bg-slate-800 border border-slate-700 p-6 rounded-3xl w-full max-w-sm shadow-2xl space-y-4">
+            <div class="text-center space-y-1">
+                <h3 class="text-lg font-bold text-white">Withdrawal Request</h3>
+                <p class="text-xs text-slate-400">Available: <span id="modalAvailBalance" class="text-emerald-400 font-bold">₹0</span></p>
             </div>
-            <div id="withdrawErrorArea" class="hidden py-4">
-                <i class="fa-solid fa-triangle-exclamation text-4xl text-amber-500 mb-3"></i><h4 class="text-sm font-bold text-white mb-2">Requirement Not Met</h4><p class="text-xs text-slate-400 mb-5">You need at least <strong class="text-amber-400">5 Active Direct Members</strong> to unlock withdrawal.</p>
-                <button onclick="closeModal('withdrawModal')" class="w-full bg-slate-700 text-white py-3 rounded-xl text-sm font-bold">Close</button>
+
+            <div>
+                <label class="text-[10px] text-slate-400 uppercase tracking-widest font-semibold block mb-1">Enter Amount (₹)</label>
+                <input type="number" id="withdrawAmountInput" placeholder="Min. ₹500" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white font-bold outline-none focus:border-emerald-500">
+            </div>
+
+            <div id="modalBankDetailsDisplay" class="bg-slate-900 p-3 rounded-xl border border-slate-700 text-xs text-slate-300 font-mono space-y-1">
+                Loading bank details...
+            </div>
+
+            <p id="withdrawMsg" class="text-xs font-bold text-center hidden"></p>
+
+            <div class="flex gap-3 pt-2">
+                <button onclick="submitWithdrawal()" id="withdrawSubmitBtn" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition text-xs shadow-lg">
+                    Confirm Withdraw
+                </button>
+                <button onclick="closeModal('withdrawModal')" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-xl transition text-xs">
+                    Cancel
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- QR Modal -->
-    <div id="qrModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-[95%] max-w-sm shadow-2xl text-center">
-            <h3 class="text-lg font-bold text-white mb-2"><i class="fa-solid fa-qrcode text-emerald-400 mr-2"></i> Account Activation</h3>
-            <p class="text-xs text-slate-400 mb-4">Scan QR code using PhonePe/GPay to pay activation fee (<strong class="text-amber-400" id="displayFee">₹...</strong>) and enter UTR number.</p>
-            <div class="bg-white p-3 rounded-xl inline-block mb-4 shadow-lg"><img src="qr.jpg" alt="Payment QR" class="w-36 h-36"></div>
-            <input type="text" id="utrNumber" placeholder="Enter 12-digit UTR / Ref No." class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-emerald-500 font-mono text-center uppercase">
-            <p id="qrMsg" class="text-xs mb-3 hidden"></p>
-            <div class="flex gap-3"><button onclick="submitUTR()" id="utrBtn" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-sm font-bold transition">Submit</button><button onclick="closeModal('qrModal')" class="flex-1 bg-slate-700 text-white py-3 rounded-xl text-sm font-bold">Cancel</button></div>
+    <div id="bankModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-slate-800 border border-slate-700 p-6 rounded-3xl w-full max-w-sm shadow-2xl space-y-3">
+            <div class="flex justify-between items-center border-b border-slate-700 pb-2">
+                <h3 class="text-base font-bold text-white">Bank Account Details</h3>
+                <button onclick="closeModal('bankModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">Bank Name</label>
+                    <input type="text" id="bankNameInput" placeholder="e.g. State Bank of India" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-2.5 text-white outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">Account Number</label>
+                    <input type="text" id="bankAccInput" placeholder="Enter Account Number" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-2.5 text-white font-mono outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="text-[10px] text-slate-400 uppercase tracking-wider block mb-1">IFSC Code</label>
+                    <input type="text" id="bankIfscInput" placeholder="e.g. SBIN0001234" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-2.5 text-white font-mono uppercase outline-none focus:border-blue-500">
+                </div>
+            </div>
+
+            <p id="bankSaveMsg" class="text-xs font-bold text-center hidden"></p>
+
+            <button onclick="saveBankDetails()" id="saveBankBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition text-xs shadow-lg mt-2">
+                Save Details
+            </button>
         </div>
     </div>
-    
-    <!-- Settings Modals -->
-    <div id="passwordModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4"><div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-[95%] max-w-sm shadow-2xl"><h3 class="text-lg font-bold text-white mb-4"><i class="fa-solid fa-lock text-blue-400 mr-2"></i> Update Password</h3><input type="text" id="newPassword" placeholder="Enter new password" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4"><p id="passMsg" class="text-xs mb-3 hidden"></p><div class="flex gap-3"><button onclick="updatePassword()" id="passBtn" class="flex-1 bg-blue-600 text-white py-3 rounded-xl text-sm font-semibold">Save</button><button onclick="closeModal('passwordModal')" class="flex-1 bg-slate-700 text-white py-3 rounded-xl text-sm font-semibold">Cancel</button></div></div></div>
-    <div id="bankModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4"><div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-[95%] max-w-sm shadow-2xl"><h3 class="text-lg font-bold text-white mb-4"><i class="fa-solid fa-building-columns text-emerald-400 mr-2"></i> Bank Details</h3><input type="text" id="accName" placeholder="Account Holder Name" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-3"><input type="text" id="accNo" placeholder="Account Number" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-3"><input type="text" id="ifscCode" placeholder="IFSC Code" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 uppercase"><p id="bankMsg" class="text-xs mb-3 hidden"></p><div class="flex gap-3"><button onclick="saveBankDetails()" id="bankBtn" class="flex-1 bg-emerald-600 text-white py-3 rounded-xl text-sm font-semibold">Save KYC</button><button onclick="closeModal('bankModal')" class="flex-1 bg-slate-700 text-white py-3 rounded-xl text-sm font-semibold">Cancel</button></div></div></div>
 
 <script>
+    // Supabase Configuration
     const SUPABASE_URL = "https://wzrbsvwmrymkpzwmgypb.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6cmJzdndtcnlta3B6d21neXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDc1NzQsImV4cCI6MjEwMzMyMzU3NH0.5ulY5LW3AQEPFDP__iOSJssgNafTSe9Yu4gEqZF7sLc";
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    let currentUser = null; let windowMyActiveDirects = 0; let windowAvailableBalance = 0; let isActiveStatus = false;
+    let currentUser = null;
+    let windowAvailableBalance = 0;
+    let hasPendingWithdrawal = false;
 
-    // --- HARDCODED COURSES LIST --- 
-    // અહી તમે તમારા પ્રાઇવેટ Unlisted YouTube વિડીયોની લિંક મૂકી શકો છો.
-    const privateCourses = [
-        { title: "Chapter 1: Welcome to MAHAN", url: "https://www.youtube.com/embed/ZqD__3pfVIw" },
-        { title: "Chapter 2: Master Your English", url: "https://www.youtube.com/embed/ZqD__3pfVIw" }, // લિંક બદલજો
-        { title: "Chapter 3: Business Networking", url: "https://www.youtube.com/embed/ZqD__3pfVIw" } // લિંક બદલજો
-    ];
-
-    window.onload = async () => {
-        try {
-            const userDataStr = localStorage.getItem('mahan_user');
-            if (!userDataStr) { window.location.href = "login.html"; return; }
-            currentUser = JSON.parse(userDataStr);
-
-            document.getElementById('dashName').innerText = currentUser.name || '';
-            document.getElementById('dashId').innerText = currentUser.user_id || '';
-            document.getElementById('dashMobile').innerText = currentUser.mobile || '';
-            if(currentUser.bank_name) document.getElementById('accName').value = currentUser.bank_name;
-            if(currentUser.bank_acc) document.getElementById('accNo').value = currentUser.bank_acc;
-            if(currentUser.bank_ifsc) document.getElementById('ifscCode').value = currentUser.bank_ifsc;
-
-            let statusEl = document.getElementById('dashStatusText');
-            isActiveStatus = (currentUser.status || '').toLowerCase() === 'active';
-            
-            if(isActiveStatus) {
-                statusEl.innerText = "Status: ACTIVE";
-                statusEl.className = "text-xs font-bold text-emerald-400 bg-emerald-400/10 inline-block px-3 py-1 rounded-full border border-emerald-400/20 tracking-widest";
-                document.getElementById('courseSection').classList.remove('hidden'); // Show Course Section
-            } else {
-                statusEl.innerText = "Status: UNACTIVE";
-                statusEl.className = "text-xs font-bold text-red-400 bg-red-400/10 inline-block px-3 py-1 rounded-full border border-red-400/20 tracking-widest";
-                document.getElementById('activationDiv').classList.remove('hidden');
-            }
-
-            await fetchNetworkData(); await loadWithdrawalHistory(); await fetchPlatformSettings();
-        } catch (error) { console.error("Load Error:", error); }
-    };
-
-    // --- COURSE LOGIC ---
-    function openCourseModal() {
-        const list = document.getElementById('chapterList'); list.innerHTML = '';
-        privateCourses.forEach((c) => {
-            list.innerHTML += `<button onclick="playCourseVideo('${c.url}', '${c.title}')" class="w-full text-left bg-[#0f172a] hover:bg-slate-800 border border-slate-700 p-3 rounded-xl transition flex justify-between items-center group mb-2"><span class="text-xs font-bold text-white group-hover:text-indigo-400"><i class="fa-solid fa-circle-play text-slate-500 group-hover:text-indigo-400 mr-2"></i> ${c.title}</span> <i class="fa-solid fa-chevron-right text-slate-600 text-[10px]"></i></button>`;
-        });
-        openModal('courseModal');
-        if(privateCourses.length > 0) playCourseVideo(privateCourses[0].url, privateCourses[0].title);
-    }
-    function playCourseVideo(url, title) { document.getElementById('coursePlayer').src = url; document.getElementById('currentChapterTitle').innerText = title; }
-    function closeCourseModal() { document.getElementById('coursePlayer').src = ''; closeModal('courseModal'); } // Stop video on close
-
-    // --- SETTINGS FETCH ---
-    async function fetchPlatformSettings() {
-        try {
-            const { data } = await _supabase.from('settings').select('*').limit(1).maybeSingle();
-            if(data) {
-                if(data.news_text) document.getElementById('liveNewsText').innerText = data.news_text;
-                const vCont = document.getElementById('videoContainer');
-                if(data.video_url && data.video_url.length > 10) { document.getElementById('dashVideo').src = data.video_url; vCont.classList.remove('hidden'); }
-                if(data.qr_url && data.qr_url.length > 5) document.getElementById('dynamicQR').src = data.qr_url;
-                if(data.activation_fee) document.getElementById('displayFee').innerText = `₹${data.activation_fee}`;
-                if(data.yt_link) document.getElementById('ytLink').href = data.yt_link;
-                if(data.ig_link) document.getElementById('igLink').href = data.ig_link;
-                if(data.fb_link) document.getElementById('fbLink').href = data.fb_link;
-                if(data.wa_link) document.getElementById('waLink').href = data.wa_link;
-            }
-        } catch (err) {}
-    }
-
-    function shareReferralWhatsApp() { const refLink = `https://mahan-institute-english.github.io/mahan-institute-platform/register.html?ref=${currentUser.user_id}`; const waText = `🚀 *Join MAHAN Institute!*\n\nLearn, Grow & Earn with our Premium Platform.\n\n🔗 *Click here to register free:*\n${refLink}`; window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(waText)}`, '_blank'); }
-
-    async function fetchNetworkData() {
-        const container = document.getElementById('directStudentContainer');
-        try {
-            const { data: allUsers, error } = await _supabase.from('users').select('*'); if (error || !allUsers) throw error;
-            const myIdNorm = String(currentUser.user_id).trim().toUpperCase(); const networkMap = {};
-            allUsers.forEach(u => { const sp = String(u.sponsor || '').trim().toUpperCase(); if(sp) { if(!networkMap[sp]) networkMap[sp] = []; networkMap[sp].push(u); } });
-            const payoutRates = [1000, 500, 250, 250, 250, 125, 125, 125, 125];
-
-            function getUserTotalEarning(uid) {
-                let earn = 0; let cLevel = networkMap[String(uid).trim().toUpperCase()] || [];
-                for (let i = 0; i < 9; i++) { let actCount = cLevel.filter(u => (u.status || '').toLowerCase() === 'active').length; earn += actCount * payoutRates[i]; let nxLevel = []; cLevel.forEach(u => { nxLevel = nxLevel.concat(networkMap[String(u.user_id).trim().toUpperCase()] || []); }); cLevel = nxLevel; } return earn;
-            }
-
-            let currentLevelUsers = networkMap[myIdNorm] || [];
-            document.getElementById('directTeamCount').innerText = currentLevelUsers.length;
-            if (currentLevelUsers.length === 0) { container.innerHTML = `<p class="text-center text-xs text-slate-500 py-4">No direct network.</p>`; } else {
-                container.innerHTML = '';
-                currentLevelUsers.forEach(member => {
-                    const isActive = (member.status || '').toLowerCase() === 'active';
-                    const badgeClass = isActive ? 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20' : 'text-slate-400 bg-slate-700/50 border-slate-600';
-                    const badgeText = isActive ? 'ACTIVE' : 'UNACTIVE';
-                    const mEarn = getUserTotalEarning(member.user_id);
-                    const earnHtml = isActive ? `<p class="text-[11px] font-black text-emerald-400 mt-1">Earned: ₹${mEarn}</p>` : `<p class="text-[11px] font-bold text-slate-500 mt-1">Earned: ₹${mEarn}</p>`;
-                    container.innerHTML += `<div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-700/50 shadow-sm mb-2"><div><p class="text-sm font-semibold text-white"><i class="fa-solid fa-user-circle text-blue-400 mr-1.5"></i> ${member.name}</p><p class="text-[10px] text-slate-400 ml-6 font-mono">${member.user_id}</p><div class="ml-6">${earnHtml}</div></div><span class="text-[10px] font-bold px-2.5 py-1 rounded-md border ${badgeClass}">${badgeText}</span></div>`;
-                });
-            }
-
-            let totalEarning = 0; let totalTeamCount = 0; let levelCounts = [0,0,0,0,0,0,0,0,0]; let activeCounts = [0,0,0,0,0,0,0,0,0];
-            for (let i = 0; i < 9; i++) {
-                levelCounts[i] = currentLevelUsers.length; activeCounts[i] = currentLevelUsers.filter(u => (u.status || '').toLowerCase() === 'active').length;
-                if(i === 0) { windowMyActiveDirects = activeCounts[0]; document.getElementById('activeDirectCount').innerText = `${windowMyActiveDirects} Active`; }
-                let income = activeCounts[i] * payoutRates[i]; totalEarning += income; totalTeamCount += levelCounts[i];
-                document.getElementById(`l${i+1}Count`).innerText = levelCounts[i]; document.getElementById(`l${i+1}Pay`).innerText = `₹${income}`;
-                let nextLevelUsers = []; currentLevelUsers.forEach(u => { nextLevelUsers = nextLevelUsers.concat(networkMap[String(u.user_id).trim().toUpperCase()] || []); }); currentLevelUsers = nextLevelUsers;
-            }
-
-            let maxLimit = isActiveStatus ? 50000 : 0;
-            if(!isActiveStatus) totalEarning = 0; 
-            let remainingLimitCalc = maxLimit - totalEarning;
-            if(remainingLimitCalc <= 0 && isActiveStatus) remainingLimitCalc = 0;
-
-            document.getElementById('totalTeam').innerText = totalTeamCount; document.getElementById('limitAmount').innerText = `₹ ${maxLimit}`; document.getElementById('earningAmount').innerText = `₹ ${totalEarning}`; document.getElementById('remainingLimit').innerText = `₹ ${remainingLimitCalc}`;
-            
-            if(isActiveStatus && totalEarning >= 50000) { document.getElementById('activationDiv').classList.remove('hidden'); document.getElementById('btnActText').innerText = "Renew Account (Limit Reached)"; }
-
-            const { data: wData } = await _supabase.from('withdrawals').select('amount').eq('user_id', currentUser.user_id);
-            let totalWithdrawn = 0; if(wData) wData.forEach(w => totalWithdrawn += parseFloat(w.amount)); windowAvailableBalance = totalEarning - totalWithdrawn;
-            document.getElementById('modalAvailBal').innerText = `₹${windowAvailableBalance}`;
-        } catch (err) { console.error("Data Error:", err); }
-    }
-
-    async function updatePassword() {
-        const newPass = document.getElementById('newPassword').value.trim(); const msg = document.getElementById('passMsg'); const btn = document.getElementById('passBtn');
-        if(!newPass) { msg.innerText = "Please enter password."; msg.className = "text-xs text-red-400 block mb-3 font-bold"; return; }
-        btn.disabled = true; btn.innerText = "Saving...";
-        try { await _supabase.from('users').update({ password: newPass }).eq('user_id', currentUser.user_id); msg.innerText = "Updated Successfully!"; msg.className = "text-xs text-emerald-400 block mb-3 font-bold"; currentUser.password = newPass; localStorage.setItem('mahan_user', JSON.stringify(currentUser)); setTimeout(() => { closeModal('passwordModal'); document.getElementById('newPassword').value=''; msg.classList.add('hidden'); btn.disabled=false; btn.innerText="Save"; }, 1500); } catch(err) { msg.innerText = "Error!"; msg.className = "text-xs text-red-400 block mb-3"; btn.disabled=false; btn.innerText="Save"; }
-    }
-
-    async function saveBankDetails() {
-        const bName = document.getElementById('accName').value.trim(); const bAcc = document.getElementById('accNo').value.trim(); const bIfsc = document.getElementById('ifscCode').value.trim(); const msg = document.getElementById('bankMsg'); const btn = document.getElementById('bankBtn');
-        if(!bName || !bAcc || !bIfsc) { msg.innerText = "Fill all details."; msg.className = "text-xs text-red-400 block mb-3 font-bold"; return; }
-        btn.disabled = true; btn.innerText = "Saving...";
-        try { await _supabase.from('users').update({ bank_name: bName, bank_acc: bAcc, bank_ifsc: bIfsc }).eq('user_id', currentUser.user_id); msg.innerText = "Saved Successfully!"; msg.className = "text-xs text-emerald-400 block mb-3 font-bold"; currentUser.bank_name = bName; currentUser.bank_acc = bAcc; currentUser.bank_ifsc = bIfsc; localStorage.setItem('mahan_user', JSON.stringify(currentUser)); setTimeout(() => { closeModal('bankModal'); msg.classList.add('hidden'); btn.disabled=false; btn.innerText="Save KYC"; }, 1500); } catch (err) { msg.innerText = "Error!"; msg.className = "text-xs text-amber-400 block mb-3"; btn.disabled=false; btn.innerText="Save KYC"; }
-    }
-
-    function openWithdrawModal() {
-        if(!isActiveStatus) { alert("Account must be ACTIVE."); return; }
-        openModal('withdrawModal');
-        if(windowMyActiveDirects >= 5) { document.getElementById('withdrawFormArea').classList.remove('hidden'); document.getElementById('withdrawErrorArea').classList.add('hidden'); } else { document.getElementById('withdrawFormArea').classList.add('hidden'); document.getElementById('withdrawErrorArea').classList.remove('hidden'); }
-    }
-
-    async function submitWithdraw() {
-        const amt = parseFloat(document.getElementById('withdrawAmount').value); const msg = document.getElementById('withdrawMsg'); const btn = document.getElementById('wSubmitBtn');
-        if(!amt || amt <= 0) { msg.innerText = "Valid amount required."; msg.className = "text-xs text-red-400 block mb-3 font-bold"; return; }
-        if(amt > windowAvailableBalance) { msg.innerText = "Exceeds balance."; msg.className = "text-xs text-red-400 block mb-3 font-bold"; return; }
-        btn.disabled = true; btn.innerText = "Processing...";
-        try { await _supabase.from('withdrawals').insert([ { user_id: currentUser.user_id, amount: amt, status: 'Pending' } ]); msg.innerText = "Requested Successfully!"; msg.className = "text-xs text-emerald-400 block mb-3 font-bold"; setTimeout(() => { closeModal('withdrawModal'); fetchNetworkData(); loadWithdrawalHistory(); btn.disabled=false; btn.innerText="Withdraw"; msg.classList.add('hidden'); document.getElementById('withdrawAmount').value=''; }, 1500); } catch(err) { msg.innerText = "Error!"; msg.className = "text-xs text-red-400 block mb-3"; btn.disabled=false; btn.innerText="Withdraw"; }
-    }
-
-    async function loadWithdrawalHistory() {
-        const container = document.getElementById('historyContainer');
-        try {
-            const { data } = await _supabase.from('withdrawals').select('*').eq('user_id', currentUser.user_id).order('created_at', { ascending: false });
-             if (data.length === 0) { container.innerHTML = `<p class="text-center text-xs text-slate-500 py-4">No history found.</p>`; } else {
-                container.innerHTML = '';
-                data.forEach(w => {
-                    const isPaid = w.status === 'Paid'; const sColor = isPaid ? 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20' : 'text-amber-400 bg-amber-400/10 border-amber-400/20';
-                    container.innerHTML += `<div class="flex justify-between items-center bg-[#0f172a] p-3 rounded-xl border border-slate-700/50 shadow-sm mb-2"><div><p class="text-sm font-bold text-white">₹${w.amount}</p><p class="text-[10px] text-slate-400 font-mono">${new Date(w.created_at).toLocaleDateString('en-IN')}</p></div><span class="text-[10px] font-bold px-2.5 py-1 rounded-md border ${sColor}">${w.status}</span></div>`;
-                });
-            }
-        } catch (err) {}
-    }
-
-    async function submitUTR() {
-         const utrVal = document.getElementById('utrNumber').value.trim();
-        const msg = document.getElementById('qrMsg');
-        const btn = document.getElementById('utrBtn');
-        
-        
-            msg.innerText = "Please enter valid UTR / Ref No.";
-            msg.className = "text-xs text-red-400 block mt-2 font-bold";
-            msg.classList.remove('hidden');
+    // Initialization
+    window.addEventListener('DOMContentLoaded', async () => {
+        const storedUser = localStorage.getItem('mahan_user');
+        if (!storedUser) {
+            // If user is not logged in, redirect to login page
+            window.location.href = 'index.html';
             return;
         }
-        
-        msg.innerText = "Submitting UTR...";
-        msg.className = "text-xs text-amber-400 block mt-2 font-bold";
-        msg.classList.remove('hidden');
-        btn.disabled = true;
-        
+
+        currentUser = JSON.parse(storedUser);
+        await refreshUserData();
+        loadPlatformLiveSettings();
+        loadWithdrawalHistory();
+    });
+
+    // Refresh User Information & Sync with Database
+    async function refreshUserData() {
         try {
-            // UTR સીધો users ટેબલમાં સેવ થશે
-            const { error } = await _supabase.from('users').update({ utr: utrVal }).eq('user_id', currentUser.user_id);
-            if(error) throw error;
-            
-            msg.innerText = "✅ UTR Submitted! Wait for Admin Approval.";
-            msg.className = "text-xs text-emerald-400 block mt-2 font-bold";
-            
-            // 2 સેકન્ડ પછી પોપ-અપ બંધ કરવાનું લોજિક 
-            setTimeout(() => { 
-                closeModal('qrModal'); 
-                btn.disabled = false; 
-                btn.innerText = "Submit"; 
-                msg.classList.add('hidden'); 
-                document.getElementById('utrNumber').value = ''; 
-            }, 2000);
-            
+            const { data: user, error } = await _supabase.from('users').select('*').eq('user_id', currentUser.user_id).maybeSingle();
+            if (error || !user) return;
+
+            currentUser = user;
+            localStorage.setItem('mahan_user', JSON.stringify(user));
+
+            document.getElementById('userName').innerText = user.name;
+            document.getElementById('userId').innerText = user.user_id;
+            document.getElementById('sponsorId').innerText = user.sponsor || 'None';
+
+            // Referral Link
+            const origin = window.location.origin;
+            const refLink = `${origin}/register.html?ref=${user.user_id}`;
+            document.getElementById('refLinkText').innerText = refLink;
+
+            // Status Badge
+            const statusBadge = document.getElementById('userStatusBadge');
+            const alertBox = document.getElementById('activationAlertBox');
+
+            if ((user.status || '').toLowerCase() === 'active') {
+                statusBadge.innerText = 'ACTIVE STUDENT';
+                statusBadge.className = 'inline-block text-[10px] font-bold px-3 py-0.5 rounded-full tracking-widest uppercase border bg-emerald-500/10 text-emerald-400 border-emerald-500/30 mb-2';
+                alertBox.classList.add('hidden');
+            } else {
+                statusBadge.innerText = 'UNACTIVE';
+                statusBadge.className = 'inline-block text-[10px] font-bold px-3 py-0.5 rounded-full tracking-widest uppercase border bg-red-500/10 text-red-400 border-red-500/30 mb-2';
+                alertBox.classList.remove('hidden');
+            }
+
+            // Wallet Balance
+            windowAvailableBalance = Number(user.wallet_balance || 0);
+            document.getElementById('walletBalance').innerText = `₹${windowAvailableBalance}`;
+            document.getElementById('modalAvailBalance').innerText = `₹${windowAvailableBalance}`;
+
+            // Pre-fill Bank Details
+            document.getElementById('bankNameInput').value = user.bank_name || '';
+            document.getElementById('bankAccInput').value = user.bank_acc || '';
+            document.getElementById('bankIfscInput').value = user.bank_ifsc || '';
+
+            // Count Direct Referrals
+            const { data: refs } = await _supabase.from('users').select('user_id').eq('sponsor', user.user_id);
+            document.getElementById('directReferralsCount').innerText = refs ? refs.length : 0;
+
         } catch (err) {
-            msg.innerText = "Error: UTR not saved.";
+            console.error(err);
+        }
+    }
+
+    // Load Live Settings (News, QR URL, Video, Social Links)
+    async function loadPlatformLiveSettings() {
+        try {
+            const { data: setting } = await _supabase.from('settings').select('*').limit(1).maybeSingle();
+            if (!setting) return;
+
+            if (setting.news_text) {
+                document.getElementById('liveNewsTicker').innerText = setting.news_text;
+            }
+            if (setting.qr_url) {
+                document.getElementById('paymentQrImage').src = setting.qr_url;
+            }
+            if (setting.video_url) {
+                document.getElementById('dashboardVideoPlayer').src = setting.video_url;
+            } else {
+                document.getElementById('videoSection').classList.add('hidden');
+            }
+
+            if (setting.yt_link) document.getElementById('linkYt').href = setting.yt_link;
+            if (setting.ig_link) document.getElementById('linkIg').href = setting.ig_link;
+            if (setting.fb_link) document.getElementById('linkFb').href = setting.fb_link;
+            if (setting.wa_link) document.getElementById('linkWa').href = setting.wa_link;
+
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    // Account Activation - Submit UTR
+    async function submitUTR() {
+        const utrVal = document.getElementById('utrNumber').value.trim();
+        const msg = document.getElementById('qrMsg');
+        const btn = document.getElementById('utrBtn');
+
+        if (utrVal.length < 6) {
+            msg.innerText = "Please enter valid 12-digit UTR / Ref No.";
             msg.className = "text-xs text-red-400 block mt-2 font-bold";
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerText = "Submitting...";
+        msg.innerText = "Saving UTR verification...";
+        msg.className = "text-xs text-amber-400 block mt-2 font-bold";
+
+        try {
+            // Direct update to users table so Admin Panel sees it immediately
+            const { error } = await _supabase.from('users').update({ utr: utrVal }).eq('user_id', currentUser.user_id);
+            if (error) throw error;
+
+            msg.innerText = "✅ UTR Submitted! Please wait for Admin Verification.";
+            msg.className = "text-xs text-emerald-400 block mt-2 font-bold";
+
+            setTimeout(() => {
+                closeModal('qrModal');
+                btn.disabled = false;
+                btn.innerText = "Submit";
+                msg.classList.add('hidden');
+                document.getElementById('utrNumber').value = '';
+            }, 2500);
+
+        } catch (err) {
+            msg.innerText = "Error submitting UTR. Please try again.";
+            msg.className = "text-xs text-red-400 block mt-2 font-bold";
+            btn.disabled = false;
+            btn.innerText = "Submit";
+        }
+    }
+
+    // Open Withdrawal Modal with Security Checks
+    function openWithdrawModal() {
+        const msg = document.getElementById('withdrawMsg');
+        msg.classList.add('hidden');
+
+        if ((currentUser.status || '').toLowerCase() !== 'active') {
+            alert("Your account is Unactive. Please activate your account first to withdraw funds.");
+            return;
+        }
+
+        if (!currentUser.bank_acc || !currentUser.bank_ifsc) {
+            alert("Please save your Bank Details before requesting a withdrawal.");
+            openModal('bankModal');
+            return;
+        }
+
+        if (hasPendingWithdrawal) {
+            alert("You already have a Pending withdrawal request. Please wait until it is processed by Admin.");
+            return;
+        }
+
+        // Display current bank info
+        document.getElementById('modalBankDetailsDisplay').innerHTML = `
+            <div><span class="text-slate-400">Bank:</span> ${currentUser.bank_name || '-'}</div>
+            <div><span class="text-slate-400">A/C:</span> ${currentUser.bank_acc}</div>
+            <div><span class="text-slate-400">IFSC:</span> ${currentUser.bank_ifsc}</div>
+        `;
+
+        openModal('withdrawModal');
+    }
+
+    // Submit Withdrawal Request
+    async function submitWithdrawal() {
+        const amount = Number(document.getElementById('withdrawAmountInput').value);
+        const msg = document.getElementById('withdrawMsg');
+        const btn = document.getElementById('withdrawSubmitBtn');
+
+        if (!amount || amount < 500) {
+            msg.innerText = "Minimum withdrawal amount is ₹500.";
+            msg.className = "text-xs font-bold text-red-400 block mt-2";
+            return;
+        }
+
+        if (amount > windowAvailableBalance) {
+            msg.innerText = "Insufficient wallet balance.";
+            msg.className = "text-xs font-bold text-red-400 block mt-2";
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerText = "Processing...";
+
+        try {
+            // 1. Insert into withdrawals table
+            const { error: wError } = await _supabase.from('withdrawals').insert([{
+                user_id: currentUser.user_id,
+                amount: amount,
+                status: 'Pending'
+            }]);
+            if (wError) throw wError;
+
+            // 2. Deduct from wallet balance
+            const newBal = windowAvailableBalance - amount;
+            await _supabase.from('users').update({ wallet_balance: newBal }).eq('user_id', currentUser.user_id);
+
+            msg.innerText = "✅ Withdrawal Request Sent Successfully!";
+            msg.className = "text-xs font-bold text-emerald-400 block mt-2";
+
+            setTimeout(async () => {
+                closeModal('withdrawModal');
+                btn.disabled = false;
+                btn.innerText = "Confirm Withdraw";
+                document.getElementById('withdrawAmountInput').value = '';
+                await refreshUserData();
+                loadWithdrawalHistory();
+            }, 2000);
+
+        } catch (err) {
+            msg.innerText = "Error: " + err.message;
+            msg.className = "text-xs font-bold text-red-400 block mt-2";
+            btn.disabled = false;
+            btn.innerText = "Confirm Withdraw";
+        }
+    }
+
+    // Load User Withdrawal History
+    async function loadWithdrawalHistory() {
+        const container = document.getElementById('withdrawalHistoryList');
+        try {
+            const { data, error } = await _supabase.from('withdrawals').select('*').eq('user_id', currentUser.user_id).order('created_at', { ascending: false });
+            if (error) throw error;
+
+            if (!data || data.length === 0) {
+                container.innerHTML = '<p class="text-slate-500 text-center py-3">No withdrawal history available.</p>';
+                hasPendingWithdrawal = false;
+                return;
+            }
+
+            // Check if there is any pending request
+            hasPendingWithdrawal = data.some(w => w.status === 'Pending');
+
+            container.innerHTML = '';
+            data.forEach(w => {
+                const dateStr = w.created_at ? new Date(w.created_at).toLocaleDateString('en-IN') : '-';
+                const statusColor = w.status === 'Paid' ? 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20' : 'text-amber-400 bg-amber-400/10 border-amber-400/20';
+
+                container.innerHTML += `
+                    <div class="bg-[#0f172a] border border-slate-700/80 p-3 rounded-xl flex justify-between items-center">
+                        <div>
+                            <p class="font-bold text-white">₹${w.amount}</p>
+                            <p class="text-[10px] text-slate-400 font-mono">${dateStr}</p>
+                        </div>
+                        <span class="text-[10px] font-bold px-2.5 py-0.5 rounded border uppercase tracking-wider ${statusColor}">
+                            ${w.status}
+                        </span>
+                    </div>
+                `;
+            });
+
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    // Save Bank Account Details
+    async function saveBankDetails() {
+        const bName = document.getElementById('bankNameInput').value.trim();
+        const bAcc = document.getElementById('bankAccInput').value.trim();
+        const bIfsc = document.getElementById('bankIfscInput').value.trim().toUpperCase();
+        const msg = document.getElementById('bankSaveMsg');
+        const btn = document.getElementById('saveBankBtn');
+
+        if (!bAcc || !bIfsc) {
+            msg.innerText = "Please fill Account Number and IFSC.";
+            msg.className = "text-xs font-bold text-red-400 block mt-1";
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerText = "Saving...";
+
+        try {
+            const { error } = await _supabase.from('users').update({
+                bank_name: bName,
+                bank_acc: bAcc,
+                bank_ifsc: bIfsc
+            }).eq('user_id', currentUser.user_id);
+
+            if (error) throw error;
+
+            msg.innerText = "✅ Bank Details Saved Successfully!";
+            msg.className = "text-xs font-bold text-emerald-400 block mt-1";
+
+            setTimeout(async () => {
+                closeModal('bankModal');
+                btn.disabled = false;
+                btn.innerText = "Save Details";
+                msg.classList.add('hidden');
+                await refreshUserData();
+            }, 1500);
+
+        } catch (err) {
+            msg.innerText = "Error saving bank details.";
+            msg.className = "text-xs font-bold text-red-400 block mt-1";
             btn.disabled = false;
         }
     }
-    function openModal(id) { const el = document.getElementById(id); if(el) el.classList.remove('hidden'); }
-    function closeModal(id) { const el = document.getElementById(id); if(el) el.classList.add('hidden'); }
-    function logout() { localStorage.removeItem('mahan_user'); window.location.href = "login.html"; }
+
+    // Copy Referral Link Helper
+    function copyReferralLink() {
+        const text = document.getElementById('refLinkText').innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            alert("Referral Link copied to clipboard!");
+        });
+    }
+
+    // Modal Helpers
+    function openModal(id) {
+        document.getElementById(id).classList.remove('hidden');
+    }
+    function closeModal(id) {
+        document.getElementById(id).classList.add('hidden');
+    }
+
+    // Logout Helper
+    function logout() {
+        localStorage.removeItem('mahan_user');
+        window.location.href = 'index.html';
+    }
 </script>
 </body>
 </html>
-                
