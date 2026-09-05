@@ -326,7 +326,12 @@
             if(remainingLimitCalc <= 0 && isActiveStatus) remainingLimitCalc = 0;
 
             document.getElementById('totalTeam').innerText = totalTeamCount; document.getElementById('limitAmount').innerText = `₹ ${maxLimit}`; document.getElementById('earningAmount').innerText = `₹ ${totalEarning}`; document.getElementById('remainingLimit').innerText = `₹ ${remainingLimitCalc}`;
-            
+            // Supabase માં લાઈવ Earning, Remaining Limit અને Total Limit ઓટો-અપડેટ કરવા માટે
+            await _supabase.from('users').update({
+                total_limit: maxLimit,
+                total_earning: totalEarning,
+                remaining_limit: remainingLimitCalc
+            }).eq('user_id', currentUser.user_id);
             if(isActiveStatus && totalEarning >= 50000) { document.getElementById('activationDiv').classList.remove('hidden'); document.getElementById('btnActText').innerText = "Renew Account (Limit Reached)"; }
 
             const { data: wData } = await _supabase.from('withdrawals').select('amount').eq('user_id', currentUser.user_id);
