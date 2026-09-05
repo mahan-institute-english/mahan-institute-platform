@@ -301,34 +301,48 @@
             const { data, error } = await _supabase.from('users').select('*').neq('status', 'Active').order('created_at', { ascending: false });
             if (error) throw error;
             
-            const pendingUsers = data.filter(u => u.utr || u.utr_number || (u.created_at && (u.status || '').toLowerCase() !== 'active'));
+            // જેનું એકાઉન્ટ એક્ટિવ નથી તેવા લોકોનું લિસ્ટ
+            const pendingUsers = data.filter(u => (u.status || '').toLowerCase() !== 'active');
 
             if (!pendingUsers || pendingUsers.length === 0) {
-                container.innerHTML = '<p class="text-xs text-slate-500 text-center py-4">No pending account approvals with UTR.</p>';
+                container.innerHTML = '<p class="text-xs text-slate-500 text-center py-4">No pending account approvals.</p>';
                 return;
             }
 
             container.innerHTML = '';
             for (let u of pendingUsers) {
                 const utrDisplay = u.utr || u.utr_number || 'WAITING FOR UTR...';
-                const utrColor = (utrDisplay === 'WAITING FOR UTR...') ? 'text-red-400' : 'text-amber-400';
+                const utrColor = (utrDisplay === 'WAITING FOR UTR...') ? 'text-red-400' : 'text-emerald-400 font-bold text-xl';
+                const joinDate = u.created_at ? new Date(u.created_at).toLocaleString('en-IN') : '-';
                 
                 container.innerHTML += `
-                    <div class="bg-[#0f172a] border border-slate-600 rounded-xl p-4 shadow-sm mb-3">
-                        <div class="flex justify-between items-start mb-2 border-b border-slate-700 pb-2">
-                            <div><p class="text-sm font-bold text-white">${u.name}</p><p class="text-[10px] text-blue-400 font-mono">${u.user_id}</p></div>
-                            <div class="text-right"><p class="text-lg font-black text-emerald-400">₹5000</p><p class="text-[9px] text-amber-400 font-bold uppercase tracking-widest">Pending</p></div>
+                    <div class="bg-[#0f172a] border border-slate-600 rounded-xl p-4 shadow-sm mb-4">
+                        <div class="flex justify-between items-start mb-3 border-b border-slate-700 pb-3">
+                            <div>
+                                <p class="text-base font-bold text-white">${u.name}</p>
+                                <p class="text-xs text-blue-400 font-mono mt-1">${u.user_id} | 📱 ${u.mobile}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xl font-black text-emerald-400">₹5000</p>
+                                <p class="text-[10px] text-amber-400 font-bold uppercase tracking-widest mt-1">Pending</p>
+                            </div>
                         </div>
-                        <div class="bg-slate-800 p-3 rounded mb-3 border border-slate-700 text-center">
+                        
+                        <div class="grid grid-cols-2 gap-2 text-xs text-slate-400 mb-3 bg-slate-800 p-2 rounded border border-slate-700">
+                            <p><i class="fa-regular fa-calendar text-blue-400 mr-1"></i> ${joinDate}</p>
+                            <p><i class="fa-solid fa-building-columns text-emerald-400 mr-1"></i> ${u.bank_name || 'Bank N/A'}</p>
+                        </div>
+
+                        <div class="bg-slate-900 p-3 rounded mb-3 border border-slate-700 text-center shadow-inner">
                             <p class="text-[10px] text-slate-400 uppercase tracking-widest mb-1">Verify this UTR in your Bank</p>
-                            <p class="text-lg ${utrColor} font-mono font-bold tracking-widest">UTR: ${utrDisplay}</p>
+                            <p class="text-lg ${utrColor} font-mono tracking-widest">${utrDisplay}</p>
                         </div>
-                        <button onclick="approveAccountDirectly('${u.user_id}', '${utrDisplay}')" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg text-xs font-bold transition shadow-lg"><i class="fa-solid fa-check-double mr-1"></i> Bank Checked! Activate Account</button>
+                        
+                        <button onclick="approveAccountDirectly('${u.user_id}', '${utrDisplay}')" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg text-sm font-bold transition shadow-lg"><i class="fa-solid fa-check-double mr-1"></i> Bank Checked! Activate Account</button>
                     </div>`;
             }
         } catch (err) { console.error(err); }
     }
-
     async function approveAccountDirectly(userId, utr) {
         if(utr === 'WAITING FOR UTR...') {
             alert("This student has not submitted a UTR yet. Please wait for them to pay.");
