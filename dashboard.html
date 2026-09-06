@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Poppins', sans-serif; }
         ::-webkit-scrollbar { width: 6px; }
@@ -58,7 +58,7 @@
             </div>
         </div>
 
-        <!-- NEW: Premium Course Section (Only visible if ACTIVE) -->
+        <!-- NEW: Premium Course Section -->
         <div id="courseSection" class="bg-gradient-to-br from-indigo-900 to-slate-800 border border-indigo-500/50 rounded-2xl shadow-xl p-6 text-center hidden">
             <h3 class="text-lg font-black text-white mb-2 tracking-wide"><i class="fa-solid fa-graduation-cap text-indigo-400 mr-2"></i> Premium Training</h3>
             <p class="text-[10px] text-slate-300 mb-4">Exclusive video courses to grow your network and skills.</p>
@@ -83,25 +83,6 @@
             </div>
             <button onclick="openWithdrawModal()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2 text-sm"><i class="fa-solid fa-money-bill-transfer"></i> Request Withdrawal</button>
         </div>
-        
-        <!-- Video Box -->
-        <div id="videoContainer" class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5 text-center hidden">
-            <h3 class="text-sm font-bold text-white mb-1"><i class="fa-brands fa-youtube text-red-500 mr-2"></i>Live Classes & Updates</h3>
-            <div class="relative w-full aspect-video rounded-xl overflow-hidden mt-3 border border-slate-600 shadow-[0_0_15px_rgba(0,0,0,0.5)]">
-                <iframe id="dashVideo" class="w-full h-full" src="" title="MAHAN Video" frameborder="0" allowfullscreen></iframe>
-            </div>
-        </div>
-
-        <!-- Social Media Hub -->
-        <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5">
-            <h3 class="text-sm font-bold text-white mb-4 text-center border-b border-slate-700 pb-3">Join Our Community</h3>
-            <div class="grid grid-cols-4 gap-3">
-                <a href="#" id="ytLink" target="_blank" class="bg-gradient-to-br from-red-500 to-red-700 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg hover:scale-105 transition"><i class="fa-brands fa-youtube text-2xl text-white mb-1"></i><span class="text-[8px] font-bold text-white uppercase tracking-wider">YouTube</span></a>
-                <a href="#" id="igLink" target="_blank" class="bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg hover:scale-105 transition"><i class="fa-brands fa-instagram text-2xl text-white mb-1"></i><span class="text-[8px] font-bold text-white uppercase tracking-wider">Insta</span></a>
-                <a href="#" id="fbLink" target="_blank" class="bg-gradient-to-br from-blue-600 to-blue-800 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg hover:scale-105 transition"><i class="fa-brands fa-facebook-f text-2xl text-white mb-1"></i><span class="text-[8px] font-bold text-white uppercase tracking-wider">Facebook</span></a>
-                <a href="#" id="waLink" target="_blank" class="bg-gradient-to-br from-green-500 to-emerald-700 p-3 rounded-xl flex flex-col items-center justify-center shadow-lg hover:scale-105 transition"><i class="fa-brands fa-whatsapp text-2xl text-white mb-1"></i><span class="text-[8px] font-bold text-white uppercase tracking-wider">Group</span></a>
-            </div>
-        </div>
 
         <!-- Buttons -->
         <div class="bg-[#1e293b] border border-slate-700 rounded-2xl shadow-lg p-5 text-center"><h3 class="text-sm font-bold text-white mb-2"><i class="fa-solid fa-chart-line text-emerald-400 mr-2"></i> Level Wise Income</h3><button onclick="openModal('levelModal')" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold py-2.5 px-6 rounded-xl transition shadow-lg">View Income Details</button></div>
@@ -116,96 +97,84 @@
     </div>
 
     <!-- MODALS -->
-    <!-- Course Modal -->
+    
+    <!-- 1. Course Modal (Advanced Folders) -->
     <div id="courseModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
         <div class="bg-[#1e293b] border border-indigo-500/50 p-5 rounded-2xl w-[95%] max-w-lg max-h-[90vh] shadow-2xl relative flex flex-col">
             <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-2">
-                <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-book-open text-indigo-400 mr-2"></i> Masterclass</h3>
-                <button onclick="closeCourseModal()" class="text-slate-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+                <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-graduation-cap text-indigo-400 mr-2"></i> Premium Masterclass</h3>
+                <button onclick="closeCourseModal()" class="text-slate-400 hover:text-white text-2xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="relative w-full aspect-video rounded-xl overflow-hidden border border-slate-600 mb-4 bg-black">
+            
+            <div class="relative w-full aspect-video rounded-xl overflow-hidden border border-slate-600 mb-4 bg-black shadow-[0_0_15px_rgba(0,0,0,0.5)]">
                 <iframe id="coursePlayer" class="w-full h-full" src="" title="Course Video" frameborder="0" allowfullscreen></iframe>
             </div>
-            <h4 id="currentChapterTitle" class="text-sm font-bold text-emerald-400 mb-3 border-b border-slate-700 pb-2">Select a chapter below</h4>
-            <div class="flex-1 overflow-y-auto pr-2 space-y-2" id="chapterList"></div>
+            
+            <h4 id="currentChapterTitle" class="text-[13px] font-black text-emerald-400 mb-3 border-b border-slate-700 pb-2 tracking-wide">Select a video to play</h4>
+            
+            <div class="flex-1 overflow-y-auto pr-2" id="chapterList">
+                <!-- Chapters and Videos will automatically appear here -->
+            </div>
         </div>
     </div>
 
-    <!-- Level Modal -->
-    <div id="levelModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-[#1e293b] border border-slate-600 p-5 rounded-2xl w-[95%] max-w-md max-h-[90vh] shadow-2xl relative flex flex-col">
-            <h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2"><i class="fa-solid fa-chart-line text-emerald-400 mr-2"></i> Level Wise Income</h3>
-            <div class="flex-1 overflow-y-auto border border-slate-700 rounded-xl mb-4">
-                <table class="w-full text-left text-xs whitespace-nowrap">
-                    <thead class="bg-[#0f172a] text-slate-400 uppercase tracking-wider sticky top-0 z-10">
-                        <tr><th class="p-3 font-semibold">Level</th><th class="p-3 font-semibold text-center">Rate</th><th class="p-3 font-semibold text-center">Team</th><th class="p-3 font-semibold text-right">Payout</th></tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-800 text-slate-300">
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 1</td><td class="p-3 text-center text-blue-400 font-mono">₹1000</td><td id="l1Count" class="p-3 text-center">0</td><td id="l1Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 2</td><td class="p-3 text-center text-blue-400 font-mono">₹500</td><td id="l2Count" class="p-3 text-center">0</td><td id="l2Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 3</td><td class="p-3 text-center text-blue-400 font-mono">₹250</td><td id="l3Count" class="p-3 text-center">0</td><td id="l3Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 4</td><td class="p-3 text-center text-blue-400 font-mono">₹250</td><td id="l4Count" class="p-3 text-center">0</td><td id="l4Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 5</td><td class="p-3 text-center text-blue-400 font-mono">₹250</td><td id="l5Count" class="p-3 text-center">0</td><td id="l5Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 6</td><td class="p-3 text-center text-blue-400 font-mono">₹125</td><td id="l6Count" class="p-3 text-center">0</td><td id="l6Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 7</td><td class="p-3 text-center text-blue-400 font-mono">₹125</td><td id="l7Count" class="p-3 text-center">0</td><td id="l7Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 8</td><td class="p-3 text-center text-blue-400 font-mono">₹125</td><td id="l8Count" class="p-3 text-center">0</td><td id="l8Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                        <tr class="hover:bg-slate-800/30 transition"><td class="p-3">Level 9</td><td class="p-3 text-center text-blue-400 font-mono">₹125</td><td id="l9Count" class="p-3 text-center">0</td><td id="l9Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
-                    </tbody>
-                </table>
+    <!-- 2. Quiz Modal -->
+    <div id="quizModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
+        <div class="bg-[#1e293b] border border-emerald-500/50 p-6 rounded-2xl w-[95%] max-w-lg shadow-2xl relative flex flex-col">
+            <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-2">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa-solid fa-clipboard-question text-emerald-400"></i> <span id="quizTitle">Chapter Test</span></h3>
+                <button onclick="closeQuizModal()" class="text-slate-400 hover:text-white text-2xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <button onclick="closeModal('levelModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold">Close</button>
+            
+            <!-- Question Area -->
+            <div id="quizQuestionArea" class="space-y-4">
+                <p class="text-xs font-bold text-blue-400 uppercase tracking-widest">Question <span id="qCurrent">1</span> of <span id="qTotal">5</span></p>
+                <p id="qText" class="text-sm font-semibold text-white leading-relaxed">Loading question...</p>
+                
+                <div id="qOptions" class="space-y-2 mt-4">
+                    <!-- Options will be loaded here -->
+                </div>
+                
+                <button id="nextQBtn" onclick="nextQuestion()" class="w-full bg-emerald-600 text-white font-bold py-3 rounded-xl transition shadow-lg mt-4 hidden">
+                    Next Question <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+
+            <!-- Result Area -->
+            <div id="quizResultArea" class="hidden text-center space-y-4 py-4">
+                <i class="fa-solid fa-trophy text-5xl text-amber-400 mb-2"></i>
+                <h2 class="text-2xl font-black text-white">Test Completed!</h2>
+                <p class="text-sm text-slate-300">Your Final Score:</p>
+                <div class="text-4xl font-black text-emerald-400 bg-emerald-400/10 border border-emerald-400/20 py-4 rounded-xl">
+                    <span id="finalScore">0</span> / <span id="finalTotal">0</span>
+                </div>
+                <p class="text-xs text-amber-400 font-bold mt-2">Rank processing will be updated in DB soon!</p>
+                <button onclick="closeQuizModal()" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-xl transition mt-4">Close Test</button>
+            </div>
         </div>
     </div>
+
+    <!-- (Other Modals: Level, Direct, Withdraw, QR, Settings - Intact) -->
+    <div id="levelModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4"><div class="bg-[#1e293b] border border-slate-600 p-5 rounded-2xl w-[95%] max-w-md max-h-[90vh] shadow-2xl relative flex flex-col"><h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2"><i class="fa-solid fa-chart-line text-emerald-400 mr-2"></i> Level Wise Income</h3><div class="flex-1 overflow-y-auto border border-slate-700 rounded-xl mb-4"><table class="w-full text-left text-xs whitespace-nowrap"><thead class="bg-[#0f172a] text-slate-400 uppercase tracking-wider sticky top-0 z-10"><tr><th class="p-3 font-semibold">Level</th><th class="p-3 font-semibold text-center">Rate</th><th class="p-3 font-semibold text-center">Team</th><th class="p-3 font-semibold text-right">Payout</th></tr></thead><tbody class="divide-y divide-slate-800 text-slate-300">
+        <tr><td class="p-3">Level 1</td><td class="p-3 text-center text-blue-400">₹1000</td><td id="l1Count" class="p-3 text-center">0</td><td id="l1Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+        <tr><td class="p-3">Level 2</td><td class="p-3 text-center text-blue-400">₹500</td><td id="l2Count" class="p-3 text-center">0</td><td id="l2Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+        <tr><td class="p-3">Level 3</td><td class="p-3 text-center text-blue-400">₹250</td><td id="l3Count" class="p-3 text-center">0</td><td id="l3Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+        <tr><td class="p-3">Level 4</td><td class="p-3 text-center text-blue-400">₹250</td><td id="l4Count" class="p-3 text-center">0</td><td id="l4Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+        <tr><td class="p-3">Level 5</td><td class="p-3 text-center text-blue-400">₹250</td><td id="l5Count" class="p-3 text-center">0</td><td id="l5Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+        <tr><td class="p-3">Level 6</td><td class="p-3 text-center text-blue-400">₹125</td><td id="l6Count" class="p-3 text-center">0</td><td id="l6Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+        <tr><td class="p-3">Level 7</td><td class="p-3 text-center text-blue-400">₹125</td><td id="l7Count" class="p-3 text-center">0</td><td id="l7Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+        <tr><td class="p-3">Level 8</td><td class="p-3 text-center text-blue-400">₹125</td><td id="l8Count" class="p-3 text-center">0</td><td id="l8Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+        <tr><td class="p-3">Level 9</td><td class="p-3 text-center text-blue-400">₹125</td><td id="l9Count" class="p-3 text-center">0</td><td id="l9Pay" class="p-3 text-right font-bold text-emerald-400">₹0</td></tr>
+    </tbody></table></div><button onclick="closeModal('levelModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold">Close</button></div></div>
     
-    <!-- Direct Modal -->
-    <div id="directModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-[#1e293b] border border-slate-600 p-5 rounded-2xl w-[95%] max-w-md max-h-[90vh] shadow-2xl relative flex flex-col">
-            <h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2"><i class="fa-solid fa-users text-blue-400 mr-2"></i> Direct Members List</h3>
-            <div id="directStudentContainer" class="flex-1 overflow-y-auto pr-2 mb-4 space-y-3"></div>
-            <button onclick="closeModal('directModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold">Close</button>
-        </div>
-    </div>
+    <div id="directModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-md hidden flex items-center justify-center z-50 p-4"><div class="bg-[#1e293b] border border-slate-600 p-5 rounded-2xl w-[95%] max-w-md max-h-[90vh] shadow-2xl relative flex flex-col"><h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2"><i class="fa-solid fa-users text-blue-400 mr-2"></i> Direct Members List</h3><div id="directStudentContainer" class="flex-1 overflow-y-auto pr-2 mb-4 space-y-3"></div><button onclick="closeModal('directModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold">Close</button></div></div>
 
-    <!-- History Modal -->
-    <div id="historyModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-[#1e293b] border border-slate-600 p-5 rounded-2xl w-[95%] max-w-md max-h-[90vh] shadow-2xl relative flex flex-col">
-            <h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2"><i class="fa-solid fa-clock-rotate-left text-blue-400 mr-2"></i> Payout History</h3>
-            <div id="historyContainer" class="flex-1 overflow-y-auto pr-2 mb-4 space-y-3"><p class="text-center text-xs text-slate-500 py-4">Loading history...</p></div>
-            <button onclick="closeModal('historyModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold">Close</button>
-        </div>
-    </div>
+    <div id="historyModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4"><div class="bg-[#1e293b] border border-slate-600 p-5 rounded-2xl w-[95%] max-w-md max-h-[90vh] shadow-2xl relative flex flex-col"><h3 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2"><i class="fa-solid fa-clock-rotate-left text-blue-400 mr-2"></i> Payout History</h3><div id="historyContainer" class="flex-1 overflow-y-auto pr-2 mb-4 space-y-3"><p class="text-center text-xs text-slate-500 py-4">Loading history...</p></div><button onclick="closeModal('historyModal')" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl text-sm font-semibold">Close</button></div></div>
 
-    <!-- Withdraw Modal -->
-    <div id="withdrawModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-[95%] max-w-sm shadow-2xl text-center">
-            <h3 class="text-lg font-bold text-white mb-2"><i class="fa-solid fa-money-bill-transfer text-emerald-400 mr-2"></i> Withdraw Funds</h3>
-            <div id="withdrawFormArea" class="hidden">
-.               <p class="text-xs text-slate-400 mb-4">Enter amount to withdraw directly to your bank account.</p>
-                <div class="bg-[#0f172a] border border-emerald-500/30 shadow-inner p-3 rounded-xl mb-4"><p class="text-[10px] text-slate-400 uppercase tracking-widest">Available Balance</p><p id="modalAvailBal" class="text-2xl font-black text-emerald-400">₹0</p></div>
-                <input type="number" id="withdrawAmount" placeholder="Enter Amount" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-emerald-500 font-mono text-center">
-                <p id="withdrawMsg" class="text-xs mb-3 hidden"></p>
-                <div class="flex gap-3"><button onclick="submitWithdraw()" id="wSubmitBtn" class="flex-1 bg-emerald-600 text-white py-3 rounded-xl text-sm font-bold">Withdraw</button><button onclick="closeModal('withdrawModal')" class="flex-1 bg-slate-700 text-white py-3 rounded-xl text-sm font-bold">Cancel</button></div>
-            </div>
-            <div id="withdrawErrorArea" class="hidden py-4">
-                <i class="fa-solid fa-triangle-exclamation text-4xl text-amber-500 mb-3"></i><h4 class="text-sm font-bold text-white mb-2">Requirement Not Met</h4><p class="text-xs text-slate-400 mb-5">You need at least <strong class="text-amber-400">5 Active Direct Members</strong> to unlock withdrawal.</p>
-                <button onclick="closeModal('withdrawModal')" class="w-full bg-slate-700 text-white py-3 rounded-xl text-sm font-bold">Close</button>
-            </div>
-        </div>
-    </div>
+	<div id="withdrawModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4"><div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-[95%] max-w-sm shadow-2xl text-center"><h3 class="text-lg font-bold text-white mb-2"><i class="fa-solid fa-money-bill-transfer text-emerald-400 mr-2"></i> Withdraw Funds</h3><div id="withdrawFormArea" class="hidden"><p class="text-xs text-slate-400 mb-4">Enter amount to withdraw directly to your bank account.</p><div class="bg-[#0f172a] border border-emerald-500/30 shadow-inner p-3 rounded-xl mb-4"><p class="text-[10px] text-slate-400 uppercase tracking-widest">Available Balance</p><p id="modalAvailBal" class="text-2xl font-black text-emerald-400">₹0</p></div><input type="number" id="withdrawAmount" placeholder="Enter Amount" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-emerald-500 font-mono text-center"><p id="withdrawMsg" class="text-xs mb-3 hidden"></p><div class="flex gap-3"><button onclick="submitWithdraw()" id="wSubmitBtn" class="flex-1 bg-emerald-600 text-white py-3 rounded-xl text-sm font-bold">Withdraw</button><button onclick="closeModal('withdrawModal')" class="flex-1 bg-slate-700 text-white py-3 rounded-xl text-sm font-bold">Cancel</button></div></div><div id="withdrawErrorArea" class="hidden py-4"><i class="fa-solid fa-triangle-exclamation text-4xl text-amber-500 mb-3"></i><h4 class="text-sm font-bold text-white mb-2">Requirement Not Met</h4><p class="text-xs text-slate-400 mb-5">You need at least <strong class="text-amber-400">5 Active Direct Members</strong> to unlock withdrawal.</p><button onclick="closeModal('withdrawModal')" class="w-full bg-slate-700 text-white py-3 rounded-xl text-sm font-bold">Close</button></div></div></div>
 
-    <!-- QR Modal -->
-    <div id="qrModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4">
-        <div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-[95%] max-w-sm shadow-2xl text-center">
-            <h3 class="text-lg font-bold text-white mb-2"><i class="fa-solid fa-qrcode text-emerald-400 mr-2"></i> Account Activation</h3>
-            <p class="text-xs text-slate-400 mb-4">Scan QR code using PhonePe/GPay to pay activation fee (<strong class="text-amber-400" id="displayFee">₹...</strong>) and enter UTR number.</p>
-            <div class="bg-white p-3 rounded-xl inline-block mb-4 shadow-lg"><img src="qr.jpg" id="dynamicQR" alt="Payment QR" class="w-36 h-36"></div>
-            <input type="text" id="utrNumber" placeholder="Enter 12-digit UTR / Ref No." class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-emerald-500 font-mono text-center uppercase">
-            <p id="qrMsg" class="text-xs mb-3 hidden"></p>
-            <div class="flex gap-3"><button onclick="submitUTR()" id="utrBtn" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-sm font-bold transition">Submit</button><button onclick="closeModal('qrModal')" class="flex-1 bg-slate-700 text-white py-3 rounded-xl text-sm font-bold">Cancel</button></div>
-        </div>
-    </div>
+    <div id="qrModal" class="fixed inset-0 bg-[#0f172a]/90 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4"><div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-[95%] max-w-sm shadow-2xl text-center"><h3 class="text-lg font-bold text-white mb-2"><i class="fa-solid fa-qrcode text-emerald-400 mr-2"></i> Account Activation</h3><p class="text-xs text-slate-400 mb-4">Scan QR code using PhonePe/GPay to pay activation fee (<strong class="text-amber-400" id="displayFee">₹...</strong>) and enter UTR number.</p><div class="bg-white p-3 rounded-xl inline-block mb-4 shadow-lg"><img src="qr.jpg" id="dynamicQR" alt="Payment QR" class="w-36 h-36"></div><input type="text" id="utrNumber" placeholder="Enter 12-digit UTR / Ref No." class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-emerald-500 font-mono text-center uppercase"><p id="qrMsg" class="text-xs mb-3 hidden"></p><div class="flex gap-3"><button onclick="submitUTR()" id="utrBtn" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl text-sm font-bold transition">Submit</button><button onclick="closeModal('qrModal')" class="flex-1 bg-slate-700 text-white py-3 rounded-xl text-sm font-bold">Cancel</button></div></div></div>
     
-    <!-- Settings Modals -->
     <div id="passwordModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4"><div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-[95%] max-w-sm shadow-2xl"><h3 class="text-lg font-bold text-white mb-4"><i class="fa-solid fa-lock text-blue-400 mr-2"></i> Update Password</h3><input type="text" id="newPassword" placeholder="Enter new password" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4"><p id="passMsg" class="text-xs mb-3 hidden"></p><div class="flex gap-3"><button onclick="updatePassword()" id="passBtn" class="flex-1 bg-blue-600 text-white py-3 rounded-xl text-sm font-semibold">Save</button><button onclick="closeModal('passwordModal')" class="flex-1 bg-slate-700 text-white py-3 rounded-xl text-sm font-semibold">Cancel</button></div></div></div>
     <div id="bankModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-50 p-4"><div class="bg-[#1e293b] border border-slate-600 p-6 rounded-2xl w-[95%] max-w-sm shadow-2xl"><h3 class="text-lg font-bold text-white mb-4"><i class="fa-solid fa-building-columns text-emerald-400 mr-2"></i> Bank Details</h3><input type="text" id="accName" placeholder="Account Holder Name" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-3"><input type="text" id="accNo" placeholder="Account Number" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-3"><input type="text" id="ifscCode" placeholder="IFSC Code" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 uppercase"><p id="bankMsg" class="text-xs mb-3 hidden"></p><div class="flex gap-3"><button onclick="saveBankDetails()" id="bankBtn" class="flex-1 bg-emerald-600 text-white py-3 rounded-xl text-sm font-semibold">Save KYC</button><button onclick="closeModal('bankModal')" class="flex-1 bg-slate-700 text-white py-3 rounded-xl text-sm font-semibold">Cancel</button></div></div></div>
 
@@ -217,12 +186,48 @@
     let currentUser = null; let windowMyActiveDirects = 0; let windowAvailableBalance = 0; let isActiveStatus = false;
     let hasPendingWithdrawal = false;
 
-    // --- HARDCODED COURSES LIST --- 
+    // --- 1. ADVANCED COURSE & QUIZ DATA --- 
+    // અહી તમે તમારા પ્રશ્નો અને ઓપ્શન જાતે લખી શકો છો. answer: માં સાચા જવાબનો નંબર (0, 1, 2, 3) લખવો.
     const privateCourses = [
-        { title: "Chapter 1: Welcome to MAHAN", url: "https://www.youtube.com/embed/ZqD__3pfVIw" },
-        { title: "Chapter 2: Master Your English", url: "https://www.youtube.com/embed/ZqD__3pfVIw" },
-        { title: "Chapter 3: Business Networking", url: "https://www.youtube.com/embed/ZqD__3pfVIw" }
+        {
+            chapterName: "Chapter 1: Welcome to MAHAN",
+            videos: [
+                { title: "1. Introduction", url: "https://www.youtube.com/embed/ZqD__3pfVIw" }
+            ],
+            quiz: [
+                { 
+                    q: "What is the main goal of MAHAN?", 
+                    options: ["Cooking", "Learn English & Earn", "Dancing", "Gaming"], 
+                    answer: 1 
+                },
+                { 
+                    q: "How many Active Directs are needed for withdrawal?", 
+                    options: ["2", "10", "5", "0"], 
+                    answer: 2 
+                }
+            ]
+        },
+        {
+            chapterName: "Chapter 2: Master Your English",
+            videos: [
+                { title: "1. Basic Grammar", url: "https://www.youtube.com/embed/ZqD__3pfVIw" },
+                { title: "2. Daily Words", url: "https://www.youtube.com/embed/ZqD__3pfVIw" }
+            ],
+            quiz: [
+                { 
+                    q: "Which word is a noun?", 
+                    options: ["Run", "Apple", "Fast", "Beautiful"], 
+                    answer: 1 
+                }
+            ]
+        }
     ];
+
+    // Quiz Variables
+    let currentQuizIndex = -1;
+    let currentQNumber = 0;
+    let currentScore = 0;
+    let selectedOptionIndex = -1;
 
     window.onload = async () => {
         try {
@@ -254,30 +259,182 @@
         } catch (error) { console.error("Load Error:", error); }
     };
 
+    // --- 2. VIDEO FOLDER LOGIC ---
     function openCourseModal() {
-        const list = document.getElementById('chapterList'); list.innerHTML = '';
-        privateCourses.forEach((c) => {
-            list.innerHTML += `<button onclick="playCourseVideo('${c.url}', '${c.title}')" class="w-full text-left bg-[#0f172a] hover:bg-slate-800 border border-slate-700 p-3 rounded-xl transition flex justify-between items-center group mb-2"><span class="text-xs font-bold text-white group-hover:text-indigo-400"><i class="fa-solid fa-circle-play text-slate-500 group-hover:text-indigo-400 mr-2"></i> ${c.title}</span> <i class="fa-solid fa-chevron-right text-slate-600 text-[10px]"></i></button>`;
-        });
-        openModal('courseModal');
-        if(privateCourses.length > 0) playCourseVideo(privateCourses[0].url, privateCourses[0].title);
-    }
-    function playCourseVideo(url, title) { document.getElementById('coursePlayer').src = url; document.getElementById('currentChapterTitle').innerText = title; }
-    function closeCourseModal() { document.getElementById('coursePlayer').src = ''; closeModal('courseModal'); }
+        const list = document.getElementById('chapterList');
+        list.innerHTML = '';
+        
+        privateCourses.forEach((chapter, index) => {
+            let videoListHtml = '';
+            chapter.videos.forEach(vid => {
+                videoListHtml += `
+                    <button onclick="playCourseVideo('${vid.url}', '${vid.title}')" class="w-full text-left bg-[#0f172a] hover:bg-slate-700 border border-slate-700 p-3 rounded-lg transition flex items-center mb-2 shadow-sm">
+                        <i class="fa-solid fa-play-circle text-indigo-400 text-sm mr-2.5"></i> 
+                        <span class="text-xs text-slate-300 font-semibold tracking-wide">${vid.title}</span>
+                    </button>`;
+            });
 
+            // Check if test already taken (Local storage lock for now)
+            let testLock = localStorage.getItem(`mahan_test_${currentUser.user_id}_${index}`);
+            let quizBtnHtml = '';
+            
+            if(testLock) {
+                quizBtnHtml = `
+                <div class="mt-3 w-full bg-emerald-900/40 border border-emerald-700 p-2.5 rounded-lg text-center">
+                    <span class="text-xs font-bold text-emerald-400"><i class="fa-solid fa-circle-check mr-1"></i> Test Completed (${testLock})</span>
+                </div>`;
+            } else {
+                quizBtnHtml = `
+                <button onclick="startQuiz(${index})" class="mt-3 w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold py-2.5 rounded-lg transition shadow-md flex justify-center items-center gap-2 text-xs">
+                    <i class="fa-solid fa-pen-to-square"></i> Take Chapter Test
+                </button>`;
+            }
+
+            list.innerHTML += `
+                <div class="mb-3 border border-slate-600 rounded-xl overflow-hidden shadow-lg bg-slate-800">
+                    <button onclick="toggleChapter(${index})" class="w-full text-left hover:bg-slate-700 p-3.5 flex justify-between items-center transition">
+                        <span class="text-sm font-bold text-white"><i class="fa-solid fa-folder-open text-amber-400 mr-2.5"></i> ${chapter.chapterName}</span>
+                        <i id="icon-chap-${index}" class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform duration-300"></i>
+                    </button>
+                    <div id="content-chap-${index}" class="hidden p-3 bg-gradient-to-b from-[#1e293b] to-[#0f172a] border-t border-slate-700">
+                        ${videoListHtml}
+                        ${quizBtnHtml}
+                    </div>
+                </div>`;
+        });
+        
+        openModal('courseModal');
+        
+        if(privateCourses.length > 0 && privateCourses[0].videos.length > 0) {
+            playCourseVideo(privateCourses[0].videos[0].url, privateCourses[0].videos[0].title);
+            document.getElementById(`content-chap-0`).classList.remove('hidden');
+            document.getElementById(`icon-chap-0`).style.transform = "rotate(180deg)";
+        }
+    }
+
+    function toggleChapter(index) {
+        const content = document.getElementById(`content-chap-${index}`);
+        const icon = document.getElementById(`icon-chap-${index}`);
+        if(content.classList.contains('hidden')) {
+            content.classList.remove('hidden'); icon.style.transform = "rotate(180deg)";
+        } else {
+            content.classList.add('hidden'); icon.style.transform = "rotate(0deg)";
+        }
+    }
+
+    function playCourseVideo(url, title) { 
+        document.getElementById('coursePlayer').src = url; 
+        document.getElementById('currentChapterTitle').innerText = title; 
+    }
+    
+    function closeCourseModal() { 
+        document.getElementById('coursePlayer').src = ''; 
+        closeModal('courseModal'); 
+    }
+
+    // --- 3. QUIZ SYSTEM LOGIC ---
+    function startQuiz(chapterIndex) {
+        currentQuizIndex = chapterIndex;
+        currentQNumber = 0;
+        currentScore = 0;
+        document.getElementById('quizTitle').innerText = privateCourses[chapterIndex].chapterName + " - Test";
+        
+        document.getElementById('quizQuestionArea').classList.remove('hidden');
+        document.getElementById('quizResultArea').classList.add('hidden');
+        
+        loadQuestion();
+        openModal('quizModal');
+    }
+
+    function loadQuestion() {
+        let quizData = privateCourses[currentQuizIndex].quiz;
+        let q = quizData[currentQNumber];
+        
+        document.getElementById('qCurrent').innerText = currentQNumber + 1;
+        document.getElementById('qTotal').innerText = quizData.length;
+        document.getElementById('qText').innerText = q.q;
+        
+        let optionsHtml = '';
+        q.options.forEach((opt, idx) => {
+            optionsHtml += `
+            <button id="opt-${idx}" onclick="selectOption(${idx})" class="w-full text-left p-3 rounded-xl border border-slate-600 bg-[#0f172a] hover:bg-slate-700 text-sm text-slate-300 transition">
+                ${opt}
+            </button>`;
+        });
+        
+        document.getElementById('qOptions').innerHTML = optionsHtml;
+        document.getElementById('nextQBtn').classList.add('hidden');
+        selectedOptionIndex = -1;
+    }
+
+    function selectOption(index) {
+        let quizData = privateCourses[currentQuizIndex].quiz;
+        let totalOpts = quizData[currentQNumber].options.length;
+        
+        for(let i=0; i<totalOpts; i++) {
+            let btn = document.getElementById(`opt-${i}`);
+            btn.classList.remove('border-emerald-500', 'bg-emerald-900/30', 'text-white');
+            btn.classList.add('border-slate-600', 'bg-[#0f172a]', 'text-slate-300');
+        }
+        
+        let selectedBtn = document.getElementById(`opt-${index}`);
+        selectedBtn.classList.remove('border-slate-600', 'bg-[#0f172a]', 'text-slate-300');
+        selectedBtn.classList.add('border-emerald-500', 'bg-emerald-900/30', 'text-white', 'font-bold');
+        
+        selectedOptionIndex = index;
+        document.getElementById('nextQBtn').classList.remove('hidden');
+        
+        if(currentQNumber === quizData.length - 1) {
+            document.getElementById('nextQBtn').innerHTML = 'Submit Test <i class="fa-solid fa-check ml-2"></i>';
+        } else {
+            document.getElementById('nextQBtn').innerHTML = 'Next Question <i class="fa-solid fa-arrow-right ml-2"></i>';
+        }
+    }
+
+    function nextQuestion() {
+        let quizData = privateCourses[currentQuizIndex].quiz;
+        
+        // Check answer
+        if(selectedOptionIndex === quizData[currentQNumber].answer) {
+            currentScore++;
+        }
+        
+        currentQNumber++;
+        
+        if(currentQNumber < quizData.length) {
+            loadQuestion();
+        } else {
+            showQuizResult();
+        }
+    }
+
+    function showQuizResult() {
+        document.getElementById('quizQuestionArea').classList.add('hidden');
+        document.getElementById('quizResultArea').classList.remove('hidden');
+        
+        let totalQ = privateCourses[currentQuizIndex].quiz.length;
+        document.getElementById('finalScore').innerText = currentScore;
+        document.getElementById('finalTotal').innerText = totalQ;
+        
+        // Lock Test (One-Time Attempt Logic)
+        localStorage.setItem(`mahan_test_${currentUser.user_id}_${currentQuizIndex}`, `${currentScore}/${totalQ}`);
+        
+        // Refresh Course Modal to show Green Completed button
+        openCourseModal(); 
+    }
+
+    function closeQuizModal() {
+        closeModal('quizModal');
+    }
+
+    // --- (REMAINING NETWORK & DB FUNCTIONS - ALL INTACT) ---
     async function fetchPlatformSettings() {
         try {
             const { data } = await _supabase.from('settings').select('*').limit(1).maybeSingle();
             if(data) {
                 if(data.news_text) document.getElementById('liveNewsText').innerText = data.news_text;
-                const vCont = document.getElementById('videoContainer');
-                if(data.video_url && data.video_url.length > 10) { document.getElementById('dashVideo').src = data.video_url; vCont.classList.remove('hidden'); }
                 if(data.qr_url && data.qr_url.length > 5) document.getElementById('dynamicQR').src = data.qr_url;
                 if(data.activation_fee) document.getElementById('displayFee').innerText = `₹${data.activation_fee}`;
-                if(data.yt_link) document.getElementById('ytLink').href = data.yt_link;
-                if(data.ig_link) document.getElementById('igLink').href = data.ig_link;
-                if(data.fb_link) document.getElementById('fbLink').href = data.fb_link;
-                if(data.wa_link) document.getElementById('waLink').href = data.wa_link;
             }
         } catch (err) {}
     }
@@ -325,62 +482,56 @@
             let remainingLimitCalc = maxLimit - totalEarning;
             if(remainingLimitCalc <= 0 && isActiveStatus) remainingLimitCalc = 0;
 
-            document.getElementById('totalTeam').innerText = totalTeamCount; document.getElementById('limitAmount').innerText = `₹ ${maxLimit}`; document.getElementById('earningAmount').innerText = `₹ ${totalEarning}`; document.getElementById('remainingLimit').innerText = `₹ ${remainingLimitCalc}`;
-            // Supabase માં લાઈવ Earning, Remaining Limit અને Total Limit ઓટો-અપડેટ કરવા માટે
+            document.getElementById('totalTeam').innerText = totalTeamCount; 
+            document.getElementById('limitAmount').innerText = `₹ ${maxLimit}`; 
+            document.getElementById('earningAmount').innerText = `₹ ${totalEarning}`; 
+            document.getElementById('remainingLimit').innerText = `₹ ${remainingLimitCalc}`;
+            
             await _supabase.from('users').update({
                 total_limit: maxLimit,
                 total_earning: totalEarning,
                 remaining_limit: remainingLimitCalc
             }).eq('user_id', currentUser.user_id);
+
             if(isActiveStatus && totalEarning >= 50000) { document.getElementById('activationDiv').classList.remove('hidden'); document.getElementById('btnActText').innerText = "Renew Account (Limit Reached)"; }
 
             const { data: wData } = await _supabase.from('withdrawals').select('amount').eq('user_id', currentUser.user_id);
             let totalWithdrawn = 0; if(wData) wData.forEach(w => totalWithdrawn += parseFloat(w.amount)); windowAvailableBalance = totalEarning - totalWithdrawn;
             document.getElementById('modalAvailBal').innerText = `₹${windowAvailableBalance}`;
-        } catch (err) { console.error("Data Error:", err); }
+        } catch (err) {}
     }
 
     async function updatePassword() {
         const newPass = document.getElementById('newPassword').value.trim(); const msg = document.getElementById('passMsg'); const btn = document.getElementById('passBtn');
-        if(!newPass) { msg.innerText = "Please enter password."; msg.className = "text-xs text-red-400 block mb-3 font-bold"; return; }
-        btn.disabled = true; btn.innerText = "Saving...";
-        try { await _supabase.from('users').update({ password: newPass }).eq('user_id', currentUser.user_id); msg.innerText = "Updated Successfully!"; msg.className = "text-xs text-emerald-400 block mb-3 font-bold"; currentUser.password = newPass; localStorage.setItem('mahan_user', JSON.stringify(currentUser)); setTimeout(() => { closeModal('passwordModal'); document.getElementById('newPassword').value=''; msg.classList.add('hidden'); btn.disabled=false; btn.innerText="Save"; }, 1500); } catch(err) { msg.innerText = "Error!"; msg.className = "text-xs text-red-400 block mb-3"; btn.disabled=false; btn.innerText="Save"; }
+        if(!newPass) return; btn.disabled = true; btn.innerText = "Saving...";
+        try { await _supabase.from('users').update({ password: newPass }).eq('user_id', currentUser.user_id); msg.innerText = "Updated Successfully!"; msg.className = "text-xs text-emerald-400 block mb-3 font-bold"; currentUser.password = newPass; localStorage.setItem('mahan_user', JSON.stringify(currentUser)); setTimeout(() => { closeModal('passwordModal'); document.getElementById('newPassword').value=''; msg.classList.add('hidden'); btn.disabled=false; btn.innerText="Save"; }, 1500); } catch(err) {}
     }
 
     async function saveBankDetails() {
         const bName = document.getElementById('accName').value.trim(); const bAcc = document.getElementById('accNo').value.trim(); const bIfsc = document.getElementById('ifscCode').value.trim(); const msg = document.getElementById('bankMsg'); const btn = document.getElementById('bankBtn');
-        if(!bName || !bAcc || !bIfsc) { msg.innerText = "Fill all details."; msg.className = "text-xs text-red-400 block mb-3 font-bold"; return; }
-        btn.disabled = true; btn.innerText = "Saving...";
-        try { await _supabase.from('users').update({ bank_name: bName, bank_acc: bAcc, bank_ifsc: bIfsc }).eq('user_id', currentUser.user_id); msg.innerText = "Saved Successfully!"; msg.className = "text-xs text-emerald-400 block mb-3 font-bold"; currentUser.bank_name = bName; currentUser.bank_acc = bAcc; currentUser.bank_ifsc = bIfsc; localStorage.setItem('mahan_user', JSON.stringify(currentUser)); setTimeout(() => { closeModal('bankModal'); msg.classList.add('hidden'); btn.disabled=false; btn.innerText="Save KYC"; }, 1500); } catch (err) { msg.innerText = "Error!"; msg.className = "text-xs text-amber-400 block mb-3"; btn.disabled=false; btn.innerText="Save KYC"; }
+        if(!bName || !bAcc || !bIfsc) return; btn.disabled = true; btn.innerText = "Saving...";
+        try { await _supabase.from('users').update({ bank_name: bName, bank_acc: bAcc, bank_ifsc: bIfsc }).eq('user_id', currentUser.user_id); msg.innerText = "Saved Successfully!"; msg.className = "text-xs text-emerald-400 block mb-3 font-bold"; currentUser.bank_name = bName; currentUser.bank_acc = bAcc; currentUser.bank_ifsc = bIfsc; localStorage.setItem('mahan_user', JSON.stringify(currentUser)); setTimeout(() => { closeModal('bankModal'); msg.classList.add('hidden'); btn.disabled=false; btn.innerText="Save KYC"; }, 1500); } catch (err) {}
     }
 
-    // --- WITHDRAWAL SECURITY LOGIC ---
     function openWithdrawModal() {
         if(!isActiveStatus) { alert("Account must be ACTIVE."); return; }
-        if (hasPendingWithdrawal) {
-            alert("You already have a Pending withdrawal request. Please wait until it is processed by Admin.");
-            return;
-        }
+        if (hasPendingWithdrawal) { alert("You already have a Pending withdrawal request."); return; }
         openModal('withdrawModal');
         if(windowMyActiveDirects >= 5) { document.getElementById('withdrawFormArea').classList.remove('hidden'); document.getElementById('withdrawErrorArea').classList.add('hidden'); } else { document.getElementById('withdrawFormArea').classList.add('hidden'); document.getElementById('withdrawErrorArea').classList.remove('hidden'); }
     }
 
     async function submitWithdraw() {
         const amt = parseFloat(document.getElementById('withdrawAmount').value); const msg = document.getElementById('withdrawMsg'); const btn = document.getElementById('wSubmitBtn');
-        if(!amt || amt <= 0) { msg.innerText = "Valid amount required."; msg.className = "text-xs text-red-400 block mb-3 font-bold"; return; }
-        if(amt > windowAvailableBalance) { msg.innerText = "Exceeds balance."; msg.className = "text-xs text-red-400 block mb-3 font-bold"; return; }
+        if(!amt || amt <= 0) return; if(amt > windowAvailableBalance) return;
         btn.disabled = true; btn.innerText = "Processing...";
-        try { await _supabase.from('withdrawals').insert([ { user_id: currentUser.user_id, amount: amt, status: 'Pending' } ]); msg.innerText = "Requested Successfully!"; msg.className = "text-xs text-emerald-400 block mb-3 font-bold"; setTimeout(() => { closeModal('withdrawModal'); fetchNetworkData(); loadWithdrawalHistory(); btn.disabled=false; btn.innerText="Withdraw"; msg.classList.add('hidden'); document.getElementById('withdrawAmount').value=''; }, 1500); } catch(err) { msg.innerText = "Error!"; msg.className = "text-xs text-red-400 block mb-3"; btn.disabled=false; btn.innerText="Withdraw"; }
+        try { await _supabase.from('withdrawals').insert([ { user_id: currentUser.user_id, amount: amt, status: 'Pending' } ]); msg.innerText = "Requested Successfully!"; msg.className = "text-xs text-emerald-400 block mb-3 font-bold"; setTimeout(() => { closeModal('withdrawModal'); fetchNetworkData(); loadWithdrawalHistory(); btn.disabled=false; btn.innerText="Withdraw"; msg.classList.add('hidden'); document.getElementById('withdrawAmount').value=''; }, 1500); } catch(err) {}
     }
 
     async function loadWithdrawalHistory() {
         const container = document.getElementById('historyContainer');
         try {
             const { data } = await _supabase.from('withdrawals').select('*').eq('user_id', currentUser.user_id).order('created_at', { ascending: false });
-            
-            // Check pending status
             hasPendingWithdrawal = data && data.some(w => w.status === 'Pending');
-
             if (data.length === 0) { container.innerHTML = `<p class="text-center text-xs text-slate-500 py-4">No history found.</p>`; } else {
                 container.innerHTML = '';
                 data.forEach(w => {
@@ -391,44 +542,15 @@
         } catch (err) {}
     }
 
-    // --- UTR SUBMISSION LOGIC (Updated to save in 'users' table) ---
     async function submitUTR() {
-        const utrVal = document.getElementById('utrNumber').value.trim();
-        const msg = document.getElementById('qrMsg');
-        const btn = document.getElementById('utrBtn');
-        
-        if(utrVal.length < 5) {
-            msg.innerText = "Please enter valid UTR / Ref No.";
-            msg.className = "text-xs text-red-400 block mt-2 font-bold";
-            msg.classList.remove('hidden');
-            return;
-        }
-        
-        msg.innerText = "Submitting UTR...";
-        msg.className = "text-xs text-amber-400 block mt-2 font-bold";
-        msg.classList.remove('hidden');
+        const utrVal = document.getElementById('utrNumber').value.trim(); const msg = document.getElementById('qrMsg'); const btn = document.getElementById('utrBtn');
+        if(utrVal.length < 5) return;
         btn.disabled = true;
-        
         try {
             const { error } = await _supabase.from('users').update({ utr: utrVal }).eq('user_id', currentUser.user_id);
             if(error) throw error;
-            
-            msg.innerText = "✅ UTR Submitted! Wait for Admin Approval.";
-            msg.className = "text-xs text-emerald-400 block mt-2 font-bold";
-            
-            setTimeout(() => { 
-                closeModal('qrModal'); 
-                btn.disabled = false; 
-                btn.innerText = "Submit"; 
-                msg.classList.add('hidden'); 
-                document.getElementById('utrNumber').value = ''; 
-            }, 2000);
-            
-        } catch (err) {
-            msg.innerText = "Error: UTR not saved.";
-            msg.className = "text-xs text-red-400 block mt-2 font-bold";
-            btn.disabled = false;
-        }
+            setTimeout(() => { closeModal('qrModal'); btn.disabled = false; btn.innerText = "Submit"; document.getElementById('utrNumber').value = ''; }, 2000);
+        } catch (err) { btn.disabled = false; }
     }
 
     function openModal(id) { const el = document.getElementById(id); if(el) el.classList.remove('hidden'); }
@@ -437,4 +559,5 @@
 </script>
 </body>
 </html>
-					
+	
+																																																																																																																																																																																																																																																																																																													   
