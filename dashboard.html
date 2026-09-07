@@ -688,11 +688,17 @@
             document.getElementById('earningAmount').innerText = `₹ ${totalEarning}`; 
             document.getElementById('remainingLimit').innerText = `₹ ${remainingLimitCalc}`;
             
-            await _supabase.from('users').update({ 
-                total_limit: maxLimit, 
-                total_earning: totalEarning, 
-                remaining_limit: remainingLimitCalc 
-            }).eq('user_id', currentUser.user_id);
+            let updateData = { 
+    total_limit: maxLimit, 
+    total_earning: totalEarning, 
+    remaining_limit: remainingLimitCalc 
+};
+// 1 થી 9 લેવલની ઇન્કમ ડેટાબેઝ માટે તૈયાર કરવાનો કોડ
+for(let i=0; i<9; i++) {
+    updateData[`level_${i+1}`] = activeCounts[i] * payoutRates[i];
+}
+// ડેટાબેઝમાં સેવ
+await _supabase.from('users').update(updateData).eq('user_id', currentUser.user_id);
             
             if(isActiveStatus && totalEarning >= 50000) { 
                 document.getElementById('activationDiv').classList.remove('hidden'); 
