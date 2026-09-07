@@ -3,176 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAHAN - EdTech Manager</title>
+    <title>MAHAN - Course Manager</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Poppins', sans-serif; background-color: #0f172a; color: #e2e8f0; }</style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #0f172a; color: #e2e8f0; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 10px; }
+        .tab-active { background-color: #4f46e5 !important; color: white !important; }
+    </style>
 </head>
-<body class="min-h-screen flex flex-col">
-</head>																						
-<body class="bg-[#0f172a] text-slate-200 min-h-screen p-4 pb-12">																						
-																						
-    <div class="max-w-md mx-auto space-y-5">																						
-        																						
-        <!-- Logo -->																						
-        <div class="flex flex-col items-center justify-center space-y-3 pt-3 pb-4">																						
-            <div class="relative flex items-center justify-center px-5 py-2.5 bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl shadow-lg border border-slate-700/50">																						
-                <span class="text-3xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-emerald-500 to-teal-600" style="font-family: 'Arial Black', sans-serif;">MAHAN EdTech Manager</span>																						
-                <div class="absolute -top-1.5 -right-1.5 w-3 h-3 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-full animate-pulse border-2 border-slate-900"></div>																						
-            </div>																						
-            <div class="flex flex-col items-center justify-center text-center space-y-1">																						
-                <div class="flex items-baseline space-x-1.5"><span class="text-lg font-black tracking-widest text-white uppercase leading-none">MAHAN EdTech Manager</span><span class="text-lg font-black tracking-widest text-blue-500 uppercase leading-none">Institute</span></div>																						
-                <h2 class="text-[9px] font-bold text-emerald-500 pt-1.5 uppercase tracking-[0.3em]"></h2>																						
-            </div>																						
-        </div>																						
-																						
-    <!-- LOGIN SCREEN -->
-    <div id="loginScreen" class="flex-1 flex items-center justify-center p-4 z-50 absolute inset-0 bg-[#0f172a]">
-        <div class="bg-[#1e293b] border border-indigo-500/50 p-8 rounded-2xl shadow-2xl w-full max-w-md text-center">
-            <i class="fa-solid fa-user-graduate text-5xl text-indigo-400 mb-4"></i>
-            <h2 class="text-2xl font-black text-white mb-2 tracking-wider">MAHAN EdTech</h2>
-            <p class="text-xs text-slate-400 mb-6 uppercase tracking-widest">Course Manager Panel</p>
-            <input type="text" id="eduId" placeholder="Admin ID" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-indigo-500">
-            <input type="password" id="eduPass" placeholder="Password" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-6 outline-none focus:border-indigo-500">
-            <button onclick="loginEdu()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition shadow-lg">Secure Login</button>
-            <p id="loginMsg" class="text-xs text-red-400 mt-4 hidden">Invalid ID or Password</p>
+<body class="flex flex-col md:flex-row h-screen overflow-hidden">
+
+    <!-- Mobile Header (Visible only on mobile) -->
+    <div class="md:hidden flex justify-between items-center bg-[#1e293b] p-4 border-b border-slate-700 z-50">
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-graduation-cap text-indigo-500 text-xl"></i>
+            <span class="font-bold text-white tracking-widest text-lg">MAHAN EdTech</span>
+        </div>
+        <button onclick="toggleSidebar()" class="text-slate-300 hover:text-white text-2xl focus:outline-none">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Sidebar -->
+    <div id="sidebar" class="hidden md:flex flex-col w-full md:w-72 bg-[#1e293b] h-full absolute md:relative z-40 border-r border-slate-700 transition-all duration-300">
+        <div class="hidden md:flex flex-col items-center justify-center py-6 border-b border-slate-700">
+            <i class="fa-solid fa-graduation-cap text-indigo-500 text-4xl mb-2"></i>
+            <h1 class="text-xl font-black text-white tracking-widest">MAHAN EdTech</h1>
+            <p class="text-[10px] text-emerald-400 font-bold uppercase tracking-[0.2em]">Content Manager</p>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-4 space-y-2">
+            <p class="text-[10px] text-slate-500 font-bold uppercase mb-2 pl-2">Management</p>
+            
+            <button onclick="switchTab('uploadTab', this)" class="sidebar-btn w-full text-left p-3 rounded-xl flex items-center gap-3 text-sm font-semibold text-slate-300 hover:bg-slate-700 transition tab-active">
+                <i class="fa-solid fa-upload w-5 text-center"></i> Upload Course
+            </button>
+            <button onclick="switchTab('manageTab', this)" class="sidebar-btn w-full text-left p-3 rounded-xl flex items-center gap-3 text-sm font-semibold text-slate-300 hover:bg-slate-700 transition">
+                <i class="fa-solid fa-list-check w-5 text-center"></i> Manage Chapters
+            </button>
+
+            <p class="text-[10px] text-slate-500 font-bold uppercase mt-6 mb-2 pl-2">Exam & Results</p>
+            
+            <button class="w-full text-left p-3 rounded-xl flex justify-between items-center text-sm font-semibold text-amber-500/50 bg-amber-500/5 cursor-not-allowed">
+                <div class="flex items-center gap-3"><i class="fa-solid fa-trophy w-5 text-center"></i> Leaderboard</div>
+                <i class="fa-solid fa-lock text-[10px]"></i>
+            </button>
+            <button class="w-full text-left p-3 rounded-xl flex justify-between items-center text-sm font-semibold text-emerald-500/50 bg-emerald-500/5 cursor-not-allowed mt-2">
+                <div class="flex items-center gap-3"><i class="fa-solid fa-gift w-5 text-center"></i> Top Rank Prizes</div>
+                <i class="fa-solid fa-lock text-[10px]"></i>
+            </button>
+        </div>
+
+        <div class="p-4 border-t border-slate-700 bg-[#0f172a]">
+            <button onclick="logoutAdmin()" class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 p-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition">
+                <i class="fa-solid fa-power-off"></i> Logout Admin
+            </button>
         </div>
     </div>
 
-    <!-- MAIN DASHBOARD (Hidden till login) -->
-    <div id="mainDashboard" class="hidden flex-1 flex flex-col h-screen overflow-hidden">
+    <!-- Main Content Area -->
+    <div class="flex-1 h-full overflow-y-auto p-4 md:p-8 relative w-full">
         
-        <!-- Header -->
-        <header class="bg-[#1e293b] border-b border-slate-700 p-4 flex justify-between items-center shadow-md">
-            <div class="flex items-center gap-3">
-                <i class="fa-solid fa-graduation-cap text-3xl text-indigo-400"></i>
-                <div>
-                    <h1 class="text-xl font-black text-white leading-none tracking-wide">MAHAN EdTech</h1>
-                    <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-widest">Content Management System</span>
-                </div>
-            </div>
-            <button onclick="logoutEdu()" class="bg-red-500/10 text-red-400 border border-red-500/30 px-4 py-2 rounded-lg text-sm font-bold hover:bg-red-500/20 transition"><i class="fa-solid fa-power-off"></i> Logout</button>
-        </header>
-
-        <!-- Main Content Area -->
-        <div class="flex-1 flex overflow-hidden">
-            
-            <!-- Sidebar -->
-            <div class="w-64 bg-[#1e293b] border-r border-slate-700 p-4 flex flex-col gap-2">
-                <button class="w-full text-left px-4 py-3 bg-indigo-600 text-white rounded-xl font-bold shadow-md"><i class="fa-solid fa-upload mr-2"></i> Upload Course</button>
-                <button class="w-full text-left px-4 py-3 text-slate-400 hover:bg-slate-800 rounded-xl font-semibold transition"><i class="fa-solid fa-list mr-2"></i> Manage Chapters</button>
-                <div class="mt-8 border-t border-slate-700 pt-4">
-                    <p class="text-[10px] text-slate-500 uppercase font-bold mb-2 ml-2">Exam & Results</p>
-                    <button class="w-full text-left px-4 py-3 text-amber-400 hover:bg-slate-800 rounded-xl font-semibold transition flex justify-between items-center"><span class="opacity-50"><i class="fa-solid fa-trophy mr-2"></i> Leaderboard</span> <i class="fa-solid fa-lock text-[10px]"></i></button>
-                    <button class="w-full text-left px-4 py-3 text-emerald-400 hover:bg-slate-800 rounded-xl font-semibold transition flex justify-between items-center"><span class="opacity-50"><i class="fa-solid fa-gift mr-2"></i> Top Rank Prizes</span> <i class="fa-solid fa-lock text-[10px]"></i></button>
+        <!-- SECTION 1: UPLOAD COURSE -->
+        <div id="uploadTab" class="admin-section space-y-6">
+            <div class="bg-[#1e293b] border border-slate-700 p-5 md:p-6 rounded-2xl shadow-xl">
+                <h2 class="text-lg md:text-xl font-bold text-white mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-cloud-arrow-up text-indigo-400"></i> Create New Chapter
+                </h2>
+                <div class="space-y-2">
+                    <label class="text-xs font-bold text-slate-400 uppercase">Chapter Title</label>
+                    <input type="text" id="chapTitle" placeholder="e.g. Chapter 1: Basic Grammar" class="w-full bg-[#0f172a] border border-slate-600 p-3.5 rounded-xl text-white outline-none focus:border-indigo-500 text-sm">
                 </div>
             </div>
 
-            <!-- Upload Form -->
-            <div class="flex-1 overflow-y-auto p-6 bg-[#0f172a]">
-                <div class="max-w-4xl mx-auto bg-[#1e293b] border border-slate-700 p-6 rounded-2xl shadow-xl">
-                    <h2 class="text-xl font-bold text-white mb-6 border-b border-slate-700 pb-3"><i class="fa-solid fa-cloud-arrow-up text-indigo-400 mr-2"></i> Create New Chapter</h2>
-                    
-                    <!-- Chapter Name -->
-                    <div class="mb-8">
-                        <label class="block text-sm font-bold text-slate-300 mb-2">Chapter Title</label>
-                        <input type="text" id="chapName" placeholder="e.g. Chapter 1: Welcome to Spoken English" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-white focus:border-indigo-500 outline-none">
-                    </div>
-
-                    <!-- Videos Section -->
-                    <div class="mb-8 bg-slate-800/50 p-5 rounded-xl border border-slate-700">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="font-bold text-white"><i class="fa-brands fa-youtube text-red-500 mr-2"></i> Videos</h3>
-                            <button onclick="addVideo()" class="bg-indigo-600 hover:bg-indigo-700 px-3 py-1.5 rounded-lg text-xs font-bold text-white"><i class="fa-solid fa-plus"></i> Add Video</button>
-                        </div>
-                        <div id="videoContainer" class="space-y-3"></div>
-                    </div>
-
-                    <!-- PDFs Section -->
-                    <div class="mb-8 bg-slate-800/50 p-5 rounded-xl border border-slate-700">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="font-bold text-white"><i class="fa-solid fa-file-pdf text-amber-500 mr-2"></i> Lesson PDFs (View Only)</h3>
-                            <button onclick="addPdf()" class="bg-amber-600 hover:bg-amber-700 px-3 py-1.5 rounded-lg text-xs font-bold text-white"><i class="fa-solid fa-plus"></i> Add PDF</button>
-                        </div>
-                        <div id="pdfContainer" class="space-y-3"></div>
-                    </div>
-
-                    <!-- Quiz Section -->
-                    <div class="mb-8 bg-slate-800/50 p-5 rounded-xl border border-slate-700">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="font-bold text-white"><i class="fa-solid fa-clipboard-question text-emerald-500 mr-2"></i> Chapter Quiz (Exam)</h3>
-                            <button onclick="addQuiz()" class="bg-emerald-600 hover:bg-emerald-700 px-3 py-1.5 rounded-lg text-xs font-bold text-white"><i class="fa-solid fa-plus"></i> Add Question</button>
-                        </div>
-                        <div id="quizContainer" class="space-y-5"></div>
-                    </div>
-
-                    <!-- Submit -->
-                    <div class="border-t border-slate-700 pt-5">
-                        <button id="saveBtn" onclick="saveCourseToDB()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black py-4 rounded-xl shadow-lg text-lg transition"><i class="fa-solid fa-upload mr-2"></i> Publish Chapter to Student Dashboard</button>
-                        <p id="saveMsg" class="text-center text-sm font-bold mt-3 hidden"></p>
-                    </div>
+            <!-- Videos Section -->
+            <div class="bg-[#1e293b] border border-slate-700 p-5 md:p-6 rounded-2xl shadow-xl">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-md font-bold text-white flex items-center gap-2"><i class="fa-brands fa-youtube text-red-500"></i> Videos</h3>
+                    <button onclick="addVideoRow()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2 px-4 rounded-lg transition">+ Add Video</button>
                 </div>
+                <div id="videoContainer" class="space-y-3"></div>
+            </div>
+
+            <!-- PDFs Section -->
+            <div class="bg-[#1e293b] border border-slate-700 p-5 md:p-6 rounded-2xl shadow-xl">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-md font-bold text-white flex items-center gap-2"><i class="fa-solid fa-file-pdf text-amber-500"></i> Lesson PDFs (View Only)</h3>
+                    <button onclick="addPdfRow()" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold py-2 px-4 rounded-lg transition">+ Add PDF</button>
+                </div>
+                <div id="pdfContainer" class="space-y-3"></div>
+            </div>
+
+            <!-- Quiz Section -->
+            <div class="bg-[#1e293b] border border-emerald-500/30 p-5 md:p-6 rounded-2xl shadow-xl">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-md font-bold text-white flex items-center gap-2"><i class="fa-solid fa-clipboard-list text-emerald-400"></i> Chapter Quiz (Exam)</h3>
+                    <button onclick="addQuizRow()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2 px-4 rounded-lg transition">+ Add Question</button>
+                </div>
+                <div id="quizContainer" class="space-y-4"></div>
+            </div>
+
+            <button onclick="publishChapter()" id="publishBtn" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black py-4 rounded-xl shadow-lg text-lg flex justify-center items-center gap-2 transition animate-pulse">
+                <i class="fa-solid fa-upload"></i> Publish Chapter to Student Dashboard
+            </button>
+            <p id="publishMsg" class="text-center font-bold mt-2 hidden"></p>
+        </div>
+
+        <!-- SECTION 2: MANAGE CHAPTERS -->
+        <div id="manageTab" class="admin-section hidden space-y-6">
+            <h2 class="text-lg md:text-xl font-bold text-white mb-4"><i class="fa-solid fa-list-check text-indigo-400 mr-2"></i> Published Chapters</h2>
+            <div id="manageList" class="space-y-3">
+                <p class="text-slate-400 text-sm">Loading chapters...</p>
             </div>
         </div>
+        
     </div>
 
 <script>
-    // Supabase Setup
     const SUPABASE_URL = "https://wzrbsvwmrymkpzwmgypb.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind6cmJzdndtcnlta3B6d21neXBiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3NDc1NzQsImV4cCI6MjEwMzMyMzU3NH0.5ulY5LW3AQEPFDP__iOSJssgNafTSe9Yu4gEqZF7sLc";
     const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // Dynamic Counters
     let vCount = 0; let pCount = 0; let qCount = 0;
 
-    // Login Logic
-    function loginEdu() {
-        const id = document.getElementById('eduId').value;
-        const pass = document.getElementById('eduPass').value;
-        if(id === "EDUADMIN" && pass === "MahanEdu") {
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('mainDashboard').classList.remove('hidden');
-            addVideo(); addPdf(); addQuiz(); // Load first empty fields
-        } else {
-            document.getElementById('loginMsg').classList.remove('hidden');
-        }
+    // Mobile Sidebar Toggle
+    function toggleSidebar() {
+        const sb = document.getElementById('sidebar');
+        sb.classList.toggle('hidden');
     }
-    function logoutEdu() { location.reload(); }
 
-    // Dynamic Fields Logic
-    function addVideo() {
+    // Tab Switching Logic
+    function switchTab(tabId, btnElement) {
+        document.querySelectorAll('.admin-section').forEach(el => el.classList.add('hidden'));
+        document.getElementById(tabId).classList.remove('hidden');
+        
+        document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('tab-active'));
+        if(btnElement) btnElement.classList.add('tab-active');
+
+        // Hide sidebar on mobile after clicking
+        if(window.innerWidth < 768) { document.getElementById('sidebar').classList.add('hidden'); }
+
+        if(tabId === 'manageTab') loadManageChapters();
+    }
+
+    // Dynamic Rows
+    function addVideoRow() {
         vCount++;
-        const div = document.createElement('div'); div.className = "flex gap-3 items-center"; div.id = `vRow${vCount}`;
-        div.innerHTML = `<input type="text" id="vTitle${vCount}" placeholder="Video Title (e.g. 1. Intro)" class="flex-1 bg-[#0f172a] border border-slate-600 rounded-lg p-2.5 text-xs text-white">
-                         <input type="text" id="vUrl${vCount}" placeholder="YouTube Embed URL" class="flex-[2] bg-[#0f172a] border border-slate-600 rounded-lg p-2.5 text-xs text-white">
-                         <button onclick="document.getElementById('vRow${vCount}').remove()" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button>`;
+        const div = document.createElement('div'); div.className = 'flex flex-col md:flex-row gap-2 items-center bg-[#0f172a] p-2 rounded-xl border border-slate-700';
+        div.innerHTML = `<input type="text" id="vTitle_${vCount}" placeholder="Video Title (e.g. 1. Intro)" class="w-full md:flex-1 bg-transparent text-sm text-white p-2 outline-none border-b md:border-b-0 md:border-r border-slate-600"><input type="text" id="vUrl_${vCount}" placeholder="YouTube Embed URL" class="w-full md:flex-1 bg-transparent text-sm text-white p-2 outline-none"><button onclick="this.parentElement.remove()" class="text-red-400 hover:text-red-300 p-2"><i class="fa-solid fa-trash"></i></button>`;
         document.getElementById('videoContainer').appendChild(div);
     }
 
-    function addPdf() {
+    function addPdfRow() {
         pCount++;
-        const div = document.createElement('div'); div.className = "flex gap-3 items-center"; div.id = `pRow${pCount}`;
-        div.innerHTML = `<input type="text" id="pTitle${pCount}" placeholder="PDF Title (e.g. Grammar Notes)" class="flex-1 bg-[#0f172a] border border-slate-600 rounded-lg p-2.5 text-xs text-white">
-                         <input type="text" id="pUrl${pCount}" placeholder="Google Drive (View Only) Link" class="flex-[2] bg-[#0f172a] border border-slate-600 rounded-lg p-2.5 text-xs text-white">
-                         <button onclick="document.getElementById('pRow${pCount}').remove()" class="text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i></button>`;
+        const div = document.createElement('div'); div.className = 'flex flex-col md:flex-row gap-2 items-center bg-[#0f172a] p-2 rounded-xl border border-slate-700';
+        div.innerHTML = `<input type="text" id="pTitle_${pCount}" placeholder="PDF Title (e.g. Grammar Notes)" class="w-full md:flex-1 bg-transparent text-sm text-white p-2 outline-none border-b md:border-b-0 md:border-r border-slate-600"><input type="text" id="pUrl_${pCount}" placeholder="Google Drive (View Only) Link" class="w-full md:flex-1 bg-transparent text-sm text-white p-2 outline-none"><button onclick="this.parentElement.remove()" class="text-red-400 hover:text-red-300 p-2"><i class="fa-solid fa-trash"></i></button>`;
         document.getElementById('pdfContainer').appendChild(div);
     }
 
-    function addQuiz() {
+    function addQuizRow() {
         qCount++;
-        const div = document.createElement('div'); div.className = "bg-[#0f172a] p-4 rounded-xl border border-slate-600 relative"; div.id = `qRow${qCount}`;
+        const div = document.createElement('div'); div.className = 'bg-[#0f172a] p-4 rounded-xl border border-slate-600 relative';
         div.innerHTML = `
-            <button onclick="document.getElementById('qRow${qCount}').remove()" class="absolute top-3 right-3 text-red-400"><i class="fa-solid fa-times"></i></button>
-            <input type="text" id="qText${qCount}" placeholder="Enter Question Here..." class="w-full bg-[#1e293b] border border-slate-500 rounded-lg p-2.5 text-sm text-white mb-3 font-bold">
-            <div class="grid grid-cols-2 gap-3 mb-3">
-                <input type="text" id="qOpt0_${qCount}" placeholder="Option A" class="w-full bg-[#1e293b] border border-slate-600 rounded-lg p-2 text-xs text-white">
-                <input type="text" id="qOpt1_${qCount}" placeholder="Option B" class="w-full bg-[#1e293b] border border-slate-600 rounded-lg p-2 text-xs text-white">
-                <input type="text" id="qOpt2_${qCount}" placeholder="Option C" class="w-full bg-[#1e293b] border border-slate-600 rounded-lg p-2 text-xs text-white">
-                <input type="text" id="qOpt3_${qCount}" placeholder="Option D" class="w-full bg-[#1e293b] border border-slate-600 rounded-lg p-2 text-xs text-white">
+            <button onclick="this.parentElement.remove()" class="absolute top-2 right-3 text-red-400 text-lg"><i class="fa-solid fa-xmark"></i></button>
+            <input type="text" id="qText_${qCount}" placeholder="Enter Question Here..." class="w-full bg-[#1e293b] border border-slate-500 rounded-lg p-3 text-sm text-white mb-3 outline-none">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                <input type="text" id="qOpt_${qCount}_0" placeholder="Option A" class="w-full bg-transparent border border-slate-600 p-2.5 rounded-lg text-sm text-white outline-none focus:border-emerald-500">
+                <input type="text" id="qOpt_${qCount}_1" placeholder="Option B" class="w-full bg-transparent border border-slate-600 p-2.5 rounded-lg text-sm text-white outline-none focus:border-emerald-500">
+                <input type="text" id="qOpt_${qCount}_2" placeholder="Option C" class="w-full bg-transparent border border-slate-600 p-2.5 rounded-lg text-sm text-white outline-none focus:border-emerald-500">
+                <input type="text" id="qOpt_${qCount}_3" placeholder="Option D" class="w-full bg-transparent border border-slate-600 p-2.5 rounded-lg text-sm text-white outline-none focus:border-emerald-500">
             </div>
-            <select id="qAns${qCount}" class="w-full bg-emerald-900/30 border border-emerald-500 rounded-lg p-2 text-xs text-emerald-300 font-bold outline-none">
+            <select id="qAns_${qCount}" class="w-full bg-emerald-900/30 border border-emerald-600 p-2.5 rounded-lg text-sm text-emerald-300 outline-none font-bold">
                 <option value="0">Correct Answer is: Option A</option>
                 <option value="1">Correct Answer is: Option B</option>
                 <option value="2">Correct Answer is: Option C</option>
@@ -181,65 +187,86 @@
         document.getElementById('quizContainer').appendChild(div);
     }
 
-    // Save Data to Supabase
-    async function saveCourseToDB() {
-        const cName = document.getElementById('chapName').value.trim();
-        const msg = document.getElementById('saveMsg');
-        const btn = document.getElementById('saveBtn');
+    // Initialize with 1 empty row each
+    window.onload = () => { addVideoRow(); addPdfRow(); addQuizRow(); };
 
-        if(!cName) { alert("Please enter Chapter Title!"); return; }
-
-        btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Uploading...';
+    // Publish Logic
+    async function publishChapter() {
+        const title = document.getElementById('chapTitle').value.trim();
+        const btn = document.getElementById('publishBtn'); const msg = document.getElementById('publishMsg');
+        if(!title) { alert("Please enter a Chapter Title"); return; }
         
-        // Collect Videos
+        btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Uploading...';
+        
         let videos = [];
         for(let i=1; i<=vCount; i++) {
-            let t = document.getElementById(`vTitle${i}`); let u = document.getElementById(`vUrl${i}`);
-            if(t && u && t.value && u.value) videos.push({ title: t.value, url: u.value });
+            let t = document.getElementById(`vTitle_${i}`); let u = document.getElementById(`vUrl_${i}`);
+            if(t && u && t.value && u.value) videos.push({title: t.value, url: u.value});
         }
-
-        // Collect PDFs
         let pdfs = [];
         for(let i=1; i<=pCount; i++) {
-            let t = document.getElementById(`pTitle${i}`); let u = document.getElementById(`pUrl${i}`);
-            if(t && u && t.value && u.value) pdfs.push({ title: t.value, url: u.value });
+            let t = document.getElementById(`pTitle_${i}`); let u = document.getElementById(`pUrl_${i}`);
+            if(t && u && t.value && u.value) pdfs.push({title: t.value, url: u.value});
         }
-
-        // Collect Quiz
         let quiz = [];
         for(let i=1; i<=qCount; i++) {
-            let q = document.getElementById(`qText${i}`);
-            if(q && q.value) {
-                let o0 = document.getElementById(`qOpt0_${i}`).value; let o1 = document.getElementById(`qOpt1_${i}`).value;
-                let o2 = document.getElementById(`qOpt2_${i}`).value; let o3 = document.getElementById(`qOpt3_${i}`).value;
-                let ans = parseInt(document.getElementById(`qAns${i}`).value);
-                if(o0 && o1) quiz.push({ q: q.value, options: [o0, o1, o2, o3], answer: ans });
+            let qt = document.getElementById(`qText_${i}`);
+            if(qt && qt.value) {
+                let opts = [
+                    document.getElementById(`qOpt_${i}_0`).value,
+                    document.getElementById(`qOpt_${i}_1`).value,
+                    document.getElementById(`qOpt_${i}_2`).value,
+                    document.getElementById(`qOpt_${i}_3`).value
+                ];
+                let ans = parseInt(document.getElementById(`qAns_${i}`).value);
+                if(opts[0] && opts[1]) quiz.push({q: qt.value, options: opts, answer: ans});
             }
         }
 
         try {
-            const { error } = await _supabase.from('courses').insert([{ 
-                chapter_name: cName, 
-                videos: videos, 
-                pdfs: pdfs, 
-                quiz: quiz 
-            }]);
-
+            const { error } = await _supabase.from('courses').insert([{ chapter_name: title, videos: videos, pdfs: pdfs, quiz: quiz }]);
             if(error) throw error;
-            
-            msg.innerText = "✅ Chapter Uploaded Successfully!";
-            msg.className = "text-center text-sm font-bold mt-3 text-emerald-400 block";
-            
-            setTimeout(() => {
-                location.reload(); // Refresh form for next chapter
-            }, 2000);
-
-        } catch (err) {
-            msg.innerText = "❌ Error: " + err.message;
-            msg.className = "text-center text-sm font-bold mt-3 text-red-400 block";
-            btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-upload mr-2"></i> Try Again';
+            msg.innerText = "Chapter Published Successfully!"; msg.className = "text-center font-bold mt-3 text-emerald-400 block";
+            setTimeout(() => { location.reload(); }, 2000);
+        } catch(err) {
+            btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-upload"></i> Publish Chapter to Student Dashboard';
+            alert("Error: " + err.message);
         }
     }
+
+    // Manage Chapters Logic
+    async function loadManageChapters() {
+        const list = document.getElementById('manageList');
+        list.innerHTML = '<p class="text-slate-400 text-sm">Loading...</p>';
+        try {
+            const { data, error } = await _supabase.from('courses').select('id, chapter_name').order('id', {ascending: true});
+            if(error) throw error;
+            if(data.length === 0) { list.innerHTML = '<p class="text-slate-400 text-sm">No chapters found.</p>'; return; }
+            list.innerHTML = '';
+            data.forEach(ch => {
+                list.innerHTML += `
+                <div class="flex justify-between items-center bg-[#0f172a] p-4 rounded-xl border border-slate-700">
+                    <div>
+                        <p class="font-bold text-white text-sm">${ch.chapter_name}</p>
+                        <p class="text-[10px] text-slate-500">ID: ${ch.id}</p>
+                    </div>
+                    <button onclick="deleteChapter(${ch.id})" class="bg-red-500/10 hover:bg-red-500/30 text-red-400 p-2 rounded-lg border border-red-500/20 transition">
+                        <i class="fa-solid fa-trash"></i> Delete
+                    </button>
+                </div>`;
+            });
+        } catch(err) { list.innerHTML = '<p class="text-red-400 text-sm">Failed to load.</p>'; }
+    }
+
+    async function deleteChapter(id) {
+        if(!confirm("Are you sure you want to delete this chapter? This cannot be undone.")) return;
+        try {
+            await _supabase.from('courses').delete().eq('id', id);
+            loadManageChapters();
+        } catch(err) { alert("Error deleting chapter."); }
+    }
+
+    function logoutAdmin() { window.location.href = "login.html"; }
 </script>
 </body>
-  </html>
+</html>
