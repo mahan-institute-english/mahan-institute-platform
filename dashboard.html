@@ -418,9 +418,17 @@
     }
     
     function playCourseVideo(url, title) { 
-        document.getElementById('coursePlayer').src = url; 
-        document.getElementById('currentChapterTitle').innerText = title; 
+    let finalUrl = url;
+    if (url.includes('youtube.com/watch?v=')) {
+        finalUrl = 'https://www.youtube.com/embed/' + url.split('v=')[1].split('&')[0];
+    } else if (url.includes('youtu.be/')) {
+        finalUrl = 'https://www.youtube.com/embed/' + url.split('youtu.be/')[1].split('?')[0];
+    } else if (url.includes('youtube.com/shorts/')) {
+        finalUrl = 'https://www.youtube.com/embed/' + url.split('shorts/')[1].split('?')[0];
     }
+    document.getElementById('coursePlayer').src = finalUrl; 
+    document.getElementById('currentChapterTitle').innerText = title; 
+	}
     
     function closeCourseModal() { 
         document.getElementById('coursePlayer').src = ''; 
