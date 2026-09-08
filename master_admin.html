@@ -262,7 +262,7 @@
 
     function renderDashboard() {
         let activeUsers = allUsersData.filter(u => u.status?.toLowerCase() === 'active').length; let inactiveUsers = allUsersData.length - activeUsers;
-        let totalRev = activeUsers * 1000; let paidOut = 0; let pendingAmt = 0;
+        let totalRev = activeUsers * 5000; let paidOut = 0; let pendingAmt = 0;
         allWithdrawals.forEach(w => { if(w.status === 'Paid') paidOut += parseFloat(w.amount); if(w.status === 'Pending') pendingAmt += parseFloat(w.amount); });
         document.getElementById('statRev').innerText = `₹${totalRev.toLocaleString('en-IN')}`; document.getElementById('statPaid').innerText = `₹${paidOut.toLocaleString('en-IN')}`; document.getElementById('statPending').innerText = `₹${pendingAmt.toLocaleString('en-IN')}`; document.getElementById('statProfit').innerText = `₹${(totalRev - paidOut).toLocaleString('en-IN')}`;
         const ctx1 = document.getElementById('cashChart').getContext('2d'); if(myChart1) myChart1.destroy(); myChart1 = new Chart(ctx1, { type: 'bar', data: { labels: ['Revenue', 'Payouts', 'Profit'], datasets: [{ data: [totalRev, paidOut, (totalRev - paidOut)], backgroundColor: ['#10b981', '#3b82f6', '#f59e0b'] }] }, options: { plugins: { legend: { display: false } } } });
