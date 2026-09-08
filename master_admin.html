@@ -19,22 +19,18 @@
 </head>
 <body class="flex flex-col md:flex-row h-screen overflow-hidden">
 
-    <!-- SECURITY LOGIN OVERLAY (Connected to Database) -->
+    <!-- SECURITY LOGIN OVERLAY -->
     <div id="adminLoginOverlay" class="fixed inset-0 bg-[#0f172a] z-[100] flex items-center justify-center p-4">
         <div class="bg-[#1e293b] border border-amber-500/50 p-8 rounded-2xl shadow-2xl max-w-sm w-full text-center relative overflow-hidden">
             <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl"></div>
-            
             <img id="loginLogo" src="" alt="MAHAN Logo" class="w-24 h-24 mx-auto object-contain mb-2 drop-shadow-lg hidden relative z-10">
             <i id="loginIcon" class="fa-solid fa-shield-halved text-amber-500 text-5xl mb-4 drop-shadow-lg relative z-10"></i>
-            
             <h2 class="text-2xl font-black text-white tracking-widest mb-1 relative z-10">MAHAN SECURE</h2>
             <p class="text-[10px] text-amber-400 mb-6 uppercase tracking-[0.2em] font-bold relative z-10">Founder Login Area</p>
-            
             <div class="relative z-10">
                 <input type="text" id="masterId" placeholder="Admin ID (Mobile Number)" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-amber-500 font-mono text-center tracking-wider">
                 <input type="password" id="masterPass" placeholder="Secure Password" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-amber-500 font-mono text-center tracking-wider">
                 <p id="loginError" class="text-xs text-red-400 mb-4 hidden font-bold animate-pulse">Invalid ID or Password!</p>
-                
                 <button onclick="checkMasterLogin()" id="loginBtn" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition text-sm flex items-center justify-center gap-2">
                     Verify & Login <i class="fa-solid fa-arrow-right-to-bracket"></i>
                 </button>
@@ -49,9 +45,7 @@
             <i id="mobileIcon" class="fa-solid fa-crown text-amber-500 text-xl"></i>
             <span class="font-black text-white tracking-widest text-lg">MAHAN Founder</span>
         </div>
-        <button onclick="toggleSidebar()" class="text-slate-300 hover:text-white text-2xl">
-            <i class="fa-solid fa-bars"></i>
-        </button>
+        <button onclick="toggleSidebar()" class="text-slate-300 hover:text-white text-2xl"><i class="fa-solid fa-bars"></i></button>
     </div>
 
     <!-- Sidebar -->
@@ -64,31 +58,14 @@
         </div>
 
         <div class="flex-1 overflow-y-auto p-4 space-y-2">
-            <button onclick="switchTab('dashboardTab', this)" class="sidebar-btn w-full text-left p-3 rounded-xl flex items-center gap-3 text-sm text-slate-400 hover:bg-[#1e293b] hover:text-white transition tab-active">
-                <i class="fa-solid fa-chart-line w-5 text-center text-blue-400"></i> Financial Dashboard
-            </button>
-            <button onclick="switchTab('activationTab', this)" class="sidebar-btn w-full text-left p-3 rounded-xl flex items-center gap-3 text-sm text-slate-400 hover:bg-[#1e293b] hover:text-white transition relative">
-                <i class="fa-solid fa-user-check w-5 text-center text-amber-400"></i> User Activations
-                <span id="badgeAct" class="absolute right-3 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full hidden">0</span>
-            </button>
-            <button onclick="switchTab('payoutTab', this)" class="sidebar-btn w-full text-left p-3 rounded-xl flex items-center gap-3 text-sm text-slate-400 hover:bg-[#1e293b] hover:text-white transition relative">
-                <i class="fa-solid fa-money-bill-transfer w-5 text-center text-emerald-400"></i> Payout Approvals
-                <span id="badgePay" class="absolute right-3 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full hidden">0</span>
-            </button>
-            <button onclick="switchTab('usersTab', this)" class="sidebar-btn w-full text-left p-3 rounded-xl flex items-center gap-3 text-sm text-slate-400 hover:bg-[#1e293b] hover:text-white transition">
-                <i class="fa-solid fa-users-gear w-5 text-center text-purple-400"></i> All Users Database
-            </button>
+            <button onclick="switchTab('dashboardTab', this)" class="sidebar-btn w-full text-left p-3 rounded-xl flex items-center gap-3 text-sm text-slate-400 hover:bg-[#1e293b] hover:text-white transition tab-active"><i class="fa-solid fa-chart-line w-5 text-center text-blue-400"></i> Financial Dashboard</button>
+            <button onclick="switchTab('activationTab', this)" class="sidebar-btn w-full text-left p-3 rounded-xl flex items-center gap-3 text-sm text-slate-400 hover:bg-[#1e293b] hover:text-white transition relative"><i class="fa-solid fa-user-check w-5 text-center text-amber-400"></i> User Activations <span id="badgeAct" class="absolute right-3 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full hidden">0</span></button>
+            <button onclick="switchTab('payoutTab', this)" class="sidebar-btn w-full text-left p-3 rounded-xl flex items-center gap-3 text-sm text-slate-400 hover:bg-[#1e293b] hover:text-white transition relative"><i class="fa-solid fa-money-bill-transfer w-5 text-center text-emerald-400"></i> Payout Approvals <span id="badgePay" class="absolute right-3 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full hidden">0</span></button>
+            <button onclick="switchTab('usersTab', this)" class="sidebar-btn w-full text-left p-3 rounded-xl flex items-center gap-3 text-sm text-slate-400 hover:bg-[#1e293b] hover:text-white transition"><i class="fa-solid fa-users-gear w-5 text-center text-purple-400"></i> All Users Database</button>
             <p class="text-[10px] text-slate-500 font-bold uppercase mt-6 mb-2 pl-2">System Controls</p>
-            <button onclick="switchTab('settingsTab', this)" class="sidebar-btn w-full text-left p-3 rounded-xl flex items-center gap-3 text-sm text-slate-400 hover:bg-[#1e293b] hover:text-white transition">
-                <i class="fa-solid fa-shield-halved w-5 text-center text-red-400"></i> Security & Logo
-            </button>
+            <button onclick="switchTab('settingsTab', this)" class="sidebar-btn w-full text-left p-3 rounded-xl flex items-center gap-3 text-sm text-slate-400 hover:bg-[#1e293b] hover:text-white transition"><i class="fa-solid fa-shield-halved w-5 text-center text-red-400"></i> Security & Logo</button>
         </div>
-
-        <div class="p-4 border-t border-slate-700 bg-[#0f172a]">
-            <button onclick="logoutMaster()" class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 p-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition">
-                <i class="fa-solid fa-lock"></i> Lock Panel
-            </button>
-        </div>
+        <div class="p-4 border-t border-slate-700 bg-[#0f172a]"><button onclick="logoutMaster()" class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 p-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition"><i class="fa-solid fa-lock"></i> Lock Panel</button></div>
     </div>
 
     <!-- Main Content Area -->
@@ -96,84 +73,34 @@
         
         <!-- SECTION 1: FINANCIAL DASHBOARD -->
         <div id="dashboardTab" class="admin-section space-y-6">
-            <h2 class="text-2xl font-black text-white mb-6 flex items-center gap-2 border-b border-slate-700 pb-3">
-                <i class="fa-solid fa-chart-line text-blue-400"></i> Live Financial Analytics
-            </h2>
-            
+            <h2 class="text-2xl font-black text-white mb-6 flex items-center gap-2 border-b border-slate-700 pb-3"><i class="fa-solid fa-chart-line text-blue-400"></i> Live Financial Analytics</h2>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="bg-[#0f172a] p-5 rounded-2xl border border-slate-700 shadow-lg relative overflow-hidden">
-                    <div class="absolute -right-4 -bottom-4 text-emerald-500/10 text-6xl"><i class="fa-solid fa-sack-dollar"></i></div>
-                    <p class="text-[10px] md:text-xs text-slate-400 font-bold uppercase tracking-wider">Total Revenue</p>
-                    <p id="statRev" class="text-2xl md:text-3xl font-black text-emerald-400 mt-1">₹0</p>
-                </div>
-                <div class="bg-[#0f172a] p-5 rounded-2xl border border-slate-700 shadow-lg relative overflow-hidden">
-                    <div class="absolute -right-4 -bottom-4 text-blue-500/10 text-6xl"><i class="fa-solid fa-money-bill-wave"></i></div>
-                    <p class="text-[10px] md:text-xs text-slate-400 font-bold uppercase tracking-wider">Total Payouts</p>
-                    <p id="statPaid" class="text-2xl md:text-3xl font-black text-blue-400 mt-1">₹0</p>
-                </div>
-                <div class="bg-[#0f172a] p-5 rounded-2xl border border-slate-700 shadow-lg relative overflow-hidden">
-                    <div class="absolute -right-4 -bottom-4 text-amber-500/10 text-6xl"><i class="fa-solid fa-clock-rotate-left"></i></div>
-                    <p class="text-[10px] md:text-xs text-slate-400 font-bold uppercase tracking-wider">Pending Liability</p>
-                    <p id="statPending" class="text-2xl md:text-3xl font-black text-amber-400 mt-1">₹0</p>
-                </div>
-                <div class="bg-gradient-to-br from-[#0f172a] to-emerald-900/20 p-5 rounded-2xl border border-emerald-500/50 shadow-lg relative overflow-hidden">
-                    <div class="absolute -right-4 -bottom-4 text-emerald-500/20 text-6xl"><i class="fa-solid fa-vault"></i></div>
-                    <p class="text-[10px] md:text-xs text-emerald-400 font-bold uppercase tracking-wider">Company Profit</p>
-                    <p id="statProfit" class="text-2xl md:text-3xl font-black text-white mt-1">₹0</p>
-                </div>
+                <div class="bg-[#0f172a] p-5 rounded-2xl border border-slate-700 shadow-lg relative overflow-hidden"><div class="absolute -right-4 -bottom-4 text-emerald-500/10 text-6xl"><i class="fa-solid fa-sack-dollar"></i></div><p class="text-[10px] md:text-xs text-slate-400 font-bold uppercase tracking-wider">Total Revenue</p><p id="statRev" class="text-2xl md:text-3xl font-black text-emerald-400 mt-1">₹0</p></div>
+                <div class="bg-[#0f172a] p-5 rounded-2xl border border-slate-700 shadow-lg relative overflow-hidden"><div class="absolute -right-4 -bottom-4 text-blue-500/10 text-6xl"><i class="fa-solid fa-money-bill-wave"></i></div><p class="text-[10px] md:text-xs text-slate-400 font-bold uppercase tracking-wider">Total Payouts</p><p id="statPaid" class="text-2xl md:text-3xl font-black text-blue-400 mt-1">₹0</p></div>
+                <div class="bg-[#0f172a] p-5 rounded-2xl border border-slate-700 shadow-lg relative overflow-hidden"><div class="absolute -right-4 -bottom-4 text-amber-500/10 text-6xl"><i class="fa-solid fa-clock-rotate-left"></i></div><p class="text-[10px] md:text-xs text-slate-400 font-bold uppercase tracking-wider">Pending Liability</p><p id="statPending" class="text-2xl md:text-3xl font-black text-amber-400 mt-1">₹0</p></div>
+                <div class="bg-gradient-to-br from-[#0f172a] to-emerald-900/20 p-5 rounded-2xl border border-emerald-500/50 shadow-lg relative overflow-hidden"><div class="absolute -right-4 -bottom-4 text-emerald-500/20 text-6xl"><i class="fa-solid fa-vault"></i></div><p class="text-[10px] md:text-xs text-emerald-400 font-bold uppercase tracking-wider">Company Profit</p><p id="statProfit" class="text-2xl md:text-3xl font-black text-white mt-1">₹0</p></div>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                <div class="bg-[#0f172a] p-5 rounded-2xl border border-slate-700 shadow-lg">
-                    <h3 class="text-sm font-bold text-white mb-4">Cash Flow Overview</h3>
-                    <canvas id="cashChart" height="200"></canvas>
-                </div>
-                <div class="bg-[#0f172a] p-5 rounded-2xl border border-slate-700 shadow-lg">
-                    <h3 class="text-sm font-bold text-white mb-4">Network Growth (Active vs Inactive)</h3>
-                    <canvas id="userChart" height="200"></canvas>
-                </div>
+                <div class="bg-[#0f172a] p-5 rounded-2xl border border-slate-700 shadow-lg"><h3 class="text-sm font-bold text-white mb-4">Cash Flow Overview</h3><canvas id="cashChart" height="200"></canvas></div>
+                <div class="bg-[#0f172a] p-5 rounded-2xl border border-slate-700 shadow-lg"><h3 class="text-sm font-bold text-white mb-4">Network Growth (Active vs Inactive)</h3><canvas id="userChart" height="200"></canvas></div>
             </div>
         </div>
 
         <!-- SECTION 2: USER ACTIVATIONS -->
         <div id="activationTab" class="admin-section hidden space-y-6">
-            <h2 class="text-2xl font-black text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3">
-                <i class="fa-solid fa-user-check text-amber-400"></i> UTR Verification
-            </h2>
-            <div class="bg-[#0f172a] border border-slate-700 rounded-2xl overflow-hidden shadow-xl">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm whitespace-nowrap">
-                        <thead class="bg-[#1e293b] text-slate-400 uppercase text-[10px] font-bold tracking-wider">
-                            <tr><th class="p-4">User Details</th><th class="p-4">Sponsor ID</th><th class="p-4 text-amber-400">UTR Number</th><th class="p-4 text-center">Date</th><th class="p-4 text-right">Action</th></tr>
-                        </thead>
-                        <tbody id="activationBody" class="divide-y divide-slate-800"></tbody>
-                    </table>
-                </div>
-            </div>
+            <h2 class="text-2xl font-black text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3"><i class="fa-solid fa-user-check text-amber-400"></i> UTR Verification</h2>
+            <div class="bg-[#0f172a] border border-slate-700 rounded-2xl overflow-hidden shadow-xl"><div class="overflow-x-auto"><table class="w-full text-left text-sm whitespace-nowrap"><thead class="bg-[#1e293b] text-slate-400 uppercase text-[10px] font-bold tracking-wider"><tr><th class="p-4">User Details</th><th class="p-4">Sponsor ID</th><th class="p-4 text-amber-400">UTR Number</th><th class="p-4 text-center">Date</th><th class="p-4 text-right">Action</th></tr></thead><tbody id="activationBody" class="divide-y divide-slate-800"></tbody></table></div></div>
         </div>
 
         <!-- SECTION 3: PAYOUT APPROVALS -->
         <div id="payoutTab" class="admin-section hidden space-y-6">
-            <h2 class="text-2xl font-black text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3">
-                <i class="fa-solid fa-money-bill-transfer text-emerald-400"></i> Withdrawal Requests
-            </h2>
-            <div class="bg-[#0f172a] border border-slate-700 rounded-2xl overflow-hidden shadow-xl">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm whitespace-nowrap">
-                        <thead class="bg-[#1e293b] text-slate-400 uppercase text-[10px] font-bold tracking-wider">
-                            <tr><th class="p-4">User Details</th><th class="p-4 text-center">Amount</th><th class="p-4">Bank A/C & IFSC</th><th class="p-4 text-center">Date</th><th class="p-4 text-right">Action</th></tr>
-                        </thead>
-                        <tbody id="payoutBody" class="divide-y divide-slate-800"></tbody>
-                    </table>
-                </div>
-            </div>
+            <h2 class="text-2xl font-black text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3"><i class="fa-solid fa-money-bill-transfer text-emerald-400"></i> Withdrawal Requests</h2>
+            <div class="bg-[#0f172a] border border-slate-700 rounded-2xl overflow-hidden shadow-xl"><div class="overflow-x-auto"><table class="w-full text-left text-sm whitespace-nowrap"><thead class="bg-[#1e293b] text-slate-400 uppercase text-[10px] font-bold tracking-wider"><tr><th class="p-4">User Details</th><th class="p-4 text-center">Amount</th><th class="p-4">Bank A/C & IFSC</th><th class="p-4 text-center">Date</th><th class="p-4 text-right">Action</th></tr></thead><tbody id="payoutBody" class="divide-y divide-slate-800"></tbody></table></div></div>
         </div>
 
-        <!-- SECTION 4: ALL USERS DATABASE -->
+        <!-- SECTION 4: ALL USERS DATABASE (UPDATED WITH 360 VIEW) -->
         <div id="usersTab" class="admin-section hidden space-y-6">
-            <h2 class="text-2xl font-black text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3">
-                <i class="fa-solid fa-users-gear text-purple-400"></i> All Users Database
-            </h2>
+            <h2 class="text-2xl font-black text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3"><i class="fa-solid fa-users-gear text-purple-400"></i> All Users Database</h2>
             <div class="bg-[#0f172a] border border-slate-700 rounded-2xl overflow-hidden shadow-xl">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm whitespace-nowrap">
@@ -186,34 +113,68 @@
             </div>
         </div>
 
-        <!-- SECTION 5: SECURITY & LOGO SETTINGS -->
+        <!-- SECTION 5: SECURITY -->
         <div id="settingsTab" class="admin-section hidden space-y-6">
-            <h2 class="text-2xl font-black text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3">
-                <i class="fa-solid fa-shield-halved text-red-400"></i> System Security & Branding
-            </h2>
-            
+            <h2 class="text-2xl font-black text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3"><i class="fa-solid fa-shield-halved text-red-400"></i> System Security & Branding</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Branding -->
-                <div class="bg-[#0f172a] border border-slate-700 p-6 rounded-2xl shadow-xl">
-                    <h3 class="text-lg font-bold text-white mb-4"><i class="fa-regular fa-image text-blue-400 mr-2"></i> Update Company Logo</h3>
-                    <p class="text-xs text-slate-400 mb-4">Paste image URL (from Google Drive, Imgur, etc.) to set it as the global logo.</p>
-                    <input type="text" id="logoUrlInput" placeholder="https://example.com/logo.png" class="w-full bg-[#1e293b] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-blue-500">
-                    <button onclick="updateSettings('logo')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-lg transition text-sm">Save Logo</button>
-                    <p id="msgLogo" class="text-xs mt-2 font-bold hidden"></p>
-                </div>
-
-                <!-- Credentials -->
-                <div class="bg-[#0f172a] border border-red-500/30 p-6 rounded-2xl shadow-xl">
-                    <h3 class="text-lg font-bold text-white mb-4"><i class="fa-solid fa-lock text-red-400 mr-2"></i> Update Admin Credentials</h3>
-                    <p class="text-xs text-slate-400 mb-4">Change your Master Admin ID and Password for security.</p>
-                    <input type="text" id="newAdminId" placeholder="New Admin ID (Mobile)" class="w-full bg-[#1e293b] border border-slate-600 rounded-xl p-3 text-sm text-white mb-3 outline-none focus:border-red-500">
-                    <input type="text" id="newAdminPass" placeholder="New Admin Password" class="w-full bg-[#1e293b] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-red-500">
-                    <button onclick="updateSettings('credentials')" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl shadow-lg transition text-sm">Update Security Credentials</button>
-                    <p id="msgCred" class="text-xs mt-2 font-bold hidden"></p>
-                </div>
+                <div class="bg-[#0f172a] border border-slate-700 p-6 rounded-2xl shadow-xl"><h3 class="text-lg font-bold text-white mb-4"><i class="fa-regular fa-image text-blue-400 mr-2"></i> Update Company Logo</h3><input type="text" id="logoUrlInput" placeholder="Logo Image URL" class="w-full bg-[#1e293b] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-blue-500"><button onclick="updateSettings('logo')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-lg transition text-sm">Save Logo</button><p id="msgLogo" class="text-xs mt-2 font-bold hidden"></p></div>
+                <div class="bg-[#0f172a] border border-red-500/30 p-6 rounded-2xl shadow-xl"><h3 class="text-lg font-bold text-white mb-4"><i class="fa-solid fa-lock text-red-400 mr-2"></i> Update Credentials</h3><input type="text" id="newAdminId" placeholder="New Admin ID" class="w-full bg-[#1e293b] border border-slate-600 rounded-xl p-3 text-sm text-white mb-3 outline-none focus:border-red-500"><input type="text" id="newAdminPass" placeholder="New Admin Password" class="w-full bg-[#1e293b] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-red-500"><button onclick="updateSettings('credentials')" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl shadow-lg transition text-sm">Update Security</button><p id="msgCred" class="text-xs mt-2 font-bold hidden"></p></div>
             </div>
         </div>
+    </div>
 
+    <!-- USER 360° PROFILE MODAL (THE MASTERMIND FEATURE) -->
+    <div id="userProfileModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-[150] p-4">
+        <div class="bg-[#1e293b] border border-blue-500/50 p-5 rounded-2xl w-[95%] max-w-2xl max-h-[90vh] shadow-2xl relative flex flex-col">
+            <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-3">
+                <h3 class="text-lg font-black text-white"><i class="fa-solid fa-user-astronaut text-blue-400 mr-2"></i> Student 360° Profile</h3>
+                <button onclick="document.getElementById('userProfileModal').classList.add('hidden')" class="text-slate-400 hover:text-white text-2xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto pr-2 space-y-4">
+                <h4 id="modalUserName" class="text-xl font-bold text-amber-400 text-center mb-2">Student Name</h4>
+                
+                <!-- Stats Row -->
+                <div class="grid grid-cols-3 gap-3 text-center">
+                    <div class="bg-[#0f172a] p-3 rounded-xl border border-slate-700">
+                        <p class="text-[10px] text-slate-400 uppercase">Total Earned</p>
+                        <p id="modalTotalEarned" class="text-lg font-bold text-emerald-400">₹0</p>
+                    </div>
+                    <div class="bg-[#0f172a] p-3 rounded-xl border border-slate-700">
+                        <p class="text-[10px] text-slate-400 uppercase">Total Withdrawn</p>
+                        <p id="modalTotalWithdrawn" class="text-lg font-bold text-blue-400">₹0</p>
+                    </div>
+                    <div class="bg-[#0f172a] p-3 rounded-xl border border-slate-700">
+                        <p class="text-[10px] text-slate-400 uppercase">Current Balance</p>
+                        <p id="modalBalance" class="text-lg font-bold text-amber-400">₹0</p>
+                    </div>
+                </div>
+
+                <!-- Level Network Table -->
+                <div class="bg-[#0f172a] border border-slate-700 rounded-xl overflow-hidden mt-4">
+                    <h5 class="bg-[#1e293b] p-2 text-xs font-bold text-white text-center border-b border-slate-700"><i class="fa-solid fa-sitemap text-emerald-400 mr-1"></i> Level-Wise Network & Income</h5>
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-800 text-slate-400">
+                            <tr><th class="p-2 pl-4">Level</th><th class="p-2 text-center">Total Team</th><th class="p-2 text-center">Active Users</th><th class="p-2 text-right pr-4">Level Income</th></tr>
+                        </thead>
+                        <tbody id="modalLevelBody" class="text-slate-300 divide-y divide-slate-800"></tbody>
+                    </table>
+                </div>
+
+                <!-- Withdrawal History -->
+                <div class="bg-[#0f172a] border border-slate-700 rounded-xl overflow-hidden mt-4">
+                    <h5 class="bg-[#1e293b] p-2 text-xs font-bold text-white text-center border-b border-slate-700"><i class="fa-solid fa-money-bill-transfer text-blue-400 mr-1"></i> Withdrawal History</h5>
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-800 text-slate-400">
+                            <tr><th class="p-2 pl-4">Date & Time</th><th class="p-2 text-center">Amount</th><th class="p-2 text-right pr-4">Status</th></tr>
+                        </thead>
+                        <tbody id="modalWithdrawBody" class="text-slate-300 divide-y divide-slate-800"></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <button onclick="document.getElementById('userProfileModal').classList.add('hidden')" class="w-full mt-4 bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-xl transition text-sm">Close Profile</button>
+        </div>
     </div>
 
 <script>
@@ -223,9 +184,9 @@
 
     let myChart1 = null; let myChart2 = null;
     let allUsersData = []; let allWithdrawals = [];
-    let systemSettings = null;
+    const payoutRates = [1000, 500, 250, 250, 250, 125, 125, 125, 125]; // Level 1 to 9 payout
 
-    // --- INIT & LOGO LOAD ---
+    // --- SECURITY & INIT ---
     window.onload = async () => { 
         await fetchSettings();
         if(sessionStorage.getItem('mahan_founder_logged') === 'true') {
@@ -238,21 +199,11 @@
         try {
             const { data } = await _supabase.from('settings').select('*').limit(1).maybeSingle();
             if(data) {
-                systemSettings = data;
                 if(data.logo_url && data.logo_url.length > 5) {
-                    // Update Logos everywhere
-                    document.getElementById('loginLogo').src = data.logo_url;
-                    document.getElementById('loginLogo').classList.remove('hidden');
-                    document.getElementById('loginIcon').classList.add('hidden');
-                    
-                    document.getElementById('sidebarLogo').src = data.logo_url;
-                    document.getElementById('sidebarLogo').classList.remove('hidden');
-                    document.getElementById('sidebarIcon').classList.add('hidden');
-                    
-                    document.getElementById('mobileLogo').src = data.logo_url;
-                    document.getElementById('mobileLogo').classList.remove('hidden');
-                    document.getElementById('mobileIcon').classList.add('hidden');
-                    
+                    ['loginLogo', 'sidebarLogo', 'mobileLogo'].forEach(id => {
+                        let el = document.getElementById(id); el.src = data.logo_url; el.classList.remove('hidden');
+                    });
+                    ['loginIcon', 'sidebarIcon', 'mobileIcon'].forEach(id => document.getElementById(id).classList.add('hidden'));
                     document.getElementById('logoUrlInput').value = data.logo_url;
                 }
                 if(data.admin_id) document.getElementById('newAdminId').value = data.admin_id;
@@ -261,45 +212,27 @@
         } catch(e) {}
     }
 
-    // --- SECURITY LOGIN LOGIC ---
     async function checkMasterLogin() {
-        const id = document.getElementById('masterId').value.trim();
-        const pass = document.getElementById('masterPass').value.trim();
-        const err = document.getElementById('loginError');
-        const btn = document.getElementById('loginBtn');
-
+        const id = document.getElementById('masterId').value.trim(); const pass = document.getElementById('masterPass').value.trim();
+        const err = document.getElementById('loginError'); const btn = document.getElementById('loginBtn');
         if(!id || !pass) return;
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
-
         try {
-            // Check Database for Credentials
             const { data } = await _supabase.from('settings').select('admin_id, admin_pass').limit(1).maybeSingle();
-            
             if(data && id === data.admin_id && pass === data.admin_pass) {
                 sessionStorage.setItem('mahan_founder_logged', 'true');
                 document.getElementById('adminLoginOverlay').classList.add('hidden');
                 loadAllData();
-            } else {
-                err.innerText = "Access Denied: Incorrect ID or Password!";
-                err.classList.remove('hidden');
-            }
+            } else { err.innerText = "Access Denied!"; err.classList.remove('hidden'); }
         } catch(e) { err.innerText = "System Error!"; err.classList.remove('hidden'); }
         btn.innerHTML = 'Verify & Login <i class="fa-solid fa-arrow-right-to-bracket"></i>';
     }
 
-    function logoutMaster() {
-     sessionStorage.removeItem('mahan_founder_logged');
-        location.reload();
-    }
-    // ----------------------------
-
+    function logoutMaster() { sessionStorage.removeItem('mahan_founder_logged'); location.reload(); }
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('hidden'); }
-
     function switchTab(tabId, btnElement) {
-        document.querySelectorAll('.admin-section').forEach(el => el.classList.add('hidden'));
-        document.getElementById(tabId).classList.remove('hidden');
-        document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('tab-active'));
-        if(btnElement) btnElement.classList.add('tab-active');
+        document.querySelectorAll('.admin-section').forEach(el => el.classList.add('hidden')); document.getElementById(tabId).classList.remove('hidden');
+        document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('tab-active')); if(btnElement) btnElement.classList.add('tab-active');
         if(window.innerWidth < 768) { document.getElementById('sidebar').classList.add('hidden'); }
     }
 
@@ -312,45 +245,22 @@
         } catch (err) { console.error("Error loading data"); }
     }
 
-    // --- SETTINGS UPDATE (SECURITY & LOGO) ---
     async function updateSettings(type) {
-        let updateData = {};
-        let msgEl = null;
-
-        if(type === 'logo') {
-            const url = document.getElementById('logoUrlInput').value.trim();
-            updateData = { logo_url: url };
-            msgEl = document.getElementById('msgLogo');
-        } else if (type === 'credentials') {
-            const nId = document.getElementById('newAdminId').value.trim();
-            const nPass = document.getElementById('newAdminPass').value.trim();
-            if(!nId || !nPass) return;
-            updateData = { admin_id: nId, admin_pass: nPass };
-            msgEl = document.getElementById('msgCred');
-        }
-
+        let updateData = {}; let msgEl = null;
+        if(type === 'logo') { updateData = { logo_url: document.getElementById('logoUrlInput').value.trim() }; msgEl = document.getElementById('msgLogo'); }
+        else if (type === 'credentials') { updateData = { admin_id: document.getElementById('newAdminId').value.trim(), admin_pass: document.getElementById('newAdminPass').value.trim() }; msgEl = document.getElementById('msgCred'); }
         try {
-            // Get first row ID to update
             const { data } = await _supabase.from('settings').select('id').limit(1).maybeSingle();
-            if(data) {
-                await _supabase.from('settings').update(updateData).eq('id', data.id);
-                msgEl.innerText = "Updated Successfully!"; msgEl.className = "text-xs mt-2 font-bold text-emerald-400 block";
-                setTimeout(()=> { msgEl.classList.add('hidden'); if(type==='logo') location.reload(); }, 2000);
-            }
+            if(data) { await _supabase.from('settings').update(updateData).eq('id', data.id); msgEl.innerText = "Updated Successfully!"; msgEl.className = "text-xs mt-2 font-bold text-emerald-400 block"; setTimeout(()=> { msgEl.classList.add('hidden'); if(type==='logo') location.reload(); }, 2000); }
         } catch(e) { msgEl.innerText = "Error Updating!"; msgEl.className = "text-xs mt-2 font-bold text-red-400 block"; }
     }
 
-    // ... (Dashboard, Activations, Payouts, Users rendering logic remains same as previous)
     function renderDashboard() {
-        let activeUsers = allUsersData.filter(u => u.status?.toLowerCase() === 'active').length;
-        let inactiveUsers = allUsersData.length - activeUsers;
-        let totalRev = activeUsers * 1000;
-        let paidOut = 0; let pendingAmt = 0;
+        let activeUsers = allUsersData.filter(u => u.status?.toLowerCase() === 'active').length; let inactiveUsers = allUsersData.length - activeUsers;
+        let totalRev = activeUsers * 1000; let paidOut = 0; let pendingAmt = 0;
         allWithdrawals.forEach(w => { if(w.status === 'Paid') paidOut += parseFloat(w.amount); if(w.status === 'Pending') pendingAmt += parseFloat(w.amount); });
         let profit = totalRev - paidOut;
-
         document.getElementById('statRev').innerText = `₹${totalRev.toLocaleString('en-IN')}`; document.getElementById('statPaid').innerText = `₹${paidOut.toLocaleString('en-IN')}`; document.getElementById('statPending').innerText = `₹${pendingAmt.toLocaleString('en-IN')}`; document.getElementById('statProfit').innerText = `₹${profit.toLocaleString('en-IN')}`;
-
         const ctx1 = document.getElementById('cashChart').getContext('2d'); if(myChart1) myChart1.destroy(); myChart1 = new Chart(ctx1, { type: 'bar', data: { labels: ['Revenue', 'Payouts', 'Profit'], datasets: [{ data: [totalRev, paidOut, profit], backgroundColor: ['#10b981', '#3b82f6', '#f59e0b'] }] }, options: { plugins: { legend: { display: false } } } });
         const ctx2 = document.getElementById('userChart').getContext('2d'); if(myChart2) myChart2.destroy(); myChart2 = new Chart(ctx2, { type: 'doughnut', data: { labels: ['Active', 'Pending/Inactive'], datasets: [{ data: [activeUsers, inactiveUsers], backgroundColor: ['#10b981', '#ef4444'], borderWidth: 0 }] }, options: { plugins: { legend: { position: 'bottom', labels:{color:'#fff'} } } } });
     }
@@ -375,13 +285,80 @@
 
     async function approvePayout(id, btn) { if(!confirm("Mark this as PAID?")) return; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; btn.disabled = true; try { await _supabase.from('withdrawals').update({ status: 'Paid' }).eq('id', id); loadAllData(); } catch (err) { alert("Error"); btn.innerHTML = 'Pay Now'; btn.disabled = false; } }
 
+    // --- USERS DATABASE WITH 360 VIEW LOGIC ---
     function renderUsersDatabase() {
         const tbody = document.getElementById('usersBody'); tbody.innerHTML = ''; let directCountMap = {};
         allUsersData.forEach(u => { const sp = (u.sponsor || '').trim().toUpperCase(); if(sp) { directCountMap[sp] = (directCountMap[sp] || 0) + 1; } });
-        allUsersData.forEach(u => { const dCount = directCountMap[u.user_id.toUpperCase()] || 0; const isActive = u.status?.toLowerCase() === 'active'; const statBadge = isActive ? '<span class="bg-emerald-900/30 text-emerald-400 px-2 py-1 rounded text-[10px] font-bold border border-emerald-500/30">ACTIVE</span>' : '<span class="bg-slate-700 text-slate-300 px-2 py-1 rounded text-[10px] font-bold border border-slate-500">PENDING</span>'; tbody.innerHTML += `<tr class="hover:bg-slate-800/50"><td class="p-4"><p class="font-bold text-white text-sm">${u.name}</p><p class="text-[10px] text-blue-400 font-mono">${u.user_id}</p></td><td class="p-4"><p class="text-xs text-white"><i class="fa-solid fa-phone text-slate-500 text-[10px] mr-1"></i> ${u.mobile}</p><p class="text-xs text-amber-400 mt-1"><i class="fa-solid fa-lock text-slate-500 text-[10px] mr-1"></i> ${u.password}</p></td><td class="p-4 text-center font-black text-white">${dCount}</td><td class="p-4 text-center">${statBadge}</td><td class="p-4 text-right"><button onclick="toggleUserStatus('${u.user_id}', '${u.status}')" class="text-xs font-bold py-1 px-3 rounded border transition ${isActive ? 'bg-red-500/10 text-red-400 border-red-500/30 hover:bg-red-500/20' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20'}">${isActive ? 'Block' : 'Activate'}</button></td></tr>`; });
+        allUsersData.forEach(u => {
+            const dCount = directCountMap[u.user_id.toUpperCase()] || 0; const isActive = u.status?.toLowerCase() === 'active';
+            const statBadge = isActive ? '<span class="bg-emerald-900/30 text-emerald-400 px-2 py-1 rounded text-[10px] font-bold border border-emerald-500/30">ACTIVE</span>' : '<span class="bg-slate-700 text-slate-300 px-2 py-1 rounded text-[10px] font-bold border border-slate-500">PENDING</span>';
+            tbody.innerHTML += `
+            <tr class="hover:bg-slate-800/50">
+                <td class="p-4"><p class="font-bold text-white text-sm">${u.name}</p><p class="text-[10px] text-blue-400 font-mono">${u.user_id}</p></td>
+                <td class="p-4"><p class="text-xs text-white"><i class="fa-solid fa-phone text-slate-500 text-[10px] mr-1"></i> ${u.mobile}</p><p class="text-xs text-amber-400 mt-1"><i class="fa-solid fa-lock text-slate-500 text-[10px] mr-1"></i> ${u.password}</p></td>
+                <td class="p-4 text-center font-black text-white">${dCount}</td>
+                <td class="p-4 text-center">${statBadge}</td>
+                <td class="p-4 text-right">
+                    <button onclick="viewUserProfile('${u.user_id}')" class="text-xs font-bold py-1.5 px-3 rounded border bg-blue-500/10 text-blue-400 border-blue-500/30 hover:bg-blue-500/20 mr-2 transition"><i class="fa-solid fa-eye mr-1"></i> View Tree</button>
+                    <button onclick="toggleUserStatus('${u.user_id}', '${u.status}')" class="text-xs font-bold py-1.5 px-3 rounded border transition ${isActive ? 'bg-red-500/10 text-red-400 border-red-500/30 hover:bg-red-500/20' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20'}">${isActive ? 'Block' : 'Activate'}</button>
+                </td>
+            </tr>`; 
+        });
     }
 
     async function toggleUserStatus(userId, currentStatus) { let newStat = currentStatus?.toLowerCase() === 'active' ? 'blocked' : 'active'; if(!confirm(`Change status to ${newStat.toUpperCase()}?`)) return; try { await _supabase.from('users').update({ status: newStat }).eq('user_id', userId); loadAllData(); } catch (err) { alert("Error changing status."); } }
+
+    // THE MASTERMIND 360° PROFILE CALCULATOR
+    function viewUserProfile(userId) {
+        let user = allUsersData.find(u => u.user_id === userId); if(!user) return;
+        
+        // Build Full Network Map First
+        let networkMap = {};
+        allUsersData.forEach(u => { const sp = (u.sponsor || '').trim().toUpperCase(); if(sp) { if(!networkMap[sp]) networkMap[sp] = []; networkMap[sp].push(u); } });
+
+        let currentLevelUsers = networkMap[userId.toUpperCase()] || [];
+        let totalEarned = 0; let levelHtml = '';
+        
+        // Loop through all 9 levels dynamically
+        for (let i = 0; i < 9; i++) {
+            let totalCount = currentLevelUsers.length;
+            let activeCount = currentLevelUsers.filter(u => u.status?.toLowerCase() === 'active').length;
+            let levelIncome = activeCount * payoutRates[i];
+            totalEarned += levelIncome;
+
+            levelHtml += `<tr><td class="p-2 pl-4">Level ${i+1}</td><td class="p-2 text-center text-slate-400 font-bold">${totalCount}</td><td class="p-2 text-center text-emerald-400 font-bold">${activeCount}</td><td class="p-2 text-right pr-4 font-bold text-white">₹${levelIncome}</td></tr>`;
+
+            let nextLevelUsers = [];
+            currentLevelUsers.forEach(u => { nextLevelUsers = nextLevelUsers.concat(networkMap[String(u.user_id).trim().toUpperCase()] || []); });
+            currentLevelUsers = nextLevelUsers;
+    }
+        // Withdrawals history
+        let userWithdrawals = allWithdrawals.filter(w => w.user_id === userId);
+        let totalWithdrawn = 0; let wHtml = '';
+        if(userWithdrawals.length === 0) {
+            wHtml = '<tr><td colspan="3" class="text-center text-slate-500 py-3">No withdrawals found.</td></tr>';
+        } else {
+            userWithdrawals.forEach(w => {
+                if(w.status === 'Paid') totalWithdrawn += parseFloat(w.amount);
+                let wDate = new Date(w.created_at).toLocaleString('en-IN', {day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'});
+                let statColor = w.status === 'Paid' ? 'text-emerald-400' : 'text-amber-400';
+                wHtml += `<tr><td class="p-2 pl-4 text-slate-400">${wDate}</td><td class="p-2 text-center font-bold text-white">₹${w.amount}</td><td class="p-2 text-right pr-4 font-bold ${statColor}">${w.status}</td></tr>`;
+            });
+        }
+
+        // Top Stats
+        document.getElementById('modalUserName').innerText = `${user.name} (${user.user_id})`;
+        document.getElementById('modalTotalEarned').innerText = `₹${totalEarned.toLocaleString('en-IN')}`;
+        document.getElementById('modalTotalWithdrawn').innerText = `₹${totalWithdrawn.toLocaleString('en-IN')}`;
+        document.getElementById('modalBalance').innerText = `₹${(totalEarned - totalWithdrawn).toLocaleString('en-IN')}`;
+        
+        // Inject Tables
+        document.getElementById('modalLevelBody').innerHTML = levelHtml;
+        document.getElementById('modalWithdrawBody').innerHTML = wHtml;
+
+        // Open Modal
+        document.getElementById('userProfileModal').classList.remove('hidden');
+    }
 </script>
 </body>
-</html>                        
+</html>
