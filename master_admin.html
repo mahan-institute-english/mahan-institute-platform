@@ -19,10 +19,34 @@
 </head>
 <body class="flex flex-col md:flex-row h-screen overflow-hidden">
 
+    <!-- SECURITY LOGIN OVERLAY (Connected to Database) -->
+    <div id="adminLoginOverlay" class="fixed inset-0 bg-[#0f172a] z-[100] flex items-center justify-center p-4">
+        <div class="bg-[#1e293b] border border-amber-500/50 p-8 rounded-2xl shadow-2xl max-w-sm w-full text-center relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-amber-500/10 rounded-full blur-2xl"></div>
+            
+            <img id="loginLogo" src="" alt="MAHAN Logo" class="w-24 h-24 mx-auto object-contain mb-2 drop-shadow-lg hidden relative z-10">
+            <i id="loginIcon" class="fa-solid fa-shield-halved text-amber-500 text-5xl mb-4 drop-shadow-lg relative z-10"></i>
+            
+            <h2 class="text-2xl font-black text-white tracking-widest mb-1 relative z-10">MAHAN SECURE</h2>
+            <p class="text-[10px] text-amber-400 mb-6 uppercase tracking-[0.2em] font-bold relative z-10">Founder Login Area</p>
+            
+            <div class="relative z-10">
+                <input type="text" id="masterId" placeholder="Admin ID (Mobile Number)" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-amber-500 font-mono text-center tracking-wider">
+                <input type="password" id="masterPass" placeholder="Secure Password" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-amber-500 font-mono text-center tracking-wider">
+                <p id="loginError" class="text-xs text-red-400 mb-4 hidden font-bold animate-pulse">Invalid ID or Password!</p>
+                
+                <button onclick="checkMasterLogin()" id="loginBtn" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition text-sm flex items-center justify-center gap-2">
+                    Verify & Login <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Mobile Header -->
     <div class="md:hidden flex justify-between items-center bg-[#1e293b] p-4 border-b border-slate-700 z-50">
         <div class="flex items-center gap-2">
-            <i class="fa-solid fa-crown text-amber-500 text-xl"></i>
+            <img id="mobileLogo" src="" class="w-8 h-8 object-contain hidden">
+            <i id="mobileIcon" class="fa-solid fa-crown text-amber-500 text-xl"></i>
             <span class="font-black text-white tracking-widest text-lg">MAHAN Founder</span>
         </div>
         <button onclick="toggleSidebar()" class="text-slate-300 hover:text-white text-2xl">
@@ -33,7 +57,8 @@
     <!-- Sidebar -->
     <div id="sidebar" class="hidden md:flex flex-col w-full md:w-72 bg-[#0f172a] h-full absolute md:relative z-40 border-r border-slate-700 transition-all duration-300 shadow-2xl">
         <div class="hidden md:flex flex-col items-center justify-center py-6 border-b border-slate-700 bg-gradient-to-b from-[#1e293b] to-[#0f172a]">
-            <i class="fa-solid fa-crown text-amber-500 text-4xl mb-2 drop-shadow-lg"></i>
+            <img id="sidebarLogo" src="" class="w-20 h-20 object-contain mb-2 drop-shadow-lg hidden">
+            <i id="sidebarIcon" class="fa-solid fa-crown text-amber-500 text-4xl mb-2 drop-shadow-lg"></i>
             <h1 class="text-xl font-black text-white tracking-widest">MAHAN</h1>
             <p class="text-[10px] text-blue-400 font-bold uppercase tracking-[0.2em]">Master Admin Panel</p>
         </div>
@@ -52,6 +77,16 @@
             </button>
             <button onclick="switchTab('usersTab', this)" class="sidebar-btn w-full text-left p-3 rounded-xl flex items-center gap-3 text-sm text-slate-400 hover:bg-[#1e293b] hover:text-white transition">
                 <i class="fa-solid fa-users-gear w-5 text-center text-purple-400"></i> All Users Database
+            </button>
+            <p class="text-[10px] text-slate-500 font-bold uppercase mt-6 mb-2 pl-2">System Controls</p>
+            <button onclick="switchTab('settingsTab', this)" class="sidebar-btn w-full text-left p-3 rounded-xl flex items-center gap-3 text-sm text-slate-400 hover:bg-[#1e293b] hover:text-white transition">
+                <i class="fa-solid fa-shield-halved w-5 text-center text-red-400"></i> Security & Logo
+            </button>
+        </div>
+
+        <div class="p-4 border-t border-slate-700 bg-[#0f172a]">
+            <button onclick="logoutMaster()" class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 p-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition">
+                <i class="fa-solid fa-lock"></i> Lock Panel
             </button>
         </div>
     </div>
@@ -103,7 +138,7 @@
         <!-- SECTION 2: USER ACTIVATIONS -->
         <div id="activationTab" class="admin-section hidden space-y-6">
             <h2 class="text-2xl font-black text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3">
-                <i class="fa-solid fa-user-check text-amber-400"></i> UTR Verification & Activation
+                <i class="fa-solid fa-user-check text-amber-400"></i> UTR Verification
             </h2>
             <div class="bg-[#0f172a] border border-slate-700 rounded-2xl overflow-hidden shadow-xl">
                 <div class="overflow-x-auto">
@@ -151,6 +186,34 @@
             </div>
         </div>
 
+        <!-- SECTION 5: SECURITY & LOGO SETTINGS -->
+        <div id="settingsTab" class="admin-section hidden space-y-6">
+            <h2 class="text-2xl font-black text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3">
+                <i class="fa-solid fa-shield-halved text-red-400"></i> System Security & Branding
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Branding -->
+                <div class="bg-[#0f172a] border border-slate-700 p-6 rounded-2xl shadow-xl">
+                    <h3 class="text-lg font-bold text-white mb-4"><i class="fa-regular fa-image text-blue-400 mr-2"></i> Update Company Logo</h3>
+                    <p class="text-xs text-slate-400 mb-4">Paste image URL (from Google Drive, Imgur, etc.) to set it as the global logo.</p>
+                    <input type="text" id="logoUrlInput" placeholder="https://example.com/logo.png" class="w-full bg-[#1e293b] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-blue-500">
+                    <button onclick="updateSettings('logo')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-lg transition text-sm">Save Logo</button>
+                    <p id="msgLogo" class="text-xs mt-2 font-bold hidden"></p>
+                </div>
+
+                <!-- Credentials -->
+                <div class="bg-[#0f172a] border border-red-500/30 p-6 rounded-2xl shadow-xl">
+                    <h3 class="text-lg font-bold text-white mb-4"><i class="fa-solid fa-lock text-red-400 mr-2"></i> Update Admin Credentials</h3>
+                    <p class="text-xs text-slate-400 mb-4">Change your Master Admin ID and Password for security.</p>
+                    <input type="text" id="newAdminId" placeholder="New Admin ID (Mobile)" class="w-full bg-[#1e293b] border border-slate-600 rounded-xl p-3 text-sm text-white mb-3 outline-none focus:border-red-500">
+                    <input type="text" id="newAdminPass" placeholder="New Admin Password" class="w-full bg-[#1e293b] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-red-500">
+                    <button onclick="updateSettings('credentials')" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl shadow-lg transition text-sm">Update Security Credentials</button>
+                    <p id="msgCred" class="text-xs mt-2 font-bold hidden"></p>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 <script>
@@ -160,8 +223,75 @@
 
     let myChart1 = null; let myChart2 = null;
     let allUsersData = []; let allWithdrawals = [];
+    let systemSettings = null;
 
-    window.onload = () => { loadAllData(); };
+    // --- INIT & LOGO LOAD ---
+    window.onload = async () => { 
+        await fetchSettings();
+        if(sessionStorage.getItem('mahan_founder_logged') === 'true') {
+            document.getElementById('adminLoginOverlay').classList.add('hidden');
+            loadAllData();
+        }
+    };
+
+    async function fetchSettings() {
+        try {
+            const { data } = await _supabase.from('settings').select('*').limit(1).maybeSingle();
+            if(data) {
+                systemSettings = data;
+                if(data.logo_url && data.logo_url.length > 5) {
+                    // Update Logos everywhere
+                    document.getElementById('loginLogo').src = data.logo_url;
+                    document.getElementById('loginLogo').classList.remove('hidden');
+                    document.getElementById('loginIcon').classList.add('hidden');
+                    
+                    document.getElementById('sidebarLogo').src = data.logo_url;
+                    document.getElementById('sidebarLogo').classList.remove('hidden');
+                    document.getElementById('sidebarIcon').classList.add('hidden');
+                    
+                    document.getElementById('mobileLogo').src = data.logo_url;
+                    document.getElementById('mobileLogo').classList.remove('hidden');
+                    document.getElementById('mobileIcon').classList.add('hidden');
+                    
+                    document.getElementById('logoUrlInput').value = data.logo_url;
+                }
+                if(data.admin_id) document.getElementById('newAdminId').value = data.admin_id;
+                if(data.admin_pass) document.getElementById('newAdminPass').value = data.admin_pass;
+            }
+        } catch(e) {}
+    }
+
+    // --- SECURITY LOGIN LOGIC ---
+    async function checkMasterLogin() {
+        const id = document.getElementById('masterId').value.trim();
+        const pass = document.getElementById('masterPass').value.trim();
+        const err = document.getElementById('loginError');
+        const btn = document.getElementById('loginBtn');
+
+        if(!id || !pass) return;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
+
+        try {
+            // Check Database for Credentials
+            const { data } = await _supabase.from('settings').select('admin_id, admin_pass').limit(1).maybeSingle();
+            
+            if(data && id === data.admin_id && pass === data.admin_pass) {
+                sessionStorage.setItem('mahan_founder_logged', 'true');
+                document.getElementById('adminLoginOverlay').classList.add('hidden');
+                loadAllData();
+            } else {
+                err.innerText = "Access Denied: Incorrect ID or Password!";
+                err.classList.remove('hidden');
+            }
+        } catch(e) { err.innerText = "System Error!"; err.classList.remove('hidden'); }
+        btn.innerHTML = 'Verify & Login <i class="fa-solid fa-arrow-right-to-bracket"></i>';
+    }
+
+    function logoutMaster() {
+     sessionStorage.removeItem('mahan_founder_logged');
+        location.reload();
+    }
+    // ----------------------------
 
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('hidden'); }
 
@@ -175,167 +305,83 @@
 
     async function loadAllData() {
         try {
-            // Fetch everything once to save DB calls
             const { data: users } = await _supabase.from('users').select('*').order('created_at', {ascending: false});
             const { data: withdrawals } = await _supabase.from('withdrawals').select('*').order('created_at', {ascending: false});
-            allUsersData = users || [];
-            allWithdrawals = withdrawals || [];
-
-            renderDashboard();
-            renderActivations();
-            renderPayouts();
-            renderUsersDatabase();
-        } catch (err) { console.error("Error loading master data", err); }
+            allUsersData = users || []; allWithdrawals = withdrawals || [];
+            renderDashboard(); renderActivations(); renderPayouts(); renderUsersDatabase();
+        } catch (err) { console.error("Error loading data"); }
     }
 
-    // 1. Dashboard Render
+    // --- SETTINGS UPDATE (SECURITY & LOGO) ---
+    async function updateSettings(type) {
+        let updateData = {};
+        let msgEl = null;
+
+        if(type === 'logo') {
+            const url = document.getElementById('logoUrlInput').value.trim();
+            updateData = { logo_url: url };
+            msgEl = document.getElementById('msgLogo');
+        } else if (type === 'credentials') {
+            const nId = document.getElementById('newAdminId').value.trim();
+            const nPass = document.getElementById('newAdminPass').value.trim();
+            if(!nId || !nPass) return;
+            updateData = { admin_id: nId, admin_pass: nPass };
+            msgEl = document.getElementById('msgCred');
+        }
+
+        try {
+            // Get first row ID to update
+            const { data } = await _supabase.from('settings').select('id').limit(1).maybeSingle();
+            if(data) {
+                await _supabase.from('settings').update(updateData).eq('id', data.id);
+                msgEl.innerText = "Updated Successfully!"; msgEl.className = "text-xs mt-2 font-bold text-emerald-400 block";
+                setTimeout(()=> { msgEl.classList.add('hidden'); if(type==='logo') location.reload(); }, 2000);
+            }
+        } catch(e) { msgEl.innerText = "Error Updating!"; msgEl.className = "text-xs mt-2 font-bold text-red-400 block"; }
+    }
+
+    // ... (Dashboard, Activations, Payouts, Users rendering logic remains same as previous)
     function renderDashboard() {
         let activeUsers = allUsersData.filter(u => u.status?.toLowerCase() === 'active').length;
         let inactiveUsers = allUsersData.length - activeUsers;
         let totalRev = activeUsers * 1000;
-        
         let paidOut = 0; let pendingAmt = 0;
-        allWithdrawals.forEach(w => {
-            if(w.status === 'Paid') paidOut += parseFloat(w.amount);
-            if(w.status === 'Pending') pendingAmt += parseFloat(w.amount);
-        });
-
+        allWithdrawals.forEach(w => { if(w.status === 'Paid') paidOut += parseFloat(w.amount); if(w.status === 'Pending') pendingAmt += parseFloat(w.amount); });
         let profit = totalRev - paidOut;
 
-        document.getElementById('statRev').innerText = `₹${totalRev.toLocaleString('en-IN')}`;
-        document.getElementById('statPaid').innerText = `₹${paidOut.toLocaleString('en-IN')}`;
-        document.getElementById('statPending').innerText = `₹${pendingAmt.toLocaleString('en-IN')}`;
-        document.getElementById('statProfit').innerText = `₹${profit.toLocaleString('en-IN')}`;
+        document.getElementById('statRev').innerText = `₹${totalRev.toLocaleString('en-IN')}`; document.getElementById('statPaid').innerText = `₹${paidOut.toLocaleString('en-IN')}`; document.getElementById('statPending').innerText = `₹${pendingAmt.toLocaleString('en-IN')}`; document.getElementById('statProfit').innerText = `₹${profit.toLocaleString('en-IN')}`;
 
-        // Charts
-        const ctx1 = document.getElementById('cashChart').getContext('2d');
-        if(myChart1) myChart1.destroy();
-        myChart1 = new Chart(ctx1, {
-            type: 'bar',
-            data: { labels: ['Revenue', 'Payouts', 'Profit'], datasets: [{ data: [totalRev, paidOut, profit], backgroundColor: ['#10b981', '#3b82f6', '#f59e0b'] }] },
-            options: { plugins: { legend: { display: false } } }
-        });
-
-        const ctx2 = document.getElementById('userChart').getContext('2d');
-        if(myChart2) myChart2.destroy();
-        myChart2 = new Chart(ctx2, {
-            type: 'doughnut',
-            data: { labels: ['Active', 'Pending/Inactive'], datasets: [{ data: [activeUsers, inactiveUsers], backgroundColor: ['#10b981', '#ef4444'], borderWidth: 0 }] },
-            options: { plugins: { legend: { position: 'bottom', labels:{color:'#fff'} } } }
-        });
+        const ctx1 = document.getElementById('cashChart').getContext('2d'); if(myChart1) myChart1.destroy(); myChart1 = new Chart(ctx1, { type: 'bar', data: { labels: ['Revenue', 'Payouts', 'Profit'], datasets: [{ data: [totalRev, paidOut, profit], backgroundColor: ['#10b981', '#3b82f6', '#f59e0b'] }] }, options: { plugins: { legend: { display: false } } } });
+        const ctx2 = document.getElementById('userChart').getContext('2d'); if(myChart2) myChart2.destroy(); myChart2 = new Chart(ctx2, { type: 'doughnut', data: { labels: ['Active', 'Pending/Inactive'], datasets: [{ data: [activeUsers, inactiveUsers], backgroundColor: ['#10b981', '#ef4444'], borderWidth: 0 }] }, options: { plugins: { legend: { position: 'bottom', labels:{color:'#fff'} } } } });
     }
 
-    // 2. Activations Render
     function renderActivations() {
-        const tbody = document.getElementById('activationBody');
-        const badge = document.getElementById('badgeAct');
+        const tbody = document.getElementById('activationBody'); const badge = document.getElementById('badgeAct');
         let pending = allUsersData.filter(u => u.status?.toLowerCase() !== 'active' && u.utr && u.utr.length > 3);
-        
-        if(pending.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-emerald-400 font-bold"><i class="fa-solid fa-circle-check mr-2"></i> No pending activations!</td></tr>';
-            badge.classList.add('hidden'); return;
-        }
-
-        badge.innerText = pending.length; badge.classList.remove('hidden');
-        tbody.innerHTML = '';
-        pending.forEach(u => {
-            let dateStr = new Date(u.created_at).toLocaleDateString('en-IN');
-            tbody.innerHTML += `
-            <tr class="hover:bg-slate-800/50">
-                <td class="p-4"><p class="font-bold text-white">${u.name}</p><p class="text-[10px] text-slate-400 font-mono">${u.user_id}</p></td>
-                <td class="p-4"><span class="bg-[#1e293b] text-blue-400 border border-slate-600 px-2 py-1 rounded text-xs font-mono">${u.sponsor || 'None'}</span></td>
-                <td class="p-4"><span class="font-mono font-black text-amber-400 tracking-wider text-sm bg-amber-900/20 px-3 py-1 rounded-lg border border-amber-600/50">${u.utr}</span></td>
-                <td class="p-4 text-center text-xs text-slate-400">${dateStr}</td>
-                <td class="p-4 text-right"><button onclick="activateUser('${u.user_id}', this)" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold py-2 px-4 rounded-lg transition">Activate</button></td>
-            </tr>`;
-        });
+        if(pending.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-emerald-400 font-bold"><i class="fa-solid fa-circle-check mr-2"></i> No pending activations!</td></tr>'; badge.classList.add('hidden'); return; }
+        badge.innerText = pending.length; badge.classList.remove('hidden'); tbody.innerHTML = '';
+        pending.forEach(u => { let dateStr = new Date(u.created_at).toLocaleDateString('en-IN'); tbody.innerHTML += `<tr class="hover:bg-slate-800/50"><td class="p-4"><p class="font-bold text-white">${u.name}</p><p class="text-[10px] text-slate-400 font-mono">${u.user_id}</p></td><td class="p-4"><span class="bg-[#1e293b] text-blue-400 border border-slate-600 px-2 py-1 rounded text-xs font-mono">${u.sponsor || 'None'}</span></td><td class="p-4"><span class="font-mono font-black text-amber-400 tracking-wider text-sm bg-amber-900/20 px-3 py-1 rounded-lg border border-amber-600/50">${u.utr}</span></td><td class="p-4 text-center text-xs text-slate-400">${dateStr}</td><td class="p-4 text-right"><button onclick="activateUser('${u.user_id}', this)" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold py-2 px-4 rounded-lg transition">Activate</button></td></tr>`; });
     }
 
-    async function activateUser(userId, btn) {
-        if(!confirm("Did you receive ₹1000 in your bank?")) return;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; btn.disabled = true;
-        try {
-            await _supabase.from('users').update({ status: 'active' }).eq('user_id', userId);
-            loadAllData(); // Refresh everything
-        } catch (err) { alert("Error"); btn.innerHTML = 'Activate'; btn.disabled = false; }
-    }
+    async function activateUser(userId, btn) { if(!confirm("Verify ₹1000 payment received?")) return; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; btn.disabled = true; try { await _supabase.from('users').update({ status: 'active' }).eq('user_id', userId); loadAllData(); } catch (err) { alert("Error"); btn.innerHTML = 'Activate'; btn.disabled = false; } }
 
-    // 3. Payouts Render
     function renderPayouts() {
-        const tbody = document.getElementById('payoutBody');
-        const badge = document.getElementById('badgePay');
+        const tbody = document.getElementById('payoutBody'); const badge = document.getElementById('badgePay');
         let pending = allWithdrawals.filter(w => w.status === 'Pending');
-        
-        if(pending.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-emerald-400 font-bold"><i class="fa-solid fa-circle-check mr-2"></i> All payouts cleared!</td></tr>';
-            badge.classList.add('hidden'); return;
-        }
-
-        badge.innerText = pending.length; badge.classList.remove('hidden');
-        tbody.innerHTML = '';
-        pending.forEach(w => {
-            let user = allUsersData.find(u => u.user_id === w.user_id) || {};
-            let dateStr = new Date(w.created_at).toLocaleDateString('en-IN');
-            tbody.innerHTML += `
-            <tr class="hover:bg-slate-800/50">
-                <td class="p-4"><p class="font-bold text-white">${user.name || 'Unknown'}</p><p class="text-[10px] text-slate-400 font-mono">${w.user_id}</p></td>
-                <td class="p-4 text-center font-black text-emerald-400">₹${w.amount}</td>
-                <td class="p-4"><p class="text-xs text-white">A/C: <span class="font-mono text-blue-300">${user.bank_acc||'N/A'}</span></p><p class="text-xs text-white">IFSC: <span class="font-mono text-amber-300">${user.bank_ifsc||'N/A'}</span></p></td>
-                <td class="p-4 text-center text-xs text-slate-400">${dateStr}</td>
-                <td class="p-4 text-right"><button onclick="approvePayout(${w.id}, this)" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2 px-4 rounded-lg transition">Pay Now</button></td>
-            </tr>`;
-        });
+        if(pending.length === 0) { tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-emerald-400 font-bold"><i class="fa-solid fa-circle-check mr-2"></i> All payouts cleared!</td></tr>'; badge.classList.add('hidden'); return; }
+        badge.innerText = pending.length; badge.classList.remove('hidden'); tbody.innerHTML = '';
+        pending.forEach(w => { let user = allUsersData.find(u => u.user_id === w.user_id) || {}; let dateStr = new Date(w.created_at).toLocaleDateString('en-IN'); tbody.innerHTML += `<tr class="hover:bg-slate-800/50"><td class="p-4"><p class="font-bold text-white">${user.name || 'Unknown'}</p><p class="text-[10px] text-slate-400 font-mono">${w.user_id}</p></td><td class="p-4 text-center font-black text-emerald-400">₹${w.amount}</td><td class="p-4"><p class="text-xs text-white">A/C: <span class="font-mono text-blue-300">${user.bank_acc||'N/A'}</span></p><p class="text-xs text-white">IFSC: <span class="font-mono text-amber-300">${user.bank_ifsc||'N/A'}</span></p></td><td class="p-4 text-center text-xs text-slate-400">${dateStr}</td><td class="p-4 text-right"><button onclick="approvePayout(${w.id}, this)" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2 px-4 rounded-lg transition">Pay Now</button></td></tr>`; });
     }
 
-    async function approvePayout(id, btn) {
-        if(!confirm("Mark this as PAID?")) return;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; btn.disabled = true;
-        try {
-            await _supabase.from('withdrawals').update({ status: 'Paid' }).eq('id', id);
-            loadAllData();
-        } catch (err) { alert("Error"); btn.innerHTML = 'Pay Now'; btn.disabled = false; }
+    async function approvePayout(id, btn) { if(!confirm("Mark this as PAID?")) return; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; btn.disabled = true; try { await _supabase.from('withdrawals').update({ status: 'Paid' }).eq('id', id); loadAllData(); } catch (err) { alert("Error"); btn.innerHTML = 'Pay Now'; btn.disabled = false; } }
+
+    function renderUsersDatabase() {
+        const tbody = document.getElementById('usersBody'); tbody.innerHTML = ''; let directCountMap = {};
+        allUsersData.forEach(u => { const sp = (u.sponsor || '').trim().toUpperCase(); if(sp) { directCountMap[sp] = (directCountMap[sp] || 0) + 1; } });
+        allUsersData.forEach(u => { const dCount = directCountMap[u.user_id.toUpperCase()] || 0; const isActive = u.status?.toLowerCase() === 'active'; const statBadge = isActive ? '<span class="bg-emerald-900/30 text-emerald-400 px-2 py-1 rounded text-[10px] font-bold border border-emerald-500/30">ACTIVE</span>' : '<span class="bg-slate-700 text-slate-300 px-2 py-1 rounded text-[10px] font-bold border border-slate-500">PENDING</span>'; tbody.innerHTML += `<tr class="hover:bg-slate-800/50"><td class="p-4"><p class="font-bold text-white text-sm">${u.name}</p><p class="text-[10px] text-blue-400 font-mono">${u.user_id}</p></td><td class="p-4"><p class="text-xs text-white"><i class="fa-solid fa-phone text-slate-500 text-[10px] mr-1"></i> ${u.mobile}</p><p class="text-xs text-amber-400 mt-1"><i class="fa-solid fa-lock text-slate-500 text-[10px] mr-1"></i> ${u.password}</p></td><td class="p-4 text-center font-black text-white">${dCount}</td><td class="p-4 text-center">${statBadge}</td><td class="p-4 text-right"><button onclick="toggleUserStatus('${u.user_id}', '${u.status}')" class="text-xs font-bold py-1 px-3 rounded border transition ${isActive ? 'bg-red-500/10 text-red-400 border-red-500/30 hover:bg-red-500/20' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20'}">${isActive ? 'Block' : 'Activate'}</button></td></tr>`; });
     }
 
-    // 4. Users Database Render
-      function renderUsersDatabase() {
-        const tbody = document.getElementById('usersBody');
-        tbody.innerHTML = '';
-        
-        // Build Directs map
-        let directCountMap = {};
-        allUsersData.forEach(u => {
-            const sp = (u.sponsor || '').trim().toUpperCase();
-            if(sp) { directCountMap[sp] = (directCountMap[sp] || 0) + 1; }
-        });
-
-        allUsersData.forEach(u => {
-            const dCount = directCountMap[u.user_id.toUpperCase()] || 0;
-            const isActive = u.status?.toLowerCase() === 'active';
-            const statBadge = isActive ? '<span class="bg-emerald-900/30 text-emerald-400 px-2 py-1 rounded text-[10px] font-bold border border-emerald-500/30">ACTIVE</span>' : '<span class="bg-slate-700 text-slate-300 px-2 py-1 rounded text-[10px] font-bold border border-slate-500">PENDING</span>';
-            
-            tbody.innerHTML += `
-            <tr class="hover:bg-slate-800/50">
-                <td class="p-4"><p class="font-bold text-white text-sm">${u.name}</p><p class="text-[10px] text-blue-400 font-mono">${u.user_id}</p></td>
-                <td class="p-4"><p class="text-xs text-white"><i class="fa-solid fa-phone text-slate-500 text-[10px] mr-1"></i> ${u.mobile}</p><p class="text-xs text-amber-400 mt-1"><i class="fa-solid fa-lock text-slate-500 text-[10px] mr-1"></i> ${u.password}</p></td>
-                <td class="p-4 text-center font-black text-white">${dCount}</td>
-                <td class="p-4 text-center">${statBadge}</td>
-                <td class="p-4 text-right">
-                    <button onclick="toggleUserStatus('${u.user_id}', '${u.status}')" class="text-xs font-bold py-1 px-3 rounded border transition ${isActive ? 'bg-red-500/10 text-red-400 border-red-500/30 hover:bg-red-500/20' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20'}">
-                        ${isActive ? 'Block' : 'Activate'}
-                    </button>
-                </td>
-            </tr>`;
-        });
-    }
-
-    async function toggleUserStatus(userId, currentStatus) {
-        let newStat = currentStatus?.toLowerCase() === 'active' ? 'blocked' : 'active';
-        if(!confirm(`Are you sure you want to change status to ${newStat.toUpperCase()}?`)) return;
-        try {
-            await _supabase.from('users').update({ status: newStat }).eq('user_id', userId);
-            loadAllData();
-        } catch (err) { alert("Error changing status."); }
-    }
+    async function toggleUserStatus(userId, currentStatus) { let newStat = currentStatus?.toLowerCase() === 'active' ? 'blocked' : 'active'; if(!confirm(`Change status to ${newStat.toUpperCase()}?`)) return; try { await _supabase.from('users').update({ status: newStat }).eq('user_id', userId); loadAllData(); } catch (err) { alert("Error changing status."); } }
 </script>
 </body>
-</html>                                                                                                                                
+</html>                        
