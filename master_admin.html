@@ -28,7 +28,7 @@
             <h2 class="text-2xl font-black text-white tracking-widest mb-1 relative z-10">MAHAN SECURE</h2>
             <p class="text-[10px] text-amber-400 mb-6 uppercase tracking-[0.2em] font-bold relative z-10">Founder Login Area</p>
             <div class="relative z-10">
-                <input type="text" id="masterId" placeholder="Admin ID (Mobile Number)" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-amber-500 font-mono text-center tracking-wider">
+                <input type="text" id="masterId" placeholder="Admin ID" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-amber-500 font-mono text-center tracking-wider">
                 <input type="password" id="masterPass" placeholder="Secure Password" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white mb-4 outline-none focus:border-amber-500 font-mono text-center tracking-wider">
                 <p id="loginError" class="text-xs text-red-400 mb-4 hidden font-bold animate-pulse">Invalid ID or Password!</p>
                 <button onclick="checkMasterLogin()" id="loginBtn" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold py-3.5 rounded-xl shadow-lg transition text-sm flex items-center justify-center gap-2">
@@ -98,7 +98,7 @@
             <div class="bg-[#0f172a] border border-slate-700 rounded-2xl overflow-hidden shadow-xl"><div class="overflow-x-auto"><table class="w-full text-left text-sm whitespace-nowrap"><thead class="bg-[#1e293b] text-slate-400 uppercase text-[10px] font-bold tracking-wider"><tr><th class="p-4">User Details</th><th class="p-4 text-center">Amount</th><th class="p-4">Bank A/C & IFSC</th><th class="p-4 text-center">Date</th><th class="p-4 text-right">Action</th></tr></thead><tbody id="payoutBody" class="divide-y divide-slate-800"></tbody></table></div></div>
         </div>
 
-        <!-- SECTION 4: ALL USERS DATABASE (UPDATED WITH 360 VIEW) -->
+        <!-- SECTION 4: ALL USERS DATABASE -->
         <div id="usersTab" class="admin-section hidden space-y-6">
             <h2 class="text-2xl font-black text-white mb-4 flex items-center gap-2 border-b border-slate-700 pb-3"><i class="fa-solid fa-users-gear text-purple-400"></i> All Users Database</h2>
             <div class="bg-[#0f172a] border border-slate-700 rounded-2xl overflow-hidden shadow-xl">
@@ -123,7 +123,7 @@
         </div>
     </div>
 
-    <!-- USER 360° PROFILE MODAL (THE MASTERMIND FEATURE) -->
+    <!-- USER 360° PROFILE MODAL -->
     <div id="userProfileModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden flex items-center justify-center z-[150] p-4">
         <div class="bg-[#1e293b] border border-blue-500/50 p-5 rounded-2xl w-[95%] max-w-2xl max-h-[90vh] shadow-2xl relative flex flex-col">
             <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-3">
@@ -132,21 +132,42 @@
             </div>
             
             <div class="flex-1 overflow-y-auto pr-2 space-y-4">
-                <h4 id="modalUserName" class="text-xl font-bold text-amber-400 text-center mb-2">Student Name</h4>
                 
-                <!-- Stats Row -->
-                <div class="grid grid-cols-3 gap-3 text-center">
-                    <div class="bg-[#0f172a] p-3 rounded-xl border border-slate-700">
-                        <p class="text-[10px] text-slate-400 uppercase">Total Earned</p>
-                        <p id="modalTotalEarned" class="text-lg font-bold text-emerald-400">₹0</p>
+                <!-- Personal & KYC (New Suggestion) -->
+                <div class="bg-[#0f172a] p-4 rounded-xl border border-slate-700 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div class="text-center md:text-left">
+                        <h4 id="modalUserName" class="text-xl font-black text-amber-400">Student Name</h4>
+                        <p id="modalUserId" class="text-sm font-mono text-slate-300">ID: STU0000</p>
+                        <p id="modalUserSponsor" class="text-xs font-mono text-slate-400 mt-1">Sponsor: None</p>
                     </div>
-                    <div class="bg-[#0f172a] p-3 rounded-xl border border-slate-700">
-                        <p class="text-[10px] text-slate-400 uppercase">Total Withdrawn</p>
-                        <p id="modalTotalWithdrawn" class="text-lg font-bold text-blue-400">₹0</p>
+                    <div class="text-center md:text-right text-xs space-y-1">
+                        <p class="text-slate-300"><i class="fa-solid fa-phone text-blue-400 w-4"></i> <span id="modalUserMobile">---</span></p>
+                        <p class="text-slate-300"><i class="fa-solid fa-lock text-red-400 w-4"></i> <span id="modalUserPass">---</span></p>
+                        <p class="text-slate-300"><i class="fa-solid fa-building-columns text-emerald-400 w-4"></i> <span id="modalUserBank">No Bank Added</span></p>
                     </div>
-                    <div class="bg-[#0f172a] p-3 rounded-xl border border-slate-700">
-                        <p class="text-[10px] text-slate-400 uppercase">Current Balance</p>
-                        <p id="modalBalance" class="text-lg font-bold text-amber-400">₹0</p>
+                </div>
+                
+                <!-- Financial Stats Grid (Updated based on image) -->
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-2 text-center">
+                    <div class="bg-[#0f172a] p-2 rounded-xl border border-slate-700">
+                        <p class="text-[9px] text-slate-400 uppercase font-bold">Total Limit</p>
+                        <p id="modalTotalLimit" class="text-sm font-black text-white mt-1">₹0</p>
+                    </div>
+                    <div class="bg-[#0f172a] p-2 rounded-xl border border-emerald-500/30">
+                        <p class="text-[9px] text-emerald-400 uppercase font-bold">Total Earned</p>
+                        <p id="modalTotalEarned" class="text-sm font-black text-emerald-400 mt-1">₹0</p>
+                    </div>
+                    <div class="bg-[#0f172a] p-2 rounded-xl border border-slate-700">
+                        <p class="text-[9px] text-slate-400 uppercase font-bold">Remaining Limit</p>
+                        <p id="modalRemainingLimit" class="text-sm font-black text-slate-300 mt-1">₹0</p>
+                    </div>
+                    <div class="bg-[#0f172a] p-2 rounded-xl border border-blue-500/30">
+                        <p class="text-[9px] text-blue-400 uppercase font-bold">Withdrawn</p>
+                        <p id="modalTotalWithdrawn" class="text-sm font-black text-blue-400 mt-1">₹0</p>
+                    </div>
+                    <div class="bg-gradient-to-br from-[#0f172a] to-amber-900/20 p-2 rounded-xl border border-amber-500/50 col-span-2 md:col-span-1">
+                        <p class="text-[9px] text-amber-400 uppercase font-bold">Balance</p>
+                        <p id="modalBalance" class="text-sm font-black text-amber-400 mt-1">₹0</p>
                     </div>
                 </div>
 
@@ -161,15 +182,30 @@
                     </table>
                 </div>
 
+                <!-- Direct Team Details (New Section based on prompt) -->
+                <div class="bg-[#0f172a] border border-slate-700 rounded-xl overflow-hidden mt-4">
+                    <h5 class="bg-[#1e293b] p-2 text-xs font-bold text-white text-center border-b border-slate-700"><i class="fa-solid fa-users text-blue-400 mr-1"></i> Direct Students Data</h5>
+                    <div class="overflow-x-auto max-h-40">
+                        <table class="w-full text-left text-[10px]">
+                            <thead class="bg-slate-800 text-slate-400 sticky top-0">
+                                <tr><th class="p-2 pl-4">Name & ID</th><th class="p-2 text-center">Join Date</th><th class="p-2 text-right pr-4">Status</th></tr>
+                            </thead>
+                            <tbody id="modalDirectsBody" class="text-slate-300 divide-y divide-slate-800"></tbody>
+                        </table>
+                    </div>
+                </div>
+
                 <!-- Withdrawal History -->
                 <div class="bg-[#0f172a] border border-slate-700 rounded-xl overflow-hidden mt-4">
                     <h5 class="bg-[#1e293b] p-2 text-xs font-bold text-white text-center border-b border-slate-700"><i class="fa-solid fa-money-bill-transfer text-blue-400 mr-1"></i> Withdrawal History</h5>
-                    <table class="w-full text-left text-xs">
-                        <thead class="bg-slate-800 text-slate-400">
-                            <tr><th class="p-2 pl-4">Date & Time</th><th class="p-2 text-center">Amount</th><th class="p-2 text-right pr-4">Status</th></tr>
-                        </thead>
-                        <tbody id="modalWithdrawBody" class="text-slate-300 divide-y divide-slate-800"></tbody>
-                    </table>
+                    <div class="overflow-x-auto max-h-32">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-800 text-slate-400 sticky top-0">
+                                <tr><th class="p-2 pl-4">Date & Time</th><th class="p-2 text-center">Amount</th><th class="p-2 text-right pr-4">Status</th></tr>
+                            </thead>
+                            <tbody id="modalWithdrawBody" class="text-slate-300 divide-y divide-slate-800"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             
@@ -184,30 +220,19 @@
 
     let myChart1 = null; let myChart2 = null;
     let allUsersData = []; let allWithdrawals = [];
-    const payoutRates = [1000, 500, 250, 250, 250, 125, 125, 125, 125]; // Level 1 to 9 payout
+    const payoutRates = [1000, 500, 250, 250, 250, 125, 125, 125, 125];
 
-    // --- SECURITY & INIT ---
     window.onload = async () => { 
         await fetchSettings();
-        if(sessionStorage.getItem('mahan_founder_logged') === 'true') {
-            document.getElementById('adminLoginOverlay').classList.add('hidden');
-            loadAllData();
-        }
+        if(sessionStorage.getItem('mahan_founder_logged') === 'true') { document.getElementById('adminLoginOverlay').classList.add('hidden'); loadAllData(); }
     };
 
     async function fetchSettings() {
         try {
             const { data } = await _supabase.from('settings').select('*').limit(1).maybeSingle();
             if(data) {
-                if(data.logo_url && data.logo_url.length > 5) {
-                    ['loginLogo', 'sidebarLogo', 'mobileLogo'].forEach(id => {
-                        let el = document.getElementById(id); el.src = data.logo_url; el.classList.remove('hidden');
-                    });
-                    ['loginIcon', 'sidebarIcon', 'mobileIcon'].forEach(id => document.getElementById(id).classList.add('hidden'));
-                    document.getElementById('logoUrlInput').value = data.logo_url;
-                }
-                if(data.admin_id) document.getElementById('newAdminId').value = data.admin_id;
-                if(data.admin_pass) document.getElementById('newAdminPass').value = data.admin_pass;
+                if(data.logo_url && data.logo_url.length > 5) { ['loginLogo', 'sidebarLogo', 'mobileLogo'].forEach(id => { let el = document.getElementById(id); el.src = data.logo_url; el.classList.remove('hidden'); }); ['loginIcon', 'sidebarIcon', 'mobileIcon'].forEach(id => document.getElementById(id).classList.add('hidden')); document.getElementById('logoUrlInput').value = data.logo_url; }
+                if(data.admin_id) document.getElementById('newAdminId').value = data.admin_id; if(data.admin_pass) document.getElementById('newAdminPass').value = data.admin_pass;
             }
         } catch(e) {}
     }
@@ -215,54 +240,33 @@
     async function checkMasterLogin() {
         const id = document.getElementById('masterId').value.trim(); const pass = document.getElementById('masterPass').value.trim();
         const err = document.getElementById('loginError'); const btn = document.getElementById('loginBtn');
-        if(!id || !pass) return;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
+        if(!id || !pass) return; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying...';
         try {
             const { data } = await _supabase.from('settings').select('admin_id, admin_pass').limit(1).maybeSingle();
-            if(data && id === data.admin_id && pass === data.admin_pass) {
-                sessionStorage.setItem('mahan_founder_logged', 'true');
-                document.getElementById('adminLoginOverlay').classList.add('hidden');
-                loadAllData();
-            } else { err.innerText = "Access Denied!"; err.classList.remove('hidden'); }
+            if(data && id === data.admin_id && pass === data.admin_pass) { sessionStorage.setItem('mahan_founder_logged', 'true'); document.getElementById('adminLoginOverlay').classList.add('hidden'); loadAllData(); } else { err.innerText = "Access Denied!"; err.classList.remove('hidden'); }
         } catch(e) { err.innerText = "System Error!"; err.classList.remove('hidden'); }
         btn.innerHTML = 'Verify & Login <i class="fa-solid fa-arrow-right-to-bracket"></i>';
     }
 
     function logoutMaster() { sessionStorage.removeItem('mahan_founder_logged'); location.reload(); }
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('hidden'); }
-    function switchTab(tabId, btnElement) {
-        document.querySelectorAll('.admin-section').forEach(el => el.classList.add('hidden')); document.getElementById(tabId).classList.remove('hidden');
-        document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('tab-active')); if(btnElement) btnElement.classList.add('tab-active');
-        if(window.innerWidth < 768) { document.getElementById('sidebar').classList.add('hidden'); }
-    }
+    function switchTab(tabId, btnElement) { document.querySelectorAll('.admin-section').forEach(el => el.classList.add('hidden')); document.getElementById(tabId).classList.remove('hidden'); document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('tab-active')); if(btnElement) btnElement.classList.add('tab-active'); if(window.innerWidth < 768) { document.getElementById('sidebar').classList.add('hidden'); } }
 
-    async function loadAllData() {
-        try {
-            const { data: users } = await _supabase.from('users').select('*').order('created_at', {ascending: false});
-            const { data: withdrawals } = await _supabase.from('withdrawals').select('*').order('created_at', {ascending: false});
-            allUsersData = users || []; allWithdrawals = withdrawals || [];
-            renderDashboard(); renderActivations(); renderPayouts(); renderUsersDatabase();
-        } catch (err) { console.error("Error loading data"); }
-    }
+    async function loadAllData() { try { const { data: users } = await _supabase.from('users').select('*').order('created_at', {ascending: false}); const { data: withdrawals } = await _supabase.from('withdrawals').select('*').order('created_at', {ascending: false}); allUsersData = users || []; allWithdrawals = withdrawals || []; renderDashboard(); renderActivations(); renderPayouts(); renderUsersDatabase(); } catch (err) {} }
 
     async function updateSettings(type) {
         let updateData = {}; let msgEl = null;
-        if(type === 'logo') { updateData = { logo_url: document.getElementById('logoUrlInput').value.trim() }; msgEl = document.getElementById('msgLogo'); }
-        else if (type === 'credentials') { updateData = { admin_id: document.getElementById('newAdminId').value.trim(), admin_pass: document.getElementById('newAdminPass').value.trim() }; msgEl = document.getElementById('msgCred'); }
-        try {
-            const { data } = await _supabase.from('settings').select('id').limit(1).maybeSingle();
-            if(data) { await _supabase.from('settings').update(updateData).eq('id', data.id); msgEl.innerText = "Updated Successfully!"; msgEl.className = "text-xs mt-2 font-bold text-emerald-400 block"; setTimeout(()=> { msgEl.classList.add('hidden'); if(type==='logo') location.reload(); }, 2000); }
-        } catch(e) { msgEl.innerText = "Error Updating!"; msgEl.className = "text-xs mt-2 font-bold text-red-400 block"; }
+        if(type === 'logo') { updateData = { logo_url: document.getElementById('logoUrlInput').value.trim() }; msgEl = document.getElementById('msgLogo'); } else if (type === 'credentials') { updateData = { admin_id: document.getElementById('newAdminId').value.trim(), admin_pass: document.getElementById('newAdminPass').value.trim() }; msgEl = document.getElementById('msgCred'); }
+        try { const { data } = await _supabase.from('settings').select('id').limit(1).maybeSingle(); if(data) { await _supabase.from('settings').update(updateData).eq('id', data.id); msgEl.innerText = "Updated Successfully!"; msgEl.className = "text-xs mt-2 font-bold text-emerald-400 block"; setTimeout(()=> { msgEl.classList.add('hidden'); if(type==='logo') location.reload(); }, 2000); } } catch(e) { msgEl.innerText = "Error Updating!"; msgEl.className = "text-xs mt-2 font-bold text-red-400 block"; }
     }
 
     function renderDashboard() {
         let activeUsers = allUsersData.filter(u => u.status?.toLowerCase() === 'active').length; let inactiveUsers = allUsersData.length - activeUsers;
         let totalRev = activeUsers * 1000; let paidOut = 0; let pendingAmt = 0;
         allWithdrawals.forEach(w => { if(w.status === 'Paid') paidOut += parseFloat(w.amount); if(w.status === 'Pending') pendingAmt += parseFloat(w.amount); });
-        let profit = totalRev - paidOut;
-        document.getElementById('statRev').innerText = `₹${totalRev.toLocaleString('en-IN')}`; document.getElementById('statPaid').innerText = `₹${paidOut.toLocaleString('en-IN')}`; document.getElementById('statPending').innerText = `₹${pendingAmt.toLocaleString('en-IN')}`; document.getElementById('statProfit').innerText = `₹${profit.toLocaleString('en-IN')}`;
-        const ctx1 = document.getElementById('cashChart').getContext('2d'); if(myChart1) myChart1.destroy(); myChart1 = new Chart(ctx1, { type: 'bar', data: { labels: ['Revenue', 'Payouts', 'Profit'], datasets: [{ data: [totalRev, paidOut, profit], backgroundColor: ['#10b981', '#3b82f6', '#f59e0b'] }] }, options: { plugins: { legend: { display: false } } } });
-        const ctx2 = document.getElementById('userChart').getContext('2d'); if(myChart2) myChart2.destroy(); myChart2 = new Chart(ctx2, { type: 'doughnut', data: { labels: ['Active', 'Pending/Inactive'], datasets: [{ data: [activeUsers, inactiveUsers], backgroundColor: ['#10b981', '#ef4444'], borderWidth: 0 }] }, options: { plugins: { legend: { position: 'bottom', labels:{color:'#fff'} } } } });
+        document.getElementById('statRev').innerText = `₹${totalRev.toLocaleString('en-IN')}`; document.getElementById('statPaid').innerText = `₹${paidOut.toLocaleString('en-IN')}`; document.getElementById('statPending').innerText = `₹${pendingAmt.toLocaleString('en-IN')}`; document.getElementById('statProfit').innerText = `₹${(totalRev - paidOut).toLocaleString('en-IN')}`;
+        const ctx1 = document.getElementById('cashChart').getContext('2d'); if(myChart1) myChart1.destroy(); myChart1 = new Chart(ctx1, { type: 'bar', data: { labels: ['Revenue', 'Payouts', 'Profit'], datasets: [{ data: [totalRev, paidOut, (totalRev - paidOut)], backgroundColor: ['#10b981', '#3b82f6', '#f59e0b'] }] }, options: { plugins: { legend: { display: false } } } });
+        const ctx2 = document.getElementById('userChart').getContext('2d'); if(myChart2) myChart2.destroy(); myChart2 = new Chart(ctx2, { type: 'doughnut', data: { labels: ['Active', 'Pending'], datasets: [{ data: [activeUsers, inactiveUsers], backgroundColor: ['#10b981', '#ef4444'], borderWidth: 0 }] }, options: { plugins: { legend: { position: 'bottom', labels:{color:'#fff'} } } } });
     }
 
     function renderActivations() {
@@ -273,7 +277,7 @@
         pending.forEach(u => { let dateStr = new Date(u.created_at).toLocaleDateString('en-IN'); tbody.innerHTML += `<tr class="hover:bg-slate-800/50"><td class="p-4"><p class="font-bold text-white">${u.name}</p><p class="text-[10px] text-slate-400 font-mono">${u.user_id}</p></td><td class="p-4"><span class="bg-[#1e293b] text-blue-400 border border-slate-600 px-2 py-1 rounded text-xs font-mono">${u.sponsor || 'None'}</span></td><td class="p-4"><span class="font-mono font-black text-amber-400 tracking-wider text-sm bg-amber-900/20 px-3 py-1 rounded-lg border border-amber-600/50">${u.utr}</span></td><td class="p-4 text-center text-xs text-slate-400">${dateStr}</td><td class="p-4 text-right"><button onclick="activateUser('${u.user_id}', this)" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold py-2 px-4 rounded-lg transition">Activate</button></td></tr>`; });
     }
 
-    async function activateUser(userId, btn) { if(!confirm("Verify ₹1000 payment received?")) return; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; btn.disabled = true; try { await _supabase.from('users').update({ status: 'active' }).eq('user_id', userId); loadAllData(); } catch (err) { alert("Error"); btn.innerHTML = 'Activate'; btn.disabled = false; } }
+    async function activateUser(userId, btn) { if(!confirm("Verify ₹1000 payment received?")) return; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; btn.disabled = true; try { await _supabase.from('users').update({ status: 'active' }).eq('user_id', userId); loadAllData(); } catch (err) { btn.innerHTML = 'Activate'; btn.disabled = false; } }
 
     function renderPayouts() {
         const tbody = document.getElementById('payoutBody'); const badge = document.getElementById('badgePay');
@@ -283,77 +287,92 @@
         pending.forEach(w => { let user = allUsersData.find(u => u.user_id === w.user_id) || {}; let dateStr = new Date(w.created_at).toLocaleDateString('en-IN'); tbody.innerHTML += `<tr class="hover:bg-slate-800/50"><td class="p-4"><p class="font-bold text-white">${user.name || 'Unknown'}</p><p class="text-[10px] text-slate-400 font-mono">${w.user_id}</p></td><td class="p-4 text-center font-black text-emerald-400">₹${w.amount}</td><td class="p-4"><p class="text-xs text-white">A/C: <span class="font-mono text-blue-300">${user.bank_acc||'N/A'}</span></p><p class="text-xs text-white">IFSC: <span class="font-mono text-amber-300">${user.bank_ifsc||'N/A'}</span></p></td><td class="p-4 text-center text-xs text-slate-400">${dateStr}</td><td class="p-4 text-right"><button onclick="approvePayout(${w.id}, this)" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2 px-4 rounded-lg transition">Pay Now</button></td></tr>`; });
     }
 
-    async function approvePayout(id, btn) { if(!confirm("Mark this as PAID?")) return; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; btn.disabled = true; try { await _supabase.from('withdrawals').update({ status: 'Paid' }).eq('id', id); loadAllData(); } catch (err) { alert("Error"); btn.innerHTML = 'Pay Now'; btn.disabled = false; } }
+    async function approvePayout(id, btn) { if(!confirm("Mark this as PAID?")) return; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>'; btn.disabled = true; try { await _supabase.from('withdrawals').update({ status: 'Paid' }).eq('id', id); loadAllData(); } catch (err) { btn.innerHTML = 'Pay Now'; btn.disabled = false; } }
 
-    // --- USERS DATABASE WITH 360 VIEW LOGIC ---
     function renderUsersDatabase() {
         const tbody = document.getElementById('usersBody'); tbody.innerHTML = ''; let directCountMap = {};
         allUsersData.forEach(u => { const sp = (u.sponsor || '').trim().toUpperCase(); if(sp) { directCountMap[sp] = (directCountMap[sp] || 0) + 1; } });
         allUsersData.forEach(u => {
             const dCount = directCountMap[u.user_id.toUpperCase()] || 0; const isActive = u.status?.toLowerCase() === 'active';
             const statBadge = isActive ? '<span class="bg-emerald-900/30 text-emerald-400 px-2 py-1 rounded text-[10px] font-bold border border-emerald-500/30">ACTIVE</span>' : '<span class="bg-slate-700 text-slate-300 px-2 py-1 rounded text-[10px] font-bold border border-slate-500">PENDING</span>';
-            tbody.innerHTML += `
-            <tr class="hover:bg-slate-800/50">
-                <td class="p-4"><p class="font-bold text-white text-sm">${u.name}</p><p class="text-[10px] text-blue-400 font-mono">${u.user_id}</p></td>
-                <td class="p-4"><p class="text-xs text-white"><i class="fa-solid fa-phone text-slate-500 text-[10px] mr-1"></i> ${u.mobile}</p><p class="text-xs text-amber-400 mt-1"><i class="fa-solid fa-lock text-slate-500 text-[10px] mr-1"></i> ${u.password}</p></td>
-                <td class="p-4 text-center font-black text-white">${dCount}</td>
-                <td class="p-4 text-center">${statBadge}</td>
-                <td class="p-4 text-right">
-                    <button onclick="viewUserProfile('${u.user_id}')" class="text-xs font-bold py-1.5 px-3 rounded border bg-blue-500/10 text-blue-400 border-blue-500/30 hover:bg-blue-500/20 mr-2 transition"><i class="fa-solid fa-eye mr-1"></i> View Tree</button>
-                    <button onclick="toggleUserStatus('${u.user_id}', '${u.status}')" class="text-xs font-bold py-1.5 px-3 rounded border transition ${isActive ? 'bg-red-500/10 text-red-400 border-red-500/30 hover:bg-red-500/20' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20'}">${isActive ? 'Block' : 'Activate'}</button>
-                </td>
-            </tr>`; 
+            tbody.innerHTML += `<tr class="hover:bg-slate-800/50"><td class="p-4"><p class="font-bold text-white text-sm">${u.name}</p><p class="text-[10px] text-blue-400 font-mono">${u.user_id}</p></td><td class="p-4"><p class="text-xs text-white"><i class="fa-solid fa-phone text-slate-500 text-[10px] mr-1"></i> ${u.mobile}</p><p class="text-xs text-amber-400 mt-1"><i class="fa-solid fa-lock text-slate-500 text-[10px] mr-1"></i> ${u.password}</p></td><td class="p-4 text-center font-black text-white">${dCount}</td><td class="p-4 text-center">${statBadge}</td><td class="p-4 text-right"><button onclick="viewUserProfile('${u.user_id}')" class="text-xs font-bold py-1.5 px-3 rounded border bg-blue-500/10 text-blue-400 border-blue-500/30 hover:bg-blue-500/20 mr-2 transition"><i class="fa-solid fa-eye mr-1"></i> View</button><button onclick="toggleUserStatus('${u.user_id}', '${u.status}')" class="text-xs font-bold py-1.5 px-3 rounded border transition ${isActive ? 'bg-red-500/10 text-red-400 border-red-500/30 hover:bg-red-500/20' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20'}">${isActive ? 'Block' : 'Activate'}</button></td></tr>`; 
         });
     }
 
-    async function toggleUserStatus(userId, currentStatus) { let newStat = currentStatus?.toLowerCase() === 'active' ? 'blocked' : 'active'; if(!confirm(`Change status to ${newStat.toUpperCase()}?`)) return; try { await _supabase.from('users').update({ status: newStat }).eq('user_id', userId); loadAllData(); } catch (err) { alert("Error changing status."); } }
+    async function toggleUserStatus(userId, currentStatus) { let newStat = currentStatus?.toLowerCase() === 'active' ? 'blocked' : 'active'; if(!confirm(`Change status to ${newStat.toUpperCase()}?`)) return; try { await _supabase.from('users').update({ status: newStat }).eq('user_id', userId); loadAllData(); } catch (err) {} }
 
-    // THE MASTERMIND 360° PROFILE CALCULATOR
+    // --- THE MASTERMIND 360° PROFILE CALCULATOR ---
     function viewUserProfile(userId) {
         let user = allUsersData.find(u => u.user_id === userId); if(!user) return;
         
-        // Build Full Network Map First
+        // 1. Set Personal & KYC Info
+        document.getElementById('modalUserName').innerText = user.name;
+        document.getElementById('modalUserId').innerText = `ID: ${user.user_id}`;
+        document.getElementById('modalUserSponsor').innerText = `Sponsor: ${user.sponsor || 'None'}`;
+        document.getElementById('modalUserMobile').innerText = user.mobile || 'No Mobile';
+        document.getElementById('modalUserPass').innerText = user.password || 'No Password';
+        document.getElementById('modalUserBank').innerText = (user.bank_acc && user.bank_ifsc) ? `${user.bank_acc} | ${user.bank_ifsc}` : 'No Bank Details';
+
+        // 2. Build Level Network Map
         let networkMap = {};
         allUsersData.forEach(u => { const sp = (u.sponsor || '').trim().toUpperCase(); if(sp) { if(!networkMap[sp]) networkMap[sp] = []; networkMap[sp].push(u); } });
 
         let currentLevelUsers = networkMap[userId.toUpperCase()] || [];
         let totalEarned = 0; let levelHtml = '';
         
-        // Loop through all 9 levels dynamically
         for (let i = 0; i < 9; i++) {
             let totalCount = currentLevelUsers.length;
             let activeCount = currentLevelUsers.filter(u => u.status?.toLowerCase() === 'active').length;
             let levelIncome = activeCount * payoutRates[i];
             totalEarned += levelIncome;
 
-            levelHtml += `<tr><td class="p-2 pl-4">Level ${i+1}</td><td class="p-2 text-center text-slate-400 font-bold">${totalCount}</td><td class="p-2 text-center text-emerald-400 font-bold">${activeCount}</td><td class="p-2 text-right pr-4 font-bold text-white">₹${levelIncome}</td></tr>`;
+            levelHtml += `<tr><td class="p-2 pl-4 text-white">Level ${i+1}</td><td class="p-2 text-center text-slate-400 font-bold">${totalCount}</td><td class="p-2 text-center text-emerald-400 font-bold">${activeCount}</td><td class="p-2 text-right pr-4 font-bold text-white">₹${levelIncome}</td></tr>`;
 
             let nextLevelUsers = [];
             currentLevelUsers.forEach(u => { nextLevelUsers = nextLevelUsers.concat(networkMap[String(u.user_id).trim().toUpperCase()] || []); });
             currentLevelUsers = nextLevelUsers;
-    }
-        // Withdrawals history
+        }
+
+        // 3. Withdrawals History
         let userWithdrawals = allWithdrawals.filter(w => w.user_id === userId);
         let totalWithdrawn = 0; let wHtml = '';
-        if(userWithdrawals.length === 0) {
-            wHtml = '<tr><td colspan="3" class="text-center text-slate-500 py-3">No withdrawals found.</td></tr>';
-        } else {
+        if(userWithdrawals.length === 0) { wHtml = '<tr><td colspan="3" class="text-center text-slate-500 py-3">No withdrawals found.</td></tr>'; } 
+        else {
             userWithdrawals.forEach(w => {
                 if(w.status === 'Paid') totalWithdrawn += parseFloat(w.amount);
-                let wDate = new Date(w.created_at).toLocaleString('en-IN', {day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'});
+                let wDate = new Date(w.created_at).toLocaleString('en-IN', {day:'2-digit', month:'short', year:'numeric'});
                 let statColor = w.status === 'Paid' ? 'text-emerald-400' : 'text-amber-400';
                 wHtml += `<tr><td class="p-2 pl-4 text-slate-400">${wDate}</td><td class="p-2 text-center font-bold text-white">₹${w.amount}</td><td class="p-2 text-right pr-4 font-bold ${statColor}">${w.status}</td></tr>`;
             });
         }
 
-        // Top Stats
-        document.getElementById('modalUserName').innerText = `${user.name} (${user.user_id})`;
+        // 4. Direct Students Data (Level 1 only)
+        let directs = networkMap[userId.toUpperCase()] || [];
+        let dHtml = '';
+        if(directs.length === 0) { dHtml = '<tr><td colspan="3" class="text-center text-slate-500 py-3">No direct students found.</td></tr>'; }
+        else {
+            directs.forEach(d => {
+                let dDate = new Date(d.created_at).toLocaleDateString('en-IN');
+                let dStat = d.status?.toLowerCase() === 'active' ? '<span class="text-emerald-400">Active</span>' : '<span class="text-slate-500">Pending</span>';
+                dHtml += `<tr><td class="p-2 pl-4"><p class="font-bold text-white">${d.name}</p><p class="text-[9px] text-slate-400 font-mono">${d.user_id}</p></td><td class="p-2 text-center text-slate-400">${dDate}</td><td class="p-2 text-right pr-4 font-bold">${dStat}</td></tr>`;
+            });
+        }
+
+        // 5. Update All Financial Stats
+        let maxLimit = user.status?.toLowerCase() === 'active' ? 50000 : 0;
+        let remainingLimit = maxLimit - totalEarned;
+        if(remainingLimit < 0) remainingLimit = 0;
+        let balance = totalEarned - totalWithdrawn;
+
+        document.getElementById('modalTotalLimit').innerText = `₹${maxLimit.toLocaleString('en-IN')}`;
         document.getElementById('modalTotalEarned').innerText = `₹${totalEarned.toLocaleString('en-IN')}`;
+        document.getElementById('modalRemainingLimit').innerText = `₹${remainingLimit.toLocaleString('en-IN')}`;
         document.getElementById('modalTotalWithdrawn').innerText = `₹${totalWithdrawn.toLocaleString('en-IN')}`;
-        document.getElementById('modalBalance').innerText = `₹${(totalEarned - totalWithdrawn).toLocaleString('en-IN')}`;
+        document.getElementById('modalBalance').innerText = `₹${balance.toLocaleString('en-IN')}`;
         
         // Inject Tables
         document.getElementById('modalLevelBody').innerHTML = levelHtml;
+        document.getElementById('modalDirectsBody').innerHTML = dHtml;
         document.getElementById('modalWithdrawBody').innerHTML = wHtml;
 
         // Open Modal
@@ -361,4 +380,4 @@
     }
 </script>
 </body>
-</html>
+</html> 
