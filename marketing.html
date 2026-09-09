@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAHAN - Edu & Promo Universe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #0f172a; color: #e2e8f0; overflow-x: hidden; }
+        
+        /* Dynamic Theme Backgrounds */
+        .bg-spiritual { background: linear-gradient(135deg, #7c2d12 0%, #450a0a 100%); }
+        .bg-safari { background: linear-gradient(135deg, #064e3b 0%, #022c22 100%); }
+        .bg-science { background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%); }
+        .bg-ias { background: linear-gradient(135deg, #4c1d95 0%, #1e1b4b 100%); }
+        .bg-promo { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
+
+        .glass-box { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        
+        /* Ticker Animation */
+        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .animate-ticker { display: inline-block; white-space: nowrap; animation: ticker 25s linear infinite; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center pb-20">
+
+    <!-- LIVE NEWS TICKER -->
+    <div class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 border-b border-emerald-400 overflow-hidden py-1 z-50">
+        <p class="animate-ticker text-[11px] font-bold text-white tracking-widest uppercase">
+            🌟 Welcome to MAHAN The Institute Of English 🌟 Learn Spoken English 🌟 Grow Your Network & Wealth 🌟 Expand Your Knowledge with Daily Updates! 🌟 "Education is the most powerful weapon" 🌟
+        </p>
+    </div>
+
+    <!-- Header -->
+    <div class="w-full max-w-md flex items-center justify-between p-4 bg-[#1e293b] border-b border-slate-700 sticky top-0 z-40">
+        <button onclick="window.location.href='dashboard.html'" class="text-slate-300 hover:text-white text-xl"><i class="fa-solid fa-arrow-left"></i></button>
+        <h1 class="text-base font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500 tracking-widest uppercase"><i class="fa-solid fa-globe text-blue-400 mr-1"></i> MAHAN Universe</h1>
+        <button onclick="playBGM()" id="musicBtn" class="text-emerald-400 text-lg hover:text-emerald-300 animate-pulse"><i class="fa-solid fa-music"></i></button>
+    </div>
+
+    <div class="w-full max-w-md p-4 space-y-4">
+        
+        <!-- DEPARTMENT SELECTION MENU -->
+        <div class="bg-[#1e293b] p-4 rounded-2xl border border-slate-700 shadow-xl">
+            <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest mb-2"><i class="fa-solid fa-building-columns text-amber-400 mr-1"></i> Select Department</p>
+            <div class="flex gap-2 overflow-x-auto hide-scroll pb-2">
+                <button onclick="loadDept('promo')" class="shrink-0 bg-blue-900/30 border border-blue-500/50 text-blue-300 px-3 py-1.5 rounded-lg text-xs font-bold transition">💼 Social Promo</button>
+                <button onclick="loadDept('spiritual')" class="shrink-0 bg-orange-900/30 border border-orange-500/50 text-orange-300 px-3 py-1.5 rounded-lg text-xs font-bold transition">🕉️ Spiritual & Legends</button>
+                <button onclick="loadDept('safari')" class="shrink-0 bg-emerald-900/30 border border-emerald-500/50 text-emerald-300 px-3 py-1.5 rounded-lg text-xs font-bold transition">🦁 Safari Knowledge</button>
+                <button onclick="loadDept('science')" class="shrink-0 bg-cyan-900/30 border border-cyan-500/50 text-cyan-300 px-3 py-1.5 rounded-lg text-xs font-bold transition">🔬 Science & Tech</button>
+                <button onclick="loadDept('ias')" class="shrink-0 bg-purple-900/30 border border-purple-500/50 text-purple-300 px-3 py-1.5 rounded-lg text-xs font-bold transition">📚 IAS / UPSC GK</button>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-3 mt-3">
+                <label class="bg-slate-700 hover:bg-slate-600 border border-slate-500 text-white text-[10px] font-bold py-2 px-2 rounded-xl flex items-center justify-center gap-1 cursor-pointer transition shadow-lg">
+                    <i class="fa-solid fa-camera text-amber-400"></i> Change Photo
+                    <input type="file" id="photoInput" accept="image/*" class="hidden" onchange="loadPhoto(event)">
+                </label>
+                <button onclick="nextContent()" class="bg-slate-700 hover:bg-slate-600 border border-slate-500 text-white text-[10px] font-bold py-2 px-2 rounded-xl flex items-center justify-center gap-1 transition shadow-lg">
+                    <i class="fa-solid fa-rotate-right text-emerald-400"></i> Next Content
+                </button>
+            </div>
+        </div>
+
+        <!-- AI TRANSLATOR & PRONUNCIATION TOOL -->
+        <div class="bg-indigo-900/30 border border-indigo-500/30 p-3 rounded-2xl flex justify-between items-center shadow-lg">
+            <div>
+                <p class="text-[10px] text-indigo-300 font-bold uppercase tracking-widest"><i class="fa-solid fa-ear-listen mr-1"></i> English Pronunciation</p>
+                <p class="text-[9px] text-slate-400">Listen & improve your speaking skills</p>
+            </div>
+            <button onclick="speakContent()" class="bg-indigo-600 hover:bg-indigo-500 text-white w-10 h-10 rounded-full shadow-xl flex items-center justify-center transition">
+                <i class="fa-solid fa-volume-high"></i>
+            </button>
+        </div>
+
+        <!-- THE LIVE BANNER (Canvas Area) -->
+        <div class="relative">
+            <p class="text-[10px] text-slate-500 text-center mb-2 font-bold">Live Poster Preview</p>
+            
+            <!-- Banner Frame -->
+            <div id="promoCard" class="bg-promo border-2 border-slate-500 rounded-[2rem] p-5 shadow-2xl relative overflow-hidden transition-all duration-700 aspect-[4/5] flex flex-col justify-between">
+                
+                <!-- TOP: Brand & Category Tag -->
+                <div class="flex justify-between items-start relative z-10">
+                    <div class="glass-box px-3 py-1 rounded-full border border-white/20">
+                        <span class="text-sm font-black tracking-widest text-white">MAHAN</span>
+                    </div>
+                    <span id="catTag" class="text-[8px] font-black uppercase tracking-widest text-amber-400 bg-amber-900/50 border border-amber-500/50 rounded-full px-2 py-1">General</span>
+                </div>
+
+                <!-- MIDDLE: Content Area -->
+                <div class="flex flex-col items-center justify-center relative z-10 my-2 space-y-3 flex-1">
+                    <!-- Dynamic Image/Icon -->
+                    <div class="w-28 h-28 rounded-2xl border-4 border-white/20 shadow-2xl relative overflow-hidden bg-slate-800 flex items-center justify-center">
+                        <img id="mainImage" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Visual" class="w-full h-full object-cover rounded-xl">
+                    </div>
+                    
+                    <!-- Text Area (English + Guj/Hi) -->
+                    <div class="text-center w-full glass-box rounded-xl p-3">
+                        <h3 id="textEng" class="text-sm font-bold text-white leading-snug mb-2">"Education is the most powerful weapon which you can use to change the world."</h3>
+                        <div class="w-full h-px bg-white/20 my-2"></div>
+                        <p id="textGuj" class="text-xs font-semibold text-emerald-300 leading-snug">"શિક્ષણ એ સૌથી શક્તિશાળી હથિયાર છે જેનો ઉપયોગ તમે દુનિયા બદલવા માટે કરી શકો છો."</p>
+                    </div>
+                </div>
+
+                <!-- BOTTOM: Compulsory Marketing & QR (Locked Section) -->
+                <div class="bg-gradient-to-r from-slate-900 to-black rounded-xl p-3 flex items-center justify-between relative z-10 w-full border border-white/10 shadow-inner">
+                    <div class="flex-1 pr-2 overflow-hidden">
+                        <p class="text-[7px] text-amber-400 uppercase tracking-[0.2em] font-black mb-1">Courtesy Of</p>
+                        <p id="cardName" class="text-xs font-black text-white truncate drop-shadow-md">Student Name</p>
+                        <p class="text-[9px] text-slate-300 font-mono mt-0.5 font-bold">ID: <span id="cardId" class="text-blue-400">STU0000</span></p>
+                    </div>
+                    <div class="bg-white p-1 rounded-lg shadow-lg shrink-0 flex flex-col items-center">
+                        <img id="qrCodeImg" src="" alt="QR" class="w-12 h-12 object-contain">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Download Button -->
+        <button onclick="downloadCard()" id="downloadBtn" class="w-full mt-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black py-4 rounded-2xl shadow-xl text-sm flex items-center justify-center gap-2 transition">
+            <i class="fa-solid fa-download text-lg"></i> Download HD Poster
+        </button>
+    </div>
+
+    <!-- Hidden Audio Player for BGM -->
+    <audio id="bgMusic" loop>
+        <!-- Using a free peaceful instrumental track link -->
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/16/audio_b8c9103604.mp3?filename=peaceful-piano-112106.mp3" type="audio/mpeg">
+    </audio>
+
+<script>
+    // === THE MAHAN BRAIN (Multi-Department Database) ===
+    const mahanDatabase = {
+        promo: {
+            theme: 'bg-promo',
+            tag: 'Social Promo',
+            content: [
+                { en: "Turn your free time into an earning opportunity with MAHAN.", gu: "MAHAN સાથે તમારા ફ્રી સમયને કમાણીની તકમાં બદલો.", img: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png" },
+                { en: "Learn Spoken English and unlock global career opportunities.", gu: "સ્પોકન ઇંગ્લિશ શીખો અને વૈશ્વિક કરિયરની તકો ખોલો.", img: "https://cdn-icons-png.flaticon.com/512/3135/3135715.png" }
+            ]
+        },
+        spiritual: {
+            theme: 'bg-spiritual',
+            tag: 'Spiritual & Legends',
+            content: [
+                { en: "Arise, awake, and stop not till the goal is reached. - Swami Vivekananda", gu: "ઉઠો, જાગો અને ધ્યેય પ્રાપ્તિ સુધી મંડ્યા રહો. - સ્વામી વિવેકાનંદ", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Swami_Vivekananda_Chicago_1893.jpg/800px-Swami_Vivekananda_Chicago_1893.jpg" },
+                { en: "You must be the change you wish to see in the world. - Mahatma Gandhi", gu: "તમે દુનિયામાં જે બદલાવ જોવા માંગો છો, તે પહેલા તમારામાં લાવો. - મહાત્મા ગાંધી", img: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Mahatma-Gandhi%2C_studio%2C_1931.jpg/800px-Mahatma-Gandhi%2C_studio%2C_1931.jpg" },
+                { en: "A person should not be too honest. Straight trees are cut first. - Chanakya", gu: "વ્યક્તિએ બહુ સીધા ન થવું જોઈએ. સીધા ઝાડ પહેલા કપાય છે. - ચાણક્ય", img: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Chanakya.jpg" }
+            ]
+        },
+        safari: {
+            theme: 'bg-safari',
+            tag: 'Safari Knowledge',
+            content: [
+                { en: "Do you know? An octopus has three hearts and blue blood.", gu: "શું તમે જાણો છો? ઓક્ટોપસને ત્રણ હૃદય અને ભૂરું લોહી હોય છે.", img: "https://cdn-icons-png.flaticon.com/512/1998/1998671.png" },
+                { en: "Fact: Honey never spoils. Archaeologists found pots of honey in ancient Egyptian tombs that are over 3,000 years old.", gu: "હકીકત: મધ ક્યારેય બગડતું નથી. ઈજિપ્તના પિરામિડમાંથી 3000 વર્ષ જૂનું મધ મળ્યું છે જે હજુ પણ ખાવાલાયક છે.", img: "https://cdn-icons-png.flaticon.com/512/826/826955.png" }
+            ]
+        },
+        science: {
+            theme: 'bg-science',
+            tag: 'Science & Tech',
+            content: [
+                { en: "Light travels at a speed of 299,792 kilometers per second in a vacuum.", gu: "પ્રકાશ શૂન્યાવકાશમાં 2,99,792 કિલોમીટર પ્રતિ સેકન્ડની ઝડપે મુસાફરી કરે છે.", img: "https://cdn-icons-png.flaticon.com/512/2083/2083296.png" },
+                { en: "Artificial Intelligence (AI) is the simulation of human intelligence by machines.", gu: "આર્ટિફિશિયલ ઇન્ટેલિજન્સ (AI) એટલે મશીનો દ્વારા માનવ બુદ્ધિની નકલ.", img: "https://cdn-icons-png.flaticon.com/512/2172/2172880.png" }
+            ]
+        },
+        ias: {
+            theme: 'bg-ias',
+            tag: 'IAS / UPSC GK',
+            content: [
+                { en: "The Constitution of India is the longest written constitution of any country in the world.", gu: "ભારતનું બંધારણ એ વિશ્વના કોઈપણ દેશનું સૌથી લાંબુ લિખિત બંધારણ છે.", img: "https://cdn-icons-png.flaticon.com/512/2666/2666505.png" },
+                { en: "Reserve Bank of India (RBI) was established on April 1, 1935.", gu: "ભારતીય રિઝર્વ બેંક (RBI) ની સ્થાપના 1 એપ્રિલ, 1935 ના રોજ થઈ હતી.", img: "https://cdn-icons-png.flaticon.com/512/2721/2721280.png" }
+            ]
+        }
+    };
+
+    let currentDept = 'promo';
+    let currentIndex = 0;
+    let isMusicPlaying = false;
+    let customImageLoaded = false; // Check if user uploaded own photo
+
+    window.onload = () => {
+        const userDataStr = localStorage.getItem('mahan_user');
+        if (!userDataStr) { window.location.href = "login.html"; return; }
+        const currentUser = JSON.parse(userDataStr);
+        
+        document.getElementById('cardName').innerText = currentUser.name || 'Student';
+        document.getElementById('cardId').innerText = currentUser.user_id || 'STU0000';
+        
+        const refLink = `https://mahan-institute-english.github.io/mahan-institute-platform/register.html?ref=${currentUser.user_id}`;
+        document.getElementById('qrCodeImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(refLink)}&margin=5`;
+
+        loadDept('promo'); // Load default
+    };
+
+    function loadDept(deptName) {
+        currentDept = deptName;
+        currentIndex = 0;
+        updateCardUI();
+    }
+
+    function nextContent() {
+        currentIndex = (currentIndex + 1) % mahanDatabase[currentDept].content.length;
+        updateCardUI();
+    }
+
+    function updateCardUI() {
+        const deptData = mahanDatabase[currentDept];
+        const item = deptData.content[currentIndex];
+        const card = document.getElementById('promoCard');
+
+        // Update Theme
+        card.className = `border-2 border-slate-500 rounded-[2rem] p-5 shadow-2xl relative overflow-hidden transition-all duration-700 aspect-[4/5] flex flex-col justify-between ${deptData.theme}`;
+        document.getElementById('catTag').innerText = deptData.tag;
+
+        // Update Text (Fade Effect)
+        const tEng = document.getElementById('textEng');
+        const tGuj = document.getElementById('textGuj');
+        tEng.style.opacity = 0; tGuj.style.opacity = 0;
+        
+        setTimeout(() => {
+            tEng.innerText = `"${item.en}"`;
+            tGuj.innerText = `"${item.gu}"`;
+            tEng.style.opacity = 1; tGuj.style.opacity = 1;
+        }, 300);
+
+        // Update Image only if user hasn't uploaded a custom photo
+        if(!customImageLoaded) {
+            document.getElementById('mainImage').src = item.img;
+        }
+    }
+
+    // --- AI PRONUNCIATION (Text-to-Speech) ---
+    function speakContent() {
+        if (!('speechSynthesis' in window)) { alert("Sorry, your browser doesn't support Text-to-Speech."); return; }
+        
+        window.speechSynthesis.cancel(); // Stop if already playing
+
+        const item = mahanDatabase[currentDept].content[currentIndex];
+        
+        // Speak English
+        const msgEn = new SpeechSynthesisUtterance(item.en);
+        msgEn.lang = 'en-US';
+        msgEn.rate = 0.9; // થોડું ધીમું બોલશે જેથી સ્ટુડન્ટ સમજી શકે
+        
+        // Speak Gujarati (Fallback to Hindi if Guj not available on device)
+        const msgGu = new SpeechSynthesisUtterance(item.gu);
+        msgGu.lang = 'gu-IN';
+        msgGu.rate = 0.9;
+
+        window.speechSynthesis.speak(msgEn);
+        
+        // English પૂરું થાય એટલે ગુજરાતી બોલશે
+        msgEn.onend = () => { window.speechSynthesis.speak(msgGu); };
+    }
+
+    // --- BACKGROUND MUSIC ---
+    function playBGM() {
+        const bgm = document.getElementById('bgMusic');
+        const btn = document.getElementById('musicBtn');
+        if (isMusicPlaying) {
+            bgm.pause();
+            isMusicPlaying = false;
+            btn.innerHTML = '<i class="fa-solid fa-music"></i>';
+            btn.classList.add('text-emerald-400'); btn.classList.remove('text-red-500', 'animate-bounce');
+        } else {
+            bgm.play().catch(e => alert("Please tap anywhere on the screen first to play music."));
+            isMusicPlaying = true;
+            btn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+            btn.classList.remove('text-emerald-400'); btn.classList.add('text-red-500', 'animate-bounce');
+        }
+    }
+
+    // --- USER CUSTOM PHOTO ---
+    function loadPhoto(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('mainImage').src = e.target.result;
+                customImageLoaded = true; // Flag set, so changing category doesn't override photo
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // --- HD POSTER DOWNLOAD ---
+    function downloadCard() {
+        const btn = document.getElementById('downloadBtn');
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-lg"></i> Processing...';
+        btn.disabled = true;
+
+        html2canvas(document.getElementById('promoCard'), { 
+            scale: 3, useCORS: true, backgroundColor: null 
+        }).then(canvas => {
+            const image = canvas.toDataURL("image/jpeg", 1.0);
+            const link = document.createElement('a');
+            link.download = `MAHAN_Knowledge_${document.getElementById('cardId').innerText}.jpg`;
+            link.href = image;
+            link.click();
+
+            btn.innerHTML = '<i class="fa-solid fa-check text-lg"></i> Poster Downloaded!';
+            setTimeout(() => { btn.innerHTML = '<i class="fa-solid fa-download text-lg"></i> Download HD Poster'; btn.disabled = false; }, 3000);
+        }).catch(err => { alert("Error"); btn.disabled = false; });
+    }
+</script>
+</body>
+  </html>
