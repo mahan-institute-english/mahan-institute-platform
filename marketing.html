@@ -12,8 +12,6 @@
         body { font-family: 'Poppins', sans-serif; background-color: #0f172a; color: #e2e8f0; overflow-x: hidden; }
         .glass-box { background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.15); }
         .hide-scroll::-webkit-scrollbar { display: none; }
-        
-        /* Modal Animation */
         .modal-enter { animation: modalIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
         @keyframes modalIn { from { opacity: 0; transform: scale(0.95) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
     </style>
@@ -27,60 +25,51 @@
         <div class="w-6"></div>
     </div>
 
-    <!-- MAIN DASHBOARD MENU (Grid as per your sketch) -->
+    <!-- MAIN DASHBOARD MENU -->
     <div class="w-full max-w-md p-4 mt-2">
         <h2 class="text-xs text-slate-400 font-bold uppercase tracking-widest mb-4 text-center">Select Category / Feature</h2>
         
         <div class="grid grid-cols-2 gap-4">
-            <!-- 1. My Own Quote -->
             <button onclick="openModal('myOwn')" class="bg-gradient-to-br from-pink-600 to-purple-700 p-4 rounded-2xl shadow-lg border border-pink-500/30 flex flex-col items-center justify-center gap-2 hover:scale-105 transition transform">
                 <i class="fa-solid fa-pen-nib text-3xl text-white drop-shadow-md"></i>
                 <span class="text-[11px] font-black text-white uppercase tracking-wider">My Own Quote</span>
             </button>
 
-            <!-- 2. Dictionary -->
             <button onclick="openModal('dict')" class="bg-gradient-to-br from-blue-600 to-indigo-700 p-4 rounded-2xl shadow-lg border border-blue-500/30 flex flex-col items-center justify-center gap-2 hover:scale-105 transition transform">
                 <i class="fa-solid fa-book-open text-3xl text-white drop-shadow-md"></i>
                 <span class="text-[11px] font-black text-white uppercase tracking-wider">Dictionary</span>
             </button>
 
-            <!-- 3. Education -->
             <button onclick="openSubModal('education', '🎓 Education', ['Dr. Radhakrishnan', 'Chanakya Neeti', 'Abdul Kalam'])" class="bg-[#1e293b] p-4 rounded-2xl shadow-lg border border-slate-600 flex flex-col items-center justify-center gap-2 hover:bg-slate-700 transition">
                 <i class="fa-solid fa-graduation-cap text-3xl text-emerald-400"></i>
                 <span class="text-[11px] font-bold text-slate-200 uppercase tracking-wider">Education</span>
             </button>
 
-            <!-- 4. Viral Occasion -->
             <button onclick="openSubModal('occasions', '🎉 Viral Occasion', ['Birthday', 'Marriage', 'New Vehicle', 'Other'])" class="bg-[#1e293b] p-4 rounded-2xl shadow-lg border border-slate-600 flex flex-col items-center justify-center gap-2 hover:bg-slate-700 transition">
                 <i class="fa-solid fa-cake-candles text-3xl text-pink-400"></i>
                 <span class="text-[11px] font-bold text-slate-200 uppercase tracking-wider">Occasion</span>
             </button>
 
-            <!-- 5. Saints & Legends -->
             <button onclick="openSubModal('spiritual', '🕉️ Saints & Legends', ['Ramayana', 'Mahabharat', 'Geeta', 'Sant Tukaram', 'Tulsidas'])" class="bg-[#1e293b] p-4 rounded-2xl shadow-lg border border-slate-600 flex flex-col items-center justify-center gap-2 hover:bg-slate-700 transition col-span-2">
                 <i class="fa-solid fa-om text-3xl text-orange-500"></i>
                 <span class="text-[11px] font-bold text-slate-200 uppercase tracking-wider">Saints & Dharm Granth</span>
             </button>
 
-            <!-- 6. Safari Magazine -->
             <button onclick="openSubModal('safari', '🦁 Safari Magazine', ['Amazing Facts', 'World History'])" class="bg-[#1e293b] p-4 rounded-2xl shadow-lg border border-slate-600 flex flex-col items-center justify-center gap-2 hover:bg-slate-700 transition">
                 <i class="fa-solid fa-compass text-3xl text-emerald-500"></i>
                 <span class="text-[10px] font-bold text-slate-200 uppercase tracking-wider">Safari Mag.</span>
             </button>
 
-            <!-- 7. GK -->
             <button onclick="openSubModal('gk', '🌍 General Knowledge', ['India GK', 'World GK'])" class="bg-[#1e293b] p-4 rounded-2xl shadow-lg border border-slate-600 flex flex-col items-center justify-center gap-2 hover:bg-slate-700 transition">
                 <i class="fa-solid fa-earth-americas text-3xl text-cyan-400"></i>
                 <span class="text-[11px] font-bold text-slate-200 uppercase tracking-wider">General GK</span>
             </button>
 
-            <!-- 8. Science Fact -->
             <button onclick="openSubModal('science', '🔬 Science Facts', ['Deep Space', 'Human Body', 'Technology'])" class="bg-[#1e293b] p-4 rounded-2xl shadow-lg border border-slate-600 flex flex-col items-center justify-center gap-2 hover:bg-slate-700 transition">
                 <i class="fa-solid fa-flask text-3xl text-purple-400"></i>
                 <span class="text-[11px] font-bold text-slate-200 uppercase tracking-wider">Science</span>
             </button>
 
-            <!-- 9. IAS / UPSC / GPSC -->
             <button onclick="openSubModal('ias', '📚 IAS/UPSC/GPSC', ['MCQ & Quiz', 'Current Affairs', 'Constitution'])" class="bg-[#1e293b] p-4 rounded-2xl shadow-lg border border-slate-600 flex flex-col items-center justify-center gap-2 hover:bg-slate-700 transition">
                 <i class="fa-solid fa-landmark text-3xl text-amber-500"></i>
                 <span class="text-[11px] font-bold text-slate-200 uppercase tracking-wider">UPSC / GPSC</span>
@@ -88,27 +77,21 @@
         </div>
     </div>
 
-    <!-- GLOBAL MODAL OVERLAY (The Pop-up System) -->
+    <!-- GLOBAL MODAL OVERLAY -->
     <div id="globalModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden z-[100] flex-col items-center justify-start overflow-y-auto pb-10">
-        
-        <!-- Modal Header -->
         <div class="w-full max-w-md p-4 flex justify-between items-center sticky top-0 bg-[#0f172a]/90 backdrop-blur-md z-[110] border-b border-slate-700">
             <h2 id="modalTitle" class="text-sm font-black text-white tracking-widest uppercase">Title</h2>
             <button onclick="closeModal()" class="w-8 h-8 bg-red-500/20 text-red-400 rounded-full flex justify-center items-center hover:bg-red-500 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
         </div>
-
-        <div class="w-full max-w-md p-4 w-full flex-1 modal-enter space-y-4" id="modalContent">
-            <!-- Dynamic Content goes here -->
-        </div>
+        <div class="w-full max-w-md p-4 w-full flex-1 modal-enter space-y-4" id="modalContent"></div>
     </div>
 
 <script>
-    // === THE MASSIVE AI DATABASE (Expanded content based on your book) ===
     const db = {
         education: [
-            { en: "True teachers are those who help us think for ourselves.", gu: "સાચા શિક્ષકો એ છે જે આપણને આપણી જાતે વિચારવામાં મદદ કરે છે. (Dr. Radhakrishnan)" },
+            { en: "True teachers are those who help us think for ourselves.", gu: "સાચા શિક્ષકો એ છે જે આપણને આપણી જાતે વિચારવામાં મદદ કરે છે." },
             { en: "Education is the most powerful weapon to change the world.", gu: "શિક્ષણ એ દુનિયા બદલવા માટેનું સૌથી શક્તિશાળી હથિયાર છે." },
-            { en: "Learning gives creativity, creativity leads to thinking.", gu: "શિક્ષણ સર્જનાત્મકતા આપે છે, સર્જનાત્મકતા વિચાર તરફ દોરી જાય છે. (APJ Abdul Kalam)" }
+            { en: "Learning gives creativity, creativity leads to thinking.", gu: "શિક્ષણ સર્જનાત્મકતા આપે છે, સર્જનાત્મકતા વિચાર તરફ દોરી જાય છે." }
         ],
         occasions: [
             { en: "Happy Birthday! Wishing you a year filled with success and joy.", gu: "જન્મદિવસની શુભકામનાઓ! તમારું આ વર્ષ સફળતા અને ખુશીઓથી ભરેલું રહે." },
@@ -138,7 +121,6 @@
         ]
     };
 
-    // Unsplash High-Quality Backgrounds
     const bgImages = [
         "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80",
         "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80",
@@ -156,7 +138,25 @@
     };
 
     function closeModal() { document.getElementById('globalModal').classList.add('hidden'); }
-                      // === POP-UP MANAGER ===
+
+    // === GOOGLE TRANSLATE API INTEGRATION (High Accuracy Fix) ===
+    async function fetchGoogleTranslation(text, sourceLang, targetLang) {
+        try {
+            const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            let translatedText = "";
+            if (data && data[0]) {
+                data[0].forEach(part => { if (part[0]) translatedText += part[0]; });
+            }
+            return translatedText || "Translation Error";
+        } catch (error) {
+            console.error(error);
+            return "Error connected to translation server.";
+        }
+    }
+
+    // === POP-UP MANAGER ===
     function openModal(type) {
         document.getElementById('globalModal').classList.remove('hidden');
         document.getElementById('globalModal').scrollTop = 0;
@@ -166,10 +166,10 @@
             document.getElementById('modalTitle').innerHTML = '<i class="fa-solid fa-book-open text-blue-400"></i> Smart Dictionary';
             mc.innerHTML = `
                 <div class="bg-[#1e293b] p-5 rounded-2xl border border-blue-500/50 shadow-xl space-y-4 text-center">
-                    <p class="text-xs text-slate-300">Type an English word or sentence to find its Gujarati meaning.</p>
+                    <p class="text-xs text-slate-300">Type an English word or sentence to find its true Gujarati meaning.</p>
                     <input type="text" id="dictInput" placeholder="e.g., Apple or How are you?" class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-4 text-white text-center font-bold focus:border-blue-500 outline-none">
                     <button onclick="searchDictionary()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl shadow-lg transition"><i class="fa-solid fa-language"></i> Search & Translate</button>
-                    <p id="dictLoad" class="text-xs text-amber-400 hidden animate-pulse">Searching...</p>
+                    <p id="dictLoad" class="text-xs text-amber-400 hidden animate-pulse">Connecting to Google AI...</p>
                     
                     <div id="dictResult" class="hidden mt-4 pt-4 border-t border-slate-600 text-center">
                         <p class="text-[10px] text-slate-400 uppercase tracking-widest mb-1">Gujarati Meaning</p>
@@ -187,14 +187,14 @@
                     <p class="text-[10px] text-pink-400 uppercase font-bold tracking-widest">Type Your Quote</p>
                     <textarea id="customInput" rows="3" placeholder="તમારો વિચાર અહી લખો..." class="w-full bg-[#0f172a] border border-slate-600 rounded-xl p-3 text-sm text-white outline-none focus:border-pink-500"></textarea>
                     <div class="grid grid-cols-2 gap-2">
-                        <button onclick="customTrans('gu-en')" class="bg-emerald-600 text-white text-[10px] font-bold py-3 rounded-xl"><i class="fa-solid fa-language"></i> Guj to Eng</button>
-                        <button onclick="customTrans('en-gu')" class="bg-blue-600 text-white text-[10px] font-bold py-3 rounded-xl"><i class="fa-solid fa-language"></i> Eng to Guj</button>
+                        <button onclick="customTrans('gu', 'en')" class="bg-emerald-600 text-white text-[10px] font-bold py-3 rounded-xl"><i class="fa-solid fa-language"></i> Guj to Eng</button>
+                        <button onclick="customTrans('en', 'gu')" class="bg-blue-600 text-white text-[10px] font-bold py-3 rounded-xl"><i class="fa-solid fa-language"></i> Eng to Guj</button>
                     </div>
                     <p id="transLoading" class="text-[10px] text-amber-400 hidden text-center animate-pulse">Translating...</p>
                 </div>
                 ${getPosterHTML('My Quote')}
             `;
-            generateRandomPoster('myOwn'); // Empty init
+            generateRandomPoster('myOwn');
         }
     }
 
@@ -215,61 +215,60 @@
         generateRandomPoster(categoryKey);
     }
 
-    // === DICTIONARY LOGIC ===
+    // === DICTIONARY LOGIC (Using Google API) ===
     async function searchDictionary() {
         const word = document.getElementById('dictInput').value.trim();
         if(!word) return;
         document.getElementById('dictLoad').classList.remove('hidden');
         document.getElementById('dictResult').classList.add('hidden');
-        try {
-            const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(word)}&langpair=en|gu`);
-            const data = await res.json();
-            activeEn = word; activeGu = data.responseData.translatedText;
-            
-            document.getElementById('dictGu').innerText = activeGu;
-            document.getElementById('dictLoad').classList.add('hidden');
-            document.getElementById('dictResult').classList.remove('hidden');
-            playDictAudio(); // Auto play
-        } catch(e) { alert('Error!'); document.getElementById('dictLoad').classList.add('hidden'); }
+        
+        // Translate from English (en) to Gujarati (gu)
+        const translatedText = await fetchGoogleTranslation(word, 'en', 'gu');
+        activeEn = word; activeGu = translatedText;
+        
+        document.getElementById('dictGu').innerText = activeGu;
+        document.getElementById('dictLoad').classList.add('hidden');
+        document.getElementById('dictResult').classList.remove('hidden');
+        playDictAudio();
     }
 
     function playDictAudio() {
         if (!('speechSynthesis' in window)) return;
         window.speechSynthesis.cancel(); 
-        const mEn = new SpeechSynthesisUtterance(activeEn); mEn.lang = 'en-US'; 
-        const mGu = new SpeechSynthesisUtterance(activeGu); mGu.lang = 'gu-IN'; 
+        const mEn = new SpeechSynthesisUtterance(activeEn); mEn.lang = 'en-US'; mEn.rate = 0.9;
+        const mGu = new SpeechSynthesisUtterance(activeGu); mGu.lang = 'gu-IN'; mGu.rate = 0.9;
         window.speechSynthesis.speak(mEn);
         mEn.onend = () => { window.speechSynthesis.speak(mGu); };
     }
 
-    // === CUSTOM QUOTE LOGIC ===
-    async function customTrans(pair) {
+    // === CUSTOM QUOTE LOGIC (Using Google API) ===
+    async function customTrans(sl, tl) {
         const txt = document.getElementById('customInput').value.trim();
         if(!txt) return;
         document.getElementById('transLoading').classList.remove('hidden');
-        try {
-            const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(txt)}&langpair=${pair}`);
-            const data = await res.json();
-            if(pair === 'gu-en') { activeGu = txt; activeEn = data.responseData.translatedText; } 
-            else { activeEn = txt; activeGu = data.responseData.translatedText; }
-            
-            updatePosterText();
-            document.getElementById('transLoading').classList.add('hidden');
-        } catch(e) { alert('Error'); document.getElementById('transLoading').classList.add('hidden'); }
+        
+        const translatedText = await fetchGoogleTranslation(txt, sl, tl);
+        
+        if(sl === 'gu') { activeGu = txt; activeEn = translatedText; } 
+        else { activeEn = txt; activeGu = translatedText; }
+        
+        updatePosterText();
+        document.getElementById('transLoading').classList.add('hidden');
     }
 
-    // === POSTER GENERATION ===
+    // === POSTER GENERATION (Cropping Fix Applied) ===
     function getPosterHTML(catName) {
         const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent('https://mahan-institute-english.github.io/mahan-institute-platform/register.html?ref='+userObj.id)}&margin=5`;
         return `
             <div id="posterBox" class="relative rounded-[1.5rem] shadow-2xl border-4 border-slate-600 overflow-hidden w-full aspect-[4/5] flex flex-col bg-black">
                 <img id="bgImg" src="${bgImages[0]}" class="absolute inset-0 w-full h-full object-cover z-0">
-                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-black/30 z-0"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/30 z-0"></div>
 
-                <div class="relative z-10 flex flex-col h-full justify-between p-4 pb-5">
+                <!-- Increased bottom padding (pb-6) to prevent cutting -->
+                <div class="relative z-10 flex flex-col h-full justify-between p-4 pb-6">
                     <div class="text-center pt-2"><span class="text-[10px] font-black uppercase tracking-widest text-amber-400 bg-black/70 border border-amber-500/50 rounded-full px-4 py-1.5">${catName}</span></div>
                     
-                    <div class="flex-1 flex flex-col justify-center mb-2 mt-2">
+                    <div class="flex-1 flex flex-col justify-center mb-3 mt-3">
                         <div class="glass-box rounded-2xl p-5 w-full text-center shadow-2xl">
                             <i class="fa-solid fa-quote-left text-white/30 text-3xl mb-2"></i>
                             <h3 id="pEn" class="text-sm md:text-base font-black text-white leading-relaxed mb-3">Type above or click a topic!</h3>
@@ -278,10 +277,11 @@
                         </div>
                     </div>
 
-                    <div class="bg-black/80 backdrop-blur-md rounded-xl p-3 flex justify-between items-center w-full border border-white/20">
+                    <!-- Added mb-2 to lift the bottom box up slightly -->
+                    <div class="bg-black/80 backdrop-blur-md rounded-xl p-3 flex justify-between items-center w-full border border-white/20 mb-2">
                         <div class="flex-1 pr-3 overflow-hidden">
                             <p class="text-[8px] text-amber-400 uppercase tracking-widest font-black mb-1">Presented By</p>
-                            <p class="text-xs font-black text-white truncate">${userObj.name}</p>
+                            <p class="text-xs font-black text-white truncate pb-0.5">${userObj.name}</p>
                             <p class="text-[9px] text-slate-300 font-mono font-bold">ID: ${userObj.id}</p>
                         </div>
                         <img src="${qrUrl}" class="w-12 h-12 object-contain bg-white p-1 rounded-md">
@@ -289,7 +289,6 @@
                 </div>
             </div>
 
-            <!-- Poster Tools -->
             <div class="grid grid-cols-2 gap-2 mt-2">
                 <button onclick="playDictAudio()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 text-xs shadow-lg"><i class="fa-solid fa-volume-high"></i> Play Audio</button>
                 <label class="bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 text-xs cursor-pointer shadow-lg">
@@ -329,12 +328,18 @@
     function downloadPoster() {
         const btn = document.getElementById('dlBtn');
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
-        html2canvas(document.getElementById('posterBox'), { scale: 3, useCORS: true }).then(canvas => {
-            const link = document.createElement('a');
-            link.download = `MAHAN_${userObj.id}.jpg`; link.href = canvas.toDataURL("image/jpeg", 1.0); link.click();
-            btn.innerHTML = '<i class="fa-solid fa-download"></i> Download HQ Poster';
-        });
+        
+        // Scroll fix for mobile to prevent cropping
+        document.getElementById('globalModal').scrollTop = 0;
+        
+        setTimeout(() => {
+            html2canvas(document.getElementById('posterBox'), { scale: 3, useCORS: true, scrollY: 0 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `MAHAN_${userObj.id}.jpg`; link.href = canvas.toDataURL("image/jpeg", 1.0); link.click();
+                btn.innerHTML = '<i class="fa-solid fa-download"></i> Download HQ Poster';
+            });
+        }, 300);
     }
 </script>
 </body>
-</html>
+</html> 
