@@ -13,7 +13,7 @@
         .hide-scroll::-webkit-scrollbar { display: none; }
         .modal-enter { animation: modalIn 0.3s ease-out forwards; }
         @keyframes modalIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        /* Ultra strong text shadow to make text readable on ANY background without black boxes */
+        /* Ultra strong text shadow for crystal clear reading on any background */
         .heavy-shadow { text-shadow: 2px 2px 4px rgba(0,0,0,1), -2px -2px 4px rgba(0,0,0,1), 0px 5px 15px rgba(0,0,0,1); }
     </style>
 </head>
@@ -38,10 +38,13 @@
                 <span class="text-[11px] font-black text-white uppercase tracking-wider">Dictionary</span>
             </button>
 
-            <button onclick="fetchLiveInternetData('gk')" class="bg-gradient-to-br from-emerald-600 to-teal-700 p-4 rounded-2xl shadow-lg border border-emerald-500/50 flex flex-col items-center justify-center gap-2 hover:scale-105 transition transform col-span-2">
+            <button onclick="fetchLiveInternetData('gk')" class="bg-gradient-to-br from-emerald-600 to-teal-700 p-4 rounded-2xl shadow-lg border border-emerald-500/50 flex flex-col items-center justify-center gap-2 hover:scale-105 transition transform">
                 <i class="fa-solid fa-earth-americas text-3xl text-white animate-pulse"></i>
-                <span class="text-[12px] font-black text-white uppercase tracking-wider">Live World GK</span>
-                <span class="text-[9px] text-emerald-200">New Fact Every Time!</span>
+                <span class="text-[12px] font-black text-white uppercase tracking-wider text-center">Live World GK<br>(Unlimited)</span>
+            </button>
+            <button onclick="fetchLiveInternetData('spiritual')" class="bg-gradient-to-br from-orange-600 to-red-700 p-4 rounded-2xl shadow-lg border border-orange-500/50 flex flex-col items-center justify-center gap-2 hover:scale-105 transition transform">
+                <i class="fa-solid fa-om text-3xl text-white animate-pulse"></i>
+                <span class="text-[12px] font-black text-white uppercase tracking-wider text-center">Live Wisdom<br>(Unlimited)</span>
             </button>
 
             <button onclick="openCategory('education')" class="bg-[#1e293b] p-4 rounded-2xl shadow-lg border border-slate-600 flex flex-col items-center justify-center gap-2 hover:bg-slate-700 transition">
@@ -49,8 +52,8 @@
                 <span class="text-[11px] font-bold text-slate-200 uppercase tracking-wider">Education</span>
             </button>
             <button onclick="openCategory('spiritual')" class="bg-[#1e293b] p-4 rounded-2xl shadow-lg border border-slate-600 flex flex-col items-center justify-center gap-2 hover:bg-slate-700 transition">
-                <i class="fa-solid fa-om text-3xl text-orange-500"></i>
-                <span class="text-[10px] font-bold text-slate-200 uppercase tracking-wider text-center">Saints & Granth</span>
+                <i class="fa-solid fa-dharmachakra text-3xl text-orange-500"></i>
+                <span class="text-[10px] font-bold text-slate-200 uppercase tracking-wider text-center">Granth & Saints</span>
             </button>
             
             <button onclick="openCategory('safari')" class="bg-[#1e293b] p-4 rounded-2xl shadow-lg border border-slate-600 flex flex-col items-center justify-center gap-2 hover:bg-slate-700 transition">
@@ -66,8 +69,9 @@
 
     <div id="globalModal" class="fixed inset-0 bg-[#0f172a]/95 backdrop-blur-md hidden z-[100] flex-col items-center justify-start overflow-y-auto pb-10">
         <div class="w-full max-w-md p-4 flex justify-between items-center sticky top-0 bg-[#0f172a]/90 backdrop-blur-md z-[110] border-b border-slate-700">
+            <button onclick="handleBackNavigation()" class="text-slate-300 hover:text-white text-xl px-2 py-1"><i class="fa-solid fa-arrow-left"></i></button>
             <h2 id="modalTitle" class="text-sm font-black text-white tracking-widest uppercase">Title</h2>
-            <button onclick="closeModal()" class="w-8 h-8 bg-red-500/20 text-red-400 rounded-full flex justify-center items-center hover:bg-red-500 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
+            <div class="w-6"></div>
         </div>
         <div class="w-full max-w-md p-4 w-full flex-1 modal-enter space-y-4" id="modalContent"></div>
     </div>
@@ -82,8 +86,7 @@
         <div id="posterBox" class="relative rounded-[1.5rem] shadow-2xl border-2 border-slate-500 overflow-hidden w-full aspect-[4/5] flex flex-col bg-slate-900">
             
             <img id="bgImg" src="" class="absolute inset-0 w-full h-full object-cover z-0">
-            
-            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/70 z-0"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/30 z-0"></div>
 
             <div class="relative z-10 flex flex-col h-full justify-between p-4 pb-8">
                 
@@ -93,7 +96,7 @@
                     <p id="pGu" class="text-[14px] md:text-base font-bold text-emerald-400 leading-snug heavy-shadow">"Gujarati Text"</p>
                 </div>
 
-                <div class="flex justify-between items-end w-full px-2 mt-4">
+                <div class="flex justify-between items-end w-full px-2 mt-4 mb-4">
                     <div class="flex-1 pr-3">
                         <p class="text-[9px] text-amber-400 uppercase tracking-widest font-black mb-1 heavy-shadow border-b border-amber-500/50 inline-block pb-0.5">Presented By</p>
                         <p class="text-sm font-black text-white truncate pb-0.5 heavy-shadow" id="cName">Student Name</p>
@@ -115,32 +118,24 @@
     </div>
 
 <script>
-    // === EXPANDED DB WITH ACCURATE IMAGES & TEXTS ===
+    // === EXPANDED DB WITH ACCURATE IMAGES ===
     const db = {
         education: {
             title: "🎓 Education & Knowledge",
             subs: [
                 {
                     id: "kalam", name: "Dr. APJ Abdul Kalam",
-                    images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/A._P._J._Abdul_Kalam_in_2008.jpg/800px-A._P._J._Abdul_Kalam_in_2008.jpg", "https://images.unsplash.com/photo-1517431185593-3d0d8bb75be4?auto=format&fit=crop&q=80"],
+                    images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/A._P._J._Abdul_Kalam_in_2008.jpg/800px-A._P._J._Abdul_Kalam_in_2008.jpg"],
                     quotes: [
                         { en: "Dream, Dream, Dream. Dreams transform into thoughts and thoughts result in action.", gu: "સપનાઓ જુઓ, કારણ કે સપના વિચારોમાં બદલાય છે અને વિચારો કર્મમાં પરિણમે છે." },
                         { en: "Learning gives creativity, creativity leads to thinking.", gu: "શિક્ષણ સર્જનાત્મકતા આપે છે, સર્જનાત્મકતા વિચાર તરફ દોરી જાય છે." }
                     ]
                 },
                 {
-                    id: "radhakrishnan", name: "Dr. Radhakrishnan",
-                    images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Radhakrishnan.jpg/800px-Radhakrishnan.jpg"],
-                    quotes: [
-                        { en: "True teachers are those who help us think for ourselves.", gu: "સાચા શિક્ષકો એ છે જે આપણને આપણી જાતે વિચારવામાં મદદ કરે છે." }
-                    ]
-                },
-                {
                     id: "chanakya", name: "Chanakya Neeti",
-                    images: ["https://upload.wikimedia.org/wikipedia/commons/e/e0/Chanakya.jpg", "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80"],
+                    images: ["https://upload.wikimedia.org/wikipedia/commons/e/e0/Chanakya.jpg"],
                     quotes: [
-                        { en: "Education is the best friend. An educated person is respected everywhere.", gu: "શિક્ષણ એ સૌથી સારો મિત્ર છે. શિક્ષિત વ્યક્તિ દરેક જગ્યાએ સન્માન પામે છે." },
-                        { en: "A person is great by his actions, not by his birth.", gu: "વ્યક્તિ પોતાના કર્મોથી મહાન બને છે, પોતાના જન્મથી નહિ." }
+                        { en: "Education is the best friend. An educated person is respected everywhere.", gu: "શિક્ષણ એ સૌથી સારો મિત્ર છે. શિક્ષિત વ્યક્તિ દરેક જગ્યાએ સન્માન પામે છે." }
                     ]
                 }
             ]
@@ -153,26 +148,21 @@
                     images: ["https://images.unsplash.com/photo-1599839619722-39751411ea63?auto=format&fit=crop&q=80", "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Krishna_and_arjuna_in_kurukshetra.jpg/800px-Krishna_and_arjuna_in_kurukshetra.jpg"],
                     quotes: [
                         { en: "Whenever dharma declines and adharma grows, I manifest Myself.", gu: "જ્યારે ધર્મનો નાશ થાય છે અને અધર્મ વધે છે, ત્યારે હું પ્રગટ થાઉં છું." },
-                        { en: "You have the right to work, but never to the fruit of work.", gu: "તમારો અધિકાર માત્ર કર્મ કરવાનો છે, ફળની આશા રાખવાનો નહિ." },
-                        { en: "The soul is neither born, and nor does it die.", gu: "આત્મા ક્યારેય જન્મતો નથી, અને તે ક્યારેય મરતો પણ નથી." },
-                        { en: "Change is the law of the universe.", gu: "પરિવર્તન એ આ સંસારનો અફર નિયમ છે." }
+                        { en: "You have the right to work, but never to the fruit of work.", gu: "તમારો અધિકાર માત્ર કર્મ કરવાનો છે, ફળની આશા રાખવાનો નહિ." }
                     ]
                 },
                 {
                     id: "ramayana", name: "Ramayana",
-                    images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Rama_and_Sita.jpg/800px-Rama_and_Sita.jpg", "https://images.unsplash.com/photo-1605018698943-4e8913b83648?auto=format&fit=crop&q=80"],
+                    images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Rama_and_Sita.jpg/800px-Rama_and_Sita.jpg"],
                     quotes: [
-                        { en: "Dharma protects those who protect Dharma.", gu: "ધર્મ રક્ષતિ રક્ષિતઃ - જે ધર્મનું રક્ષણ કરે છે, ધર્મ તેનું રક્ષણ કરે છે." },
-                        { en: "A promise must be kept, even at the cost of one's life.", gu: "પ્રાણ જાય પણ વચન ન જાય. રઘુકુળ રીતિ સદા ચલી આઈ." },
-                        { en: "There is no greater dharma than serving parents.", gu: "માતા-પિતાની સેવા કરવાથી મોટો કોઈ ધર્મ નથી." }
+                        { en: "Dharma protects those who protect Dharma.", gu: "ધર્મ રક્ષતિ રક્ષિતઃ - જે ધર્મનું રક્ષણ કરે છે, ધર્મ તેનું રક્ષણ કરે છે." }
                     ]
                 },
                 {
                     id: "vivekananda", name: "Swami Vivekananda",
                     images: ["https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Swami_Vivekananda_Chicago_1893.jpg/800px-Swami_Vivekananda_Chicago_1893.jpg"],
                     quotes: [
-                        { en: "Arise, awake, and stop not till the goal is reached.", gu: "ઉઠો, જાગો અને ધ્યેય પ્રાપ્તિ સુધી મંડ્યા રહો." },
-                        { en: "In a day, when you don't come across any problems, you are travelling on a wrong path.", gu: "જે દિવસે તમને કોઈ સમસ્યા ન આવે, સમજી લેજો કે તમે ખોટા રસ્તા પર ચાલી રહ્યા છો." }
+                        { en: "Arise, awake, and stop not till the goal is reached.", gu: "ઉઠો, જાગો અને ધ્યેય પ્રાપ્તિ સુધી મંડ્યા રહો." }
                     ]
                 }
             ]
@@ -184,11 +174,6 @@
                     id: "birthday", name: "Birthday Wishes",
                     images: ["https://images.unsplash.com/photo-1558636508-e0db3814bd1d?auto=format&fit=crop&q=80"],
                     quotes: [{ en: "Happy Birthday! Wishing you a year filled with success and joy.", gu: "જન્મદિવસની શુભકામનાઓ! તમારું આ વર્ષ સફળતા અને ખુશીઓથી ભરેલું રહે." }]
-                },
-                {
-                    id: "marriage", name: "Marriage / Anniversary",
-                    images: ["https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&q=80"],
-                    quotes: [{ en: "Wishing you a lifetime of love and happiness.", gu: "તમને જીવનભરના પ્રેમ અને ખુશીઓની શુભેચ્છાઓ." }]
                 }
             ]
         },
@@ -197,10 +182,9 @@
             subs: [
                 {
                     id: "animals", name: "Animal Facts",
-                    images: ["https://images.unsplash.com/photo-1545671913-b89ac1b4ac10?auto=format&fit=crop&q=80", "https://images.unsplash.com/photo-1551927411-95e412943b58?auto=format&fit=crop&q=80"],
+                    images: ["https://images.unsplash.com/photo-1545671913-b89ac1b4ac10?auto=format&fit=crop&q=80"],
                     quotes: [
-                        { en: "An octopus has three hearts and blue blood.", gu: "ઓક્ટોપસને ત્રણ હૃદય અને ભૂરું લોહી હોય છે." },
-                        { en: "Cheetahs can accelerate from 0 to 100 km/h in just 3 seconds.", gu: "ચિત્તો માત્ર 3 સેકન્ડમાં 0 થી 100 કિમી/કલાકની સ્પીડ પકડી શકે છે." }
+                        { en: "An octopus has three hearts and blue blood.", gu: "ઓક્ટોપસને ત્રણ હૃદય અને ભૂરું લોહી હોય છે." }
                     ]
                 }
             ]
@@ -209,6 +193,10 @@
 
     let userObj = { name: "Student", id: "STU0000" };
     let activeEn = "", activeGu = "";
+    
+    // NAVIGATION STATE MANAGER (Smooth Back Button Logic)
+    let appState = 'main'; // main, modal_cat, modal_sub, poster
+    let currentCat = '';
 
     window.onload = () => {
         const u = localStorage.getItem('mahan_user');
@@ -219,25 +207,27 @@
         document.getElementById('qrImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent('https://mahan-institute-english.github.io/mahan-institute-platform/register.html?ref='+userObj.id)}&margin=5`;
     };
 
-    // === STEP-BY-STEP BACK NAVIGATION (The Smart Logic) ===
+    // === STEP BY STEP BACK NAVIGATION ===
     function handleBackNavigation() {
-        const modal = document.getElementById('globalModal');
-        const poster = document.getElementById('posterSection');
-        const menu = document.getElementById('mainMenuSection');
-
-        if (!modal.classList.contains('hidden')) {
-            closeModal(); // If modal is open, just close it
-        } else if (!poster.classList.contains('hidden')) {
-            // If poster is open, go back to main menu
-            poster.classList.add('hidden');
-            menu.classList.remove('hidden');
+        if (appState === 'poster') {
+            document.getElementById('posterSection').classList.add('hidden');
+            if (currentCat) {
+                document.getElementById('globalModal').classList.remove('hidden');
+                appState = 'modal_sub';
+            } else {
+                document.getElementById('mainMenuSection').classList.remove('hidden');
+                appState = 'main';
+            }
+        } else if (appState === 'modal_sub') {
+            openCategory(currentCat); // Go back to subcategory list
+        } else if (appState === 'modal_cat') {
+            document.getElementById('globalModal').classList.add('hidden');
+            document.getElementById('mainMenuSection').classList.remove('hidden');
+            appState = 'main';
         } else {
-            // If on main menu, exit studio to dashboard
-            window.location.href = 'dashboard.html';
+            window.location.href = 'dashboard.html'; // Exit to Dashboard
         }
     }
-
-    function closeModal() { document.getElementById('globalModal').classList.add('hidden'); }
 
     // === GOOGLE TRANSLATE API ===
     async function fetchGoogleTranslation(text, sourceLang, targetLang) {
@@ -264,6 +254,11 @@
                 const response = await fetch('https://uselessfacts.jsph.pl/api/v2/facts/random');
                 const data = await response.json();
                 fetchedEnglishText = data.text;
+            } else if (type === 'spiritual') {
+                const response = await fetch('https://api.adviceslip.com/advice');
+                const data = await response.json();
+                fetchedEnglishText = data.slip.advice;
+                bgImageUrl = "https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?auto=format&fit=crop&q=80"; // Spiritual bg
             }
 
             const translatedGujarati = await fetchGoogleTranslation(fetchedEnglishText, 'en', 'gu');
@@ -276,6 +271,10 @@
             loader.classList.add('hidden');
             document.getElementById('mainMenuSection').classList.add('hidden');
             document.getElementById('posterSection').classList.remove('hidden');
+            
+            currentCat = ''; // No subcategory context
+            appState = 'poster';
+            
             setTimeout(() => { document.getElementById('posterSection').scrollIntoView({ behavior: 'smooth' }); }, 300);
 
         } catch (error) {
@@ -287,6 +286,10 @@
     // === DYNAMIC CATEGORY MANAGER ===
     function openCategory(catKey) {
         document.getElementById('globalModal').classList.remove('hidden');
+        document.getElementById('mainMenuSection').classList.add('hidden');
+        appState = 'modal_cat';
+        currentCat = catKey;
+
         const catData = db[catKey];
         document.getElementById('modalTitle').innerText = catData.title;
         
@@ -304,6 +307,7 @@
     }
 
     function openQuoteList(catKey, subId) {
+        appState = 'modal_sub';
         const subData = db[catKey].subs.find(s => s.id === subId);
         document.getElementById('modalTitle').innerText = subData.name;
         
@@ -322,7 +326,9 @@
     }
 
     function createPoster(catKey, subId, quoteIndex) {
-        closeModal();
+        document.getElementById('globalModal').classList.add('hidden');
+        appState = 'poster';
+        
         const subData = db[catKey].subs.find(s => s.id === subId);
         const quote = subData.quotes[quoteIndex];
         activeEn = quote.en; activeGu = quote.gu;
@@ -333,14 +339,15 @@
         document.getElementById('pEn').innerText = `"${activeEn}"`;
         document.getElementById('pGu').innerText = `"${activeGu}"`;
         
-        document.getElementById('mainMenuSection').classList.add('hidden');
         document.getElementById('posterSection').classList.remove('hidden');
         setTimeout(() => { document.getElementById('posterSection').scrollIntoView({ behavior: 'smooth' }); }, 300);
     }
 
-    // === CUSTOM QUOTE (Translation Tool) ===
+    // === CUSTOM QUOTE & DICTIONARY ===
     function openCustomQuote() {
         document.getElementById('globalModal').classList.remove('hidden');
+        document.getElementById('mainMenuSection').classList.add('hidden');
+        appState = 'modal_cat'; currentCat = '';
         document.getElementById('modalTitle').innerHTML = '<i class="fa-solid fa-pen-nib text-pink-400"></i> My Own Quote';
         document.getElementById('modalContent').innerHTML = `
             <div class="bg-[#1e293b] p-4 rounded-2xl border border-pink-500/50 shadow-xl space-y-3">
@@ -364,18 +371,20 @@
         if(sl === 'gu') { activeGu = txt; activeEn = translatedText; } 
         else { activeEn = txt; activeGu = translatedText; }
         
-        closeModal();
-        document.getElementById('bgImg').src = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80"; // Clean BG
+        document.getElementById('globalModal').classList.add('hidden');
+        document.getElementById('bgImg').src = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80"; 
         document.getElementById('pEn').innerText = `"${activeEn}"`;
         document.getElementById('pGu').innerText = `"${activeGu}"`;
-        document.getElementById('mainMenuSection').classList.add('hidden');
+        
         document.getElementById('posterSection').classList.remove('hidden');
+        appState = 'poster';
         setTimeout(() => { document.getElementById('posterSection').scrollIntoView({ behavior: 'smooth' }); }, 300);
     }
 
-    // === SMART DICTIONARY ===
     function openDictionary() {
         document.getElementById('globalModal').classList.remove('hidden');
+        document.getElementById('mainMenuSection').classList.add('hidden');
+        appState = 'modal_cat'; currentCat = '';
         document.getElementById('modalTitle').innerHTML = '<i class="fa-solid fa-book-open text-blue-400"></i> Smart Dictionary';
         document.getElementById('modalContent').innerHTML = `
             <div class="bg-[#1e293b] p-5 rounded-2xl border border-blue-500/50 shadow-xl space-y-4 text-center">
@@ -385,7 +394,7 @@
                 <div id="dictResult" class="hidden mt-4 pt-4 border-t border-slate-600 text-center">
                     <p class="text-[10px] text-slate-400 uppercase tracking-widest mb-1">Gujarati Meaning</p>
                     <h3 id="dictGu" class="text-2xl font-black text-emerald-400 mb-4">...</h3>
-                    <button onclick="playDictAudio()" class="bg-emerald-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto text-xl"><i class="fa-solid fa-volume-high"></i></button>
+                    <button onclick="playAudio()" class="bg-emerald-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto text-xl"><i class="fa-solid fa-volume-high"></i></button>
                 </div>
             </div>
         `;
@@ -399,20 +408,27 @@
         activeEn = word; activeGu = translatedText;
         document.getElementById('dictGu').innerText = activeGu;
         document.getElementById('dictLoad').classList.add('hidden'); document.getElementById('dictResult').classList.remove('hidden');
-        playDictAudio();
+        playAudio();
     }
 
-    // === MEDIA & EXPORT ===
+    // === MEDIA (SLOW SPEED FOR LEARNING) & EXPORT ===
     function playAudio() {
         if (!('speechSynthesis' in window)) return;
         window.speechSynthesis.cancel(); 
-        const mEn = new SpeechSynthesisUtterance(activeEn); mEn.lang = 'en-US'; mEn.rate = 0.9;
-        const mGu = new SpeechSynthesisUtterance(activeGu); mGu.lang = 'gu-IN'; mGu.rate = 0.9;
+        
+        // English slow and clear for students (Rate: 0.55)
+        const mEn = new SpeechSynthesisUtterance(activeEn); 
+        mEn.lang = 'en-US'; 
+        mEn.rate = 0.55; 
+        
+        // Gujarati normal speed (Rate: 0.85)
+        const mGu = new SpeechSynthesisUtterance(activeGu); 
+        mGu.lang = 'gu-IN'; 
+        mGu.rate = 0.85;
+        
         window.speechSynthesis.speak(mEn);
         mEn.onend = () => { window.speechSynthesis.speak(mGu); };
     }
-    
-    function playDictAudio() { playAudio(); }
 
     function changeBg(event) {
         if (event.target.files[0]) {
@@ -438,3 +454,4 @@
 </script>
 </body>
 </html>
+    
